@@ -1,4 +1,4 @@
-package com.yurkova.people;
+package com.ku.people;
 
 public class PeopleApp {
     public static void main(String[] args) {
