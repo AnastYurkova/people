@@ -5,16 +5,16 @@ import java.util.stream.Collectors;
 
 public class Authority {
     private Long id;
-    private String name;
+    private String authorityName;
 
     private List<Role> roles;
 
     public Authority() {
     }
 
-    public Authority(Long id, String name, List<Role> roles) {
+    public Authority(Long id, String authorityName, List<Role> roles) {
         this.id = id;
-        this.name = name;
+        this.authorityName = authorityName;
         this.roles = roles;
     }
 
@@ -34,66 +34,83 @@ public class Authority {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAuthorityName() {
+        return authorityName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthorityName(String authorityName) {
+        this.authorityName = authorityName;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null) {
+        if (obj == null) {
             return false;
         }
-        if (getClass() != o.getClass()) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        Authority authority = (Authority) o;
+        Authority aThat = (Authority) obj;
 
         if (getId() == null) {
-            if (authority.getId() != null) {
+            if (aThat.getId() != null) {
                 return false;
             }
-        } else if (!getId().equals(authority.getId())) {
+        } else if (!getId().equals(aThat.getId())) {
             return false;
         }
-        for (int i=0; i < getRoles().size(); i++) {
-            Role role= getRoles().get(i);
-            if (role.getId()==null){
-                if (authority.getRoles().get(i).getId()!=null){
+
+        if (getRoles() == null && aThat.getRoles() != null) {
+            return false;
+        } else if (aThat.getRoles() == null && getRoles() != null) {
+            return false;
+        } else if (aThat.getRoles() != null && getRoles() != null) {
+            for (int i = 0; i < getRoles().size(); i++) {
+                if (getRoles().size() != aThat.getRoles().size()) {
                     return false;
                 }
-            } else if(!role.getId().equals(authority.getRoles().get(i).getId())){
-                return false;
+                Role role = getRoles().get(i);
+                if (role.getId() == null) {
+                    if (aThat.getRoles().get(i).getId() != null) {
+                        return false;
+                    }
+                } else if (!role.getId().equals(aThat.getRoles().get(i).getId())) {
+                    return false;
+                }
             }
         }
-        return getName() == null ? authority.getName() == null : getName().equals(authority.getName());
+        return getAuthorityName() == null ? aThat.getAuthorityName() == null : getAuthorityName().equals(aThat.getAuthorityName());
     }
 
     @Override
     public int hashCode() {
         int result = 31;
-        result =  31 * result + (getId() != null ? getId().hashCode() : 0);
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        for (int i=0; i < getRoles().size(); i++) {
-            Role role =getRoles().get(i);
-            result = 31 * result + (role.getId() != null ? role.getId().hashCode() : 0);
+        int prime = 31;
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getAuthorityName() != null ? getAuthorityName().hashCode() : 0);
+        if (getRoles() != null) {
+            for (int i = 0; i < getRoles().size(); i++) {
+                Role role = getRoles().get(i);
+                result = prime * result + (role.getId() != null ? role.getId().hashCode() : 0);
+            }
         }
-        return result;
-    }
+            return result;
+        }
 
-    public String toString()
-    {
-        return new StringBuilder(getClass().getSimpleName()).append(" { Id = ").append(getId()).append(", Name = ").append(getName())
-                .append("} contains {Role id =").append(getRoles().stream().map(role -> role.getId()).collect(Collectors.toList()))
-                .append("}").toString();
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+                .append(" { id = ").append(getId())
+                .append(", authorityName = ").append(getAuthorityName())
+                .append("} contains {Role id =")
+                .append(getRoles().stream()
+                        .map(Role::getId)
+                        .toList())
+                .append("}")
+                .toString();
     }
-
 
 
 }

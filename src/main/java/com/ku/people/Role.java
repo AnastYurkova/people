@@ -53,71 +53,103 @@ public class Role {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null) {
+        if (obj == null) {
             return false;
         }
-        if (getClass() != o.getClass()) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        Role role = (Role) o;
+        Role aThat = (Role) obj;
 
         if (getId() == null) {
-            if (role.getId() != null) {
+            if (aThat.getId() != null) {
                 return false;
             }
-        } else if (!getId().equals(role.getId())) {
+        } else if (!getId().equals(aThat.getId())) {
             return false;
         }
 
-        for (int i = 0; i < getUsers().size(); i++) {
-            User user = getUsers().get(i);
-            if (role.getId() == null) {
-                if (role.getUsers().get(i).getId() != null) {
+        if (getUsers() == null && aThat.getUsers() != null) {
+            return false;
+        } else if (aThat.getUsers() == null && getUsers() != null) {
+            return false;
+        } else if (aThat.getUsers() != null && getUsers() != null) {
+
+            for (int i = 0; i < getUsers().size(); i++) {
+                if (getUsers().size() != aThat.getUsers().size()) {
                     return false;
                 }
-            } else if (!user.getId().equals(role.getUsers().get(i).getId())) {
-                return false;
-            }
-        }
-        for (int i = 0; i < getAuthorities().size(); i++) {
-            Authority authority = getAuthorities().get(i);
-            if (authority.getId() == null) {
-                if (role.getAuthorities().get(i).getId() != null) {
+                User user = getUsers().get(i);
+                if (aThat.getId() == null) {
+                    if (aThat.getUsers().get(i).getId() != null) {
+                        return false;
+                    }
+                } else if (!user.getId().equals(aThat.getUsers().get(i).getId())) {
                     return false;
                 }
-            } else if (!authority.getId().equals(role.getAuthorities().get(i).getId())) {
-                return false;
             }
+
         }
 
+        if (getAuthorities() == null && aThat.getAuthorities() != null) {
+            return false;
+        } else if (aThat.getAuthorities() == null && getAuthorities() != null) {
+            return false;
+        } else if (aThat.getAuthorities() != null && getAuthorities() != null) {
+            for (int i = 0; i < getAuthorities().size(); i++) {
+                if (getAuthorities().size() != aThat.getAuthorities().size()) {
+                    return false;
+                }
+                Authority authority = getAuthorities().get(i);
+                if (authority.getId() == null) {
+                    if (aThat.getAuthorities().get(i).getId() != null) {
+                        return false;
+                    }
+                } else if (!authority.getId().equals(aThat.getAuthorities().get(i).getId())) {
+                    return false;
+                }
+            }
 
-        return getName() == null ? role.getName() == null : getName().equals(role.getName());
+        }
+        return getName() == null ? aThat.getName() == null : getName().equals(aThat.getName());
     }
 
     @Override
     public int hashCode() {
         int result = 31;
-        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        for (int i = 0; i < getUsers().size(); i++) {
-            User user = getUsers().get(i);
-            result = 31 * result + (user.getId() != null ? user.getId().hashCode() : 0);
+        int prime = 31;
+        result = prime * result + (getId() != null ? getId().hashCode() : 0);
+        result = prime * result + (getName() != null ? getName().hashCode() : 0);
+        if (getUsers() != null) {
+            for (int i = 0; i < getUsers().size(); i++) {
+                User user = getUsers().get(i);
+                result = prime * result + (user.getId() != null ? user.getId().hashCode() : 0);
+            }
         }
-        for (int i = 0; i < getAuthorities().size(); i++) {
-            Authority authority = getAuthorities().get(i);
-            result = 31 * result + (authority.getId() != null ? authority.getId().hashCode() : 0);
+        if (getAuthorities() != null) {
+            for (int i = 0; i < getAuthorities().size(); i++) {
+                Authority authority = getAuthorities().get(i);
+                result = prime * result + (authority.getId() != null ? authority.getId().hashCode() : 0);
+            }
         }
         return result;
     }
 
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName()).append(" { Id = ").append(getId()).append(", Name = ").append(getName())
-                .append("} contains {Users = ").append(getUsers().stream().map(user -> user.getId()).collect(Collectors.toList()))
-                .append("} {Authorities = ").append(getAuthorities().stream().map(authority -> authority.getId()).collect(Collectors.toList()))
-                .append("}").toString();
+        return new StringBuilder(getClass().getSimpleName())
+                .append(" { id = ").append(getId())
+                .append(", name = ").append(getName())
+                .append("} contains {User id = ").append(getUsers().stream()
+                        .map(User::getId)
+                        .toList())
+                .append("} {Authorities id = ").append(getAuthorities().stream()
+                        .map(Authority::getId)
+                        .toList())
+                .append("}")
+                .toString();
     }
 }
