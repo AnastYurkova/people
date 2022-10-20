@@ -1,7 +1,6 @@
 package com.ku.people;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Authority {
     private Long id;
@@ -97,8 +96,8 @@ public class Authority {
                 result = prime * result + (role.getId() != null ? role.getId().hashCode() : 0);
             }
         }
-            return result;
-        }
+        return result;
+    }
 
     public String toString() {
         return new StringBuilder(getClass().getSimpleName())

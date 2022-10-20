@@ -3,9 +3,9 @@ package com.ku.people;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 
 class UserTest {
     @Test
@@ -87,7 +87,7 @@ class UserTest {
         List<Detail> details = new ArrayList<>();
 
         Detail detail1 = new Detail(4L, "hz", new User(), new Relationship());
-        Detail detail2 = new Detail(4L, "hz", new User(), new Relationship() );
+        Detail detail2 = new Detail(4L, "hz", new User(), new Relationship());
 
         details.add(detail1);
         details.add(detail2);
@@ -104,7 +104,7 @@ class UserTest {
     @Test
     void testHashCode_emptyListOfRolesAndDetails() {
         //given
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya",  new ArrayList<>(), new ArrayList<>());
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", new ArrayList<>(), new ArrayList<>());
         int expected = -1615042184;
 
         //when
@@ -157,7 +157,7 @@ class UserTest {
         roles.add(role1);
         roles.add(role2);
 
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", roles,  new ArrayList<>());
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", roles, new ArrayList<>());
         //given
         int expected = -1572344935;
 
@@ -185,7 +185,7 @@ class UserTest {
         roles.add(role1);
         roles.add(role2);
 
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya",  new ArrayList<>(), details);
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", new ArrayList<>(), details);
         //given
         int expected = -1572344840;
 

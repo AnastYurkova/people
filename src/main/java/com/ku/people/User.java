@@ -1,8 +1,6 @@
 package com.ku.people;
 
 import java.util.List;
-import java.lang.StringBuilder;
-import java.util.stream.Collectors;
 
 public class User {
     private Long id;
