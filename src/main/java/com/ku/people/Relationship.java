@@ -85,10 +85,10 @@ public class Relationship {
         } else if (aThat.getDetails() == null && getDetails() != null) {
             return false;
         } else if (aThat.getDetails() != null && getDetails() != null) {
+            if (getDetails().size() != aThat.getDetails().size()) {
+                return false;
+            }
             for (int i = 0; i < getDetails().size(); i++) {
-                if (getDetails().size() != aThat.getDetails().size()) {
-                    return false;
-                }
                 Detail detail = getDetails().get(i);
                 if (detail.getId() == null) {
                     if (aThat.getDetails().get(i).getId() != null) {

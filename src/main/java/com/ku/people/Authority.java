@@ -67,10 +67,10 @@ public class Authority {
         } else if (aThat.getRoles() == null && getRoles() != null) {
             return false;
         } else if (aThat.getRoles() != null && getRoles() != null) {
+            if (getRoles().size() != aThat.getRoles().size()) {
+                return false;
+            }
             for (int i = 0; i < getRoles().size(); i++) {
-                if (getRoles().size() != aThat.getRoles().size()) {
-                    return false;
-                }
                 Role role = getRoles().get(i);
                 if (role.getId() == null) {
                     if (aThat.getRoles().get(i).getId() != null) {

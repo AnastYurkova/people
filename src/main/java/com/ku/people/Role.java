@@ -77,11 +77,10 @@ public class Role {
         } else if (aThat.getUsers() == null && getUsers() != null) {
             return false;
         } else if (aThat.getUsers() != null && getUsers() != null) {
-
+            if (getUsers().size() != aThat.getUsers().size()) {
+                return false;
+            }
             for (int i = 0; i < getUsers().size(); i++) {
-                if (getUsers().size() != aThat.getUsers().size()) {
-                    return false;
-                }
                 User user = getUsers().get(i);
                 if (aThat.getId() == null) {
                     if (aThat.getUsers().get(i).getId() != null) {
@@ -99,10 +98,10 @@ public class Role {
         } else if (aThat.getAuthorities() == null && getAuthorities() != null) {
             return false;
         } else if (aThat.getAuthorities() != null && getAuthorities() != null) {
+            if (getAuthorities().size() != aThat.getAuthorities().size()) {
+                return false;
+            }
             for (int i = 0; i < getAuthorities().size(); i++) {
-                if (getAuthorities().size() != aThat.getAuthorities().size()) {
-                    return false;
-                }
                 Authority authority = getAuthorities().get(i);
                 if (authority.getId() == null) {
                     if (aThat.getAuthorities().get(i).getId() != null) {
