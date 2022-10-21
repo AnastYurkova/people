@@ -64,7 +64,7 @@ class UserTest {
     }
 
     @Test
-    void testEquals_emptyListOfDetailsInSecondUser() {
+    void testEquals_emptyListOfDetailsInBothUser() {
         //given
         List<Role> roles = new ArrayList<>();
         Role role1 = new Role(1L, "name", new ArrayList<>(), new ArrayList<>());
@@ -82,7 +82,7 @@ class UserTest {
     }
 
     @Test
-    void testEquals_emptyListOfRolesInFirstUser() {
+    void testEquals_emptyListOfRolesInBothUser() {
         //given
         List<Detail> details = new ArrayList<>();
 
