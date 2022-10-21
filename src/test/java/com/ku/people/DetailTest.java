@@ -14,8 +14,10 @@ class DetailTest {
         //given
         Detail detail1 = new Detail(4L, "hz", new User(), new Relationship());
         Detail detail2 = new Detail(4L, "hz", new User(), new Relationship());
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -25,8 +27,10 @@ class DetailTest {
         //given
         Detail detail1 = new Detail(4L, "hz", null, new Relationship());
         Detail detail2 = new Detail(4L, "hz", new User(), new Relationship());
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertFalse(actual);
     }
@@ -36,8 +40,10 @@ class DetailTest {
         //given
         Detail detail1 = new Detail(4L, "hz", null, new Relationship());
         Detail detail2 = new Detail(4L, "hz", null, new Relationship());
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -47,8 +53,10 @@ class DetailTest {
         //given
         Detail detail1 = new Detail(4L, "hz", new User(), null);
         Detail detail2 = new Detail(4L, "hz", new User(), new Relationship());
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertFalse(actual);
     }
@@ -58,8 +66,10 @@ class DetailTest {
         //given
         Detail detail1 = new Detail(4L, "hz", new User(), null);
         Detail detail2 = new Detail(4L, "hz", new User(), null);
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -67,14 +77,14 @@ class DetailTest {
     @Test
     void testEquals_emptyRelationshipsInBothDetails() {
         //given
-        List<Role> roles = new ArrayList<>();
-        List<Detail> details = new ArrayList<>();
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", roles, details);
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", new ArrayList<>(), new ArrayList<>());
 
         Detail detail1 = new Detail(4L, "hz", user, new Relationship());
         Detail detail2 = new Detail(4L, "hz", user, new Relationship());
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -82,13 +92,14 @@ class DetailTest {
     @Test
     void testEquals_emptyUsersInBothDetails() {
         //given
-        List<Detail> details = new ArrayList<>();
-        Relationship relationship = new Relationship(4L, LocalDate.of(2022, 11, 10), "ok", details);
+        Relationship relationship = new Relationship(4L, LocalDate.of(2022, 11, 10), "ok", new ArrayList<>());
 
         Detail detail1 = new Detail(4L, "hz", new User(), relationship);
         Detail detail2 = new Detail(4L, "hz", new User(), relationship);
+
         //when
         boolean actual = detail1.equals(detail2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -97,7 +108,7 @@ class DetailTest {
     void testHashCode_emptyUsersAndRelationship() {
         //given
         Detail detail = new Detail(4L, "hz", new User(), new Relationship());
-        int expected = 1775697677;
+        int expected = 891791663;
 
         //when
         int actual = detail.hashCode();
@@ -110,7 +121,7 @@ class DetailTest {
     void testHashCode_nullUsers() {
         //given
         Detail detail = new Detail(4L, "hz", null, new Relationship());
-        int expected = 1775697677;
+        int expected = 4287982;
 
         //when
         int actual = detail.hashCode();
@@ -123,7 +134,7 @@ class DetailTest {
     void testHashCode_nullUsersAndRelationships() {
         //given
         Detail detail = new Detail(4L, "hz", null, null);
-        int expected = 31963821;
+        int expected = 4258191;
 
         //when
         int actual = detail.hashCode();
@@ -135,12 +146,10 @@ class DetailTest {
     @Test
     void testHashCode_emptyRelationships() {
         //given
-        List<Role> roles = new ArrayList<>();
-        List<Detail> details = new ArrayList<>();
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", roles, details);
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", new ArrayList<>(), new ArrayList<>());
 
         Detail detail = new Detail(4L, "hz", user, new Relationship());
-        int expected = 1506187190;
+        int expected = 622281176;
 
         //when
         int actual = detail.hashCode();
@@ -152,11 +161,10 @@ class DetailTest {
     @Test
     void testHashCode_emptyListOfRoles() {
         //given
-        List<Detail> details = new ArrayList<>();
-        Relationship relationship = new Relationship(4L, LocalDate.of(2022, 11, 10), "ok", details);
+        Relationship relationship = new Relationship(4L, LocalDate.of(2022, 11, 10), "ok", new ArrayList<>());
 
         Detail detail = new Detail(4L, "hz", new User(), relationship);
-        int expected = 1904099939;
+        int expected = 1020193925;
 
         //when
         int actual = detail.hashCode();

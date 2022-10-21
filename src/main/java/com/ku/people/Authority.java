@@ -5,12 +5,10 @@ import java.util.List;
 public class Authority {
     private Long id;
     private String authorityName;
-
     private List<Role> roles;
 
     public Authority() {
     }
-
     public Authority(Long id, String authorityName, List<Role> roles) {
         this.id = id;
         this.authorityName = authorityName;
@@ -62,6 +60,15 @@ public class Authority {
             return false;
         }
 
+        if (getAuthorityName() == null) {
+            if (aThat.getAuthorityName() != null) {
+                return false;
+            }
+        } else if (!getAuthorityName().equals(aThat.getAuthorityName())) {
+            return false;
+        }
+
+
         if (getRoles() == null && aThat.getRoles() != null) {
             return false;
         } else if (aThat.getRoles() == null && getRoles() != null) {
@@ -81,13 +88,12 @@ public class Authority {
                 }
             }
         }
-        return getAuthorityName() == null ? aThat.getAuthorityName() == null : getAuthorityName().equals(aThat.getAuthorityName());
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 31;
-        int prime = 31;
+        int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getAuthorityName() != null ? getAuthorityName().hashCode() : 0);
         if (getRoles() != null) {

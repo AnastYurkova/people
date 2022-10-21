@@ -13,8 +13,10 @@ class AuthorityTest {
         //given
         Authority authority1 = new Authority(1L, "User", new ArrayList<>());
         Authority authority2 = new Authority(1L, "User", new ArrayList<>());
+
         //when
         boolean actual = authority1.equals(authority2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -24,8 +26,10 @@ class AuthorityTest {
         //given
         Authority authority1 = new Authority(1L, "User", null);
         Authority authority2 = new Authority(1L, "User", new ArrayList<>());
+
         //when
         boolean actual = authority1.equals(authority2);
+
         //then
         Assertions.assertFalse(actual);
     }
@@ -35,8 +39,10 @@ class AuthorityTest {
         //given
         Authority authority1 = new Authority(1L, "User", null);
         Authority authority2 = new Authority(1L, "User", null);
+
         //when
         boolean actual = authority1.equals(authority2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -52,8 +58,10 @@ class AuthorityTest {
 
         Authority authority1 = new Authority(1L, "User", new ArrayList<>());
         Authority authority2 = new Authority(1L, "User", roles);
+
         //when
         boolean actual = authority1.equals(authority2);
+
         //then
         Assertions.assertFalse(actual);
     }
@@ -69,8 +77,10 @@ class AuthorityTest {
 
         Authority authority1 = new Authority(1L, "User", roles);
         Authority authority2 = new Authority(1L, "User", new ArrayList<>());
+
         //when
         boolean actual = authority1.equals(authority2);
+
         //then
         Assertions.assertFalse(actual);
     }
@@ -79,7 +89,7 @@ class AuthorityTest {
     void testHashCode_emptyListOfRoles() {
         //given
         Authority authority = new Authority(1L, "User", new ArrayList<>());
-        int expected = 2675817;
+        int expected = 2646987;
 
         //when
         int actual = authority.hashCode();
@@ -92,7 +102,7 @@ class AuthorityTest {
     void testHashCode_nullListOfRoles() {
         //given
         Authority authority = new Authority(1L, "User", null);
-        int expected = 2675817;
+        int expected = 2646987;
 
         //when
         int actual = authority.hashCode();
@@ -110,7 +120,7 @@ class AuthorityTest {
         roles.add(role1);
         roles.add(role2);
         Authority authority = new Authority(1L, "User", roles);
-        int expected = -1723507126;
+        int expected = -1751212756;
 
         //when
         int actual = authority.hashCode();

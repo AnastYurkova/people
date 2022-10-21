@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Relationship {
     private Long id;
-    private LocalDate createdAtUTC;
+    private LocalDate createdUtc;
     private String status;
     private List<Detail> details;
 
@@ -14,7 +14,7 @@ public class Relationship {
 
     public Relationship(Long id, LocalDate createdAtUTC, String status, List<Detail> details) {
         this.id = id;
-        this.createdAtUTC = createdAtUTC;
+        this.createdUtc = createdAtUTC;
         this.status = status;
         this.details = details;
     }
@@ -35,12 +35,12 @@ public class Relationship {
         this.id = id;
     }
 
-    public LocalDate getCreatedAtUTC() {
-        return createdAtUTC;
+    public LocalDate getCreatedUtc() {
+        return createdUtc;
     }
 
-    public void setCreatedAtUTC(LocalDate createdAtUTC) {
-        this.createdAtUTC = createdAtUTC;
+    public void setCreatedUtc(LocalDate createdUtc) {
+        this.createdUtc = createdUtc;
     }
 
     public String getStatus() {
@@ -72,11 +72,19 @@ public class Relationship {
             return false;
         }
 
-        if (getCreatedAtUTC() == null) {
-            if (aThat.getCreatedAtUTC() != null) {
+        if (getCreatedUtc() == null) {
+            if (aThat.getCreatedUtc() != null) {
                 return false;
             }
-        } else if (!getCreatedAtUTC().equals(aThat.getCreatedAtUTC())) {
+        } else if (!getCreatedUtc().equals(aThat.getCreatedUtc())) {
+            return false;
+        }
+
+        if (getStatus() == null) {
+            if (aThat.getStatus() != null) {
+                return false;
+            }
+        } else if (!getStatus().equals(aThat.getStatus())) {
             return false;
         }
 
@@ -99,15 +107,14 @@ public class Relationship {
                 }
             }
         }
-        return getStatus() == null ? aThat.getStatus() == null : getStatus().equals(aThat.getStatus());
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 31;
-        int prime = 31;
+        int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
-        result = prime * result + (getCreatedAtUTC() != null ? getCreatedAtUTC().hashCode() : 0);
+        result = prime * result + (getCreatedUtc() != null ? getCreatedUtc().hashCode() : 0);
         result = prime * result + (getStatus() != null ? getStatus().hashCode() : 0);
         if (getDetails() != null) {
             for (int i = 0; i < getDetails().size(); i++) {
@@ -121,7 +128,7 @@ public class Relationship {
     public String toString() {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
-                .append(", createdAtUTC = ").append(getCreatedAtUTC())
+                .append(", createdAtUTC = ").append(getCreatedUtc())
                 .append(", status = ").append(getStatus())
                 .append("}, {Details id = ").append(getDetails().stream()
                         .map(Detail::getId)

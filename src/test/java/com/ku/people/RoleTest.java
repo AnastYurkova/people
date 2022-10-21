@@ -13,8 +13,10 @@ class RoleTest {
         //given
         Role role1 = new Role(1L, "name", new ArrayList<>(), new ArrayList<>());
         Role role2 = new Role(1L, "name", new ArrayList<>(), new ArrayList<>());
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -24,8 +26,10 @@ class RoleTest {
         //given
         Role role1 = new Role(1L, "name", null, new ArrayList<>());
         Role role2 = new Role(1L, "name", new ArrayList<>(), new ArrayList<>());
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertFalse(actual);
     }
@@ -35,8 +39,10 @@ class RoleTest {
         //given
         Role role1 = new Role(1L, "name", null, new ArrayList<>());
         Role role2 = new Role(1L, "name", null, new ArrayList<>());
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -46,11 +52,12 @@ class RoleTest {
         //given
         Role role1 = new Role(1L, "name", new ArrayList<>(), null);
         Role role2 = new Role(1L, "name", new ArrayList<>(), new ArrayList<>());
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertFalse(actual);
-        ;
     }
 
     @Test
@@ -58,45 +65,46 @@ class RoleTest {
         //given
         Role role1 = new Role(1L, "name", new ArrayList<>(), null);
         Role role2 = new Role(1L, "name", new ArrayList<>(), null);
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertTrue(actual);
-        ;
     }
 
     @Test
     void testEquals_emptyListOfAuthoritiesInBothRoles() {
         //given
         List<User> users = new ArrayList<>();
-        List<Role> roles = new ArrayList<>();
-        List<Detail> details = new ArrayList<>();
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", roles, details);
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", new ArrayList<>(), new ArrayList<>());
         users.add(user);
 
         Role role1 = new Role(1L, "name", users, new ArrayList<>());
         Role role2 = new Role(1L, "name", users, new ArrayList<>());
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertTrue(actual);
-        ;
     }
 
     @Test
     void testEquals_emptyListOfUsersInBothRoles() {
         //given
         List<Authority> authorities = new ArrayList<>();
-        List<Role> roles = new ArrayList<>();
-        Authority authority1 = new Authority(1L, "User", roles);
-        Authority authority2 = new Authority(2L, "Admin", roles);
+        Authority authority1 = new Authority(1L, "User", new ArrayList<>());
+        Authority authority2 = new Authority(2L, "Admin", new ArrayList<>());
         authorities.add(authority1);
         authorities.add(authority2);
 
         Role role1 = new Role(1L, "name", new ArrayList<>(), authorities);
         Role role2 = new Role(1L, "name", new ArrayList<>(), authorities);
+
         //when
         boolean actual = role1.equals(role2);
+
         //then
         Assertions.assertTrue(actual);
     }
@@ -106,7 +114,7 @@ class RoleTest {
     void testHashCode_emptyListOfUsersAndAuthorities() {
         //given
         Role role = new Role(1L, "name", new ArrayList<>(), new ArrayList<>());
-        int expected = 3403529;
+        int expected = 3374699;
 
         //when
         int actual = role.hashCode();
@@ -119,7 +127,7 @@ class RoleTest {
     void testHashCode_nullListOfUsers() {
         //given
         Role role = new Role(1L, "name", null, new ArrayList<>());
-        int expected = 3403529;
+        int expected = 3374699;
 
         //when
         int actual = role.hashCode();
@@ -132,7 +140,7 @@ class RoleTest {
     void testHashCode_nullListOfUsersAndAuthorities() {
         //given
         Role role = new Role(1L, "name", null, null);
-        int expected = 3403529;
+        int expected = 3374699;
 
         //when
         int actual = role.hashCode();
@@ -145,12 +153,10 @@ class RoleTest {
     void testHashCode_emptyListOfAuthorities() {
         //given
         List<User> users = new ArrayList<>();
-        List<Role> roles = new ArrayList<>();
-        List<Detail> details = new ArrayList<>();
-        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya", roles, details);
+        User user = new User(1L, "Nass", "123", "Yurkova", "Nastya",  new ArrayList<>(),  new ArrayList<>());
         users.add(user);
         Role role = new Role(1L, "name", users, new ArrayList<>());
-        int expected = 105509400;
+        int expected = 104615670;
 
         //when
         int actual = role.hashCode();
@@ -169,7 +175,7 @@ class RoleTest {
         authorities.add(authority1);
         authorities.add(authority2);
         Role role = new Role(1L, "name", new ArrayList<>(), authorities);
-        int expected = -1024175894;
+        int expected = -1051881524;
 
         //when
         int actual = role.hashCode();

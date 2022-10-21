@@ -89,8 +89,7 @@ public class Detail {
 
     @Override
     public int hashCode() {
-        int result = 31;
-        int prime = 31;
+        int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getType() != null ? getType().hashCode() : 0);
         result = prime * result + (getUser() != null ? getUser().hashCode() : 0);

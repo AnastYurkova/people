@@ -11,7 +11,6 @@ public class User {
     private List<Role> roles;
     private List<Detail> details;
 
-
     public User() {
     }
 
@@ -126,6 +125,14 @@ public class User {
             return false;
         }
 
+        if (getName() == null) {
+            if (aThat.getName() != null) {
+                return false;
+            }
+        } else if (!getName().equals(aThat.getName())) {
+            return false;
+        }
+
         if (getRoles() == null && aThat.getRoles() != null) {
             return false;
         } else if (aThat.getRoles() == null && getRoles() != null) {
@@ -166,13 +173,12 @@ public class User {
                 }
             }
         }
-        return getName() == null ? aThat.getName() == null : getName().equals(aThat.getName());
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 31;
-        int prime = 31;
+        int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getUsername() != null ? getUsername().hashCode() : 0);
         result = prime * result + (getPassword() != null ? getPassword().hashCode() : 0);

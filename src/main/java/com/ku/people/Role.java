@@ -5,7 +5,6 @@ import java.util.List;
 public class Role {
     private Long id;
     private String name;
-
     private List<User> users;
     private List<Authority> authorities;
 
@@ -72,6 +71,14 @@ public class Role {
             return false;
         }
 
+        if (getName() == null) {
+            if (aThat.getName() != null) {
+                return false;
+            }
+        } else if (!getName().equals(aThat.getName())) {
+            return false;
+        }
+
         if (getUsers() == null && aThat.getUsers() != null) {
             return false;
         } else if (aThat.getUsers() == null && getUsers() != null) {
@@ -113,13 +120,12 @@ public class Role {
             }
 
         }
-        return getName() == null ? aThat.getName() == null : getName().equals(aThat.getName());
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 31;
-        int prime = 31;
+        int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getName() != null ? getName().hashCode() : 0);
         if (getUsers() != null) {
