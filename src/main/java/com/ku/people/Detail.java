@@ -101,9 +101,9 @@ public class Detail {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", type = ").append(getType())
-                .append(", userId= ").append(getUser().getId())
-                .append(",relationshipId =")
-                .append(getRelationship().getId())
+                .append(", userId= ").append(getUser() == null ? null : getRelationship().getId())
+                .append(", relationshipId = ")
+                .append(getRelationship() == null ? null : getRelationship().getId())
                 .append("}")
                 .toString();
     }

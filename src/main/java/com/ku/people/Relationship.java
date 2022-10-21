@@ -5,16 +5,16 @@ import java.util.List;
 
 public class Relationship {
     private Long id;
-    private LocalDate createdUtc;
+    private LocalDate createdAtUtc;
     private String status;
     private List<Detail> details;
 
     public Relationship() {
     }
 
-    public Relationship(Long id, LocalDate createdAtUTC, String status, List<Detail> details) {
+    public Relationship(Long id, LocalDate createdAtUtc, String status, List<Detail> details) {
         this.id = id;
-        this.createdUtc = createdAtUTC;
+        this.createdAtUtc = createdAtUtc;
         this.status = status;
         this.details = details;
     }
@@ -35,12 +35,12 @@ public class Relationship {
         this.id = id;
     }
 
-    public LocalDate getCreatedUtc() {
-        return createdUtc;
+    public LocalDate getCreatedAtUtc() {
+        return createdAtUtc;
     }
 
-    public void setCreatedUtc(LocalDate createdUtc) {
-        this.createdUtc = createdUtc;
+    public void setCreatedAtUtc(LocalDate createdAtUtc) {
+        this.createdAtUtc = createdAtUtc;
     }
 
     public String getStatus() {
@@ -72,11 +72,11 @@ public class Relationship {
             return false;
         }
 
-        if (getCreatedUtc() == null) {
-            if (aThat.getCreatedUtc() != null) {
+        if (getCreatedAtUtc() == null) {
+            if (aThat.getCreatedAtUtc() != null) {
                 return false;
             }
-        } else if (!getCreatedUtc().equals(aThat.getCreatedUtc())) {
+        } else if (!getCreatedAtUtc().equals(aThat.getCreatedAtUtc())) {
             return false;
         }
 
@@ -114,7 +114,7 @@ public class Relationship {
     public int hashCode() {
         int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
-        result = prime * result + (getCreatedUtc() != null ? getCreatedUtc().hashCode() : 0);
+        result = prime * result + (getCreatedAtUtc() != null ? getCreatedAtUtc().hashCode() : 0);
         result = prime * result + (getStatus() != null ? getStatus().hashCode() : 0);
         if (getDetails() != null) {
             for (int i = 0; i < getDetails().size(); i++) {
@@ -128,11 +128,14 @@ public class Relationship {
     public String toString() {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
-                .append(", createdAtUTC = ").append(getCreatedUtc())
+                .append(", createdAtUtc = ").append(getCreatedAtUtc())
                 .append(", status = ").append(getStatus())
-                .append("}, {Details id = ").append(getDetails().stream()
-                        .map(Detail::getId)
-                        .toList())
+                .append("}, {Details id = ")
+                .append(getDetails() == null
+                        ? List.of()
+                        : getDetails().stream()
+                            .map(Detail::getId)
+                            .toList())
                 .append("}")
                 .toString();
     }

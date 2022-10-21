@@ -9,6 +9,7 @@ public class Authority {
 
     public Authority() {
     }
+
     public Authority(Long id, String authorityName, List<Role> roles) {
         this.id = id;
         this.authorityName = authorityName;
@@ -109,13 +110,13 @@ public class Authority {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", authorityName = ").append(getAuthorityName())
-                .append("} contains {Role id =")
-                .append(getRoles().stream()
-                        .map(Role::getId)
-                        .toList())
+                .append("} contains {Role id = ")
+                .append(getRoles() == null
+                        ? List.of()
+                        : getRoles().stream()
+                            .map(Role::getId)
+                            .toList())
                 .append("}")
                 .toString();
     }
-
-
 }

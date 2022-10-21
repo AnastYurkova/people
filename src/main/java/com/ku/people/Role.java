@@ -147,12 +147,18 @@ public class Role {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", name = ").append(getName())
-                .append("} contains {User id = ").append(getUsers().stream()
-                        .map(User::getId)
-                        .toList())
-                .append("} {Authorities id = ").append(getAuthorities().stream()
-                        .map(Authority::getId)
-                        .toList())
+                .append("} contains {User id = ")
+                .append(getUsers() == null
+                        ? List.of()
+                        : getUsers().stream()
+                            .map(User::getId)
+                            .toList())
+                .append("} {Authorities id = ")
+                .append(getAuthorities() == null
+                        ? List.of()
+                        : getAuthorities().stream()
+                            .map(Authority::getId)
+                            .toList())
                 .append("}")
                 .toString();
     }
