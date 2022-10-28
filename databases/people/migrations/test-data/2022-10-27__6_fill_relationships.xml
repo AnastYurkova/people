@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="6" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            with series as (
+            select generate_series(1, 100) as sery
+            )
+
+            insert into relationships(created_at_utc, relationship_status)
+            select
+            '2022-01-01'::date + (FLOOR(random() * 300) + 1)::integer,
+            case
+            when s.sery % 2 = 0 then 'sad'::relationship_status_enum
+            when s.sery % 3 = 0 then 'ok'::relationship_status_enum
+            else 'happy'::relationship_status_enum
+            end
+            from series s
+        </sql>
+    </changeSet>
+</databaseChangeLog>

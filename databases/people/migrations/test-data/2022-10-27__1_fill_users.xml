@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            with series as (
+            select generate_series(1, 100) as sery
+            )
+
+            insert into users(user_name, "password", surname, "name")
+            select
+            case
+            when s.sery % 5 = 0 then 'Nastya'
+            when s.sery % 4 = 0 then 'Vlad'
+            when s.sery % 3 = 0 then 'Katya'
+            when s.sery % 2 = 0 then 'Polina'
+            when s.sery = 1  then 'Yarick'
+            else 'Andrew'
+            end,
+            lpad(s.sery::varchar, 8, '0'),
+            case
+            when s.sery % 5 = 0 then 'Yurkova'
+            when s.sery % 4 = 0 then 'Kolyago'
+            when s.sery % 3 = 0 then 'Kamenko'
+            when s.sery % 2 = 0 then 'Starostenko'
+            when s.sery = 1  then 'Vasilevski'
+            else 'Yuriev'
+            end,
+            'User' || s.sery
+            from series s
+        </sql>
+    </changeSet>
+</databaseChangeLog>
