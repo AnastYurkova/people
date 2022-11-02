@@ -18,6 +18,10 @@ public class Role {
         this.authorities = authorities;
     }
 
+    public Role(Long id) {
+        this.id = id;
+    }
+
     public List<Authority> getAuthorities() {
         return authorities;
     }

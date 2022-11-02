@@ -16,6 +16,14 @@ public class Detail {
         this.relationship = relationship;
     }
 
+    public Detail(Long id) {
+        this.id = id;
+    }
+    public Detail(String type, Relationship relationship) {
+        this.type = type;
+        this.relationship = relationship;
+    }
+
     public Long getId() {
         return id;
     }

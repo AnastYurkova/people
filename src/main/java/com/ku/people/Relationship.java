@@ -19,6 +19,10 @@ public class Relationship {
         this.details = details;
     }
 
+    public Relationship(Long id) {
+        this.id = id;
+    }
+
     public List<Detail> getDetails() {
         return details;
     }
