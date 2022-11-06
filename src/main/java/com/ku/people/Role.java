@@ -18,6 +18,11 @@ public class Role {
         this.authorities = authorities;
     }
 
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Role(Long id) {
         this.id = id;
     }
