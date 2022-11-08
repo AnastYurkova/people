@@ -50,15 +50,15 @@ public class UserRepository {
             return new Role(resultSet.getLong(ROLE_ID_COLUMN),
                     resultSet.getString(ROLE_NAME_COLUMN));
         } catch (Exception ex) {
-            throw new UserException("Failed to find user", ex);
+            throw new UserException("Failed to find role of user", ex);
         }
     }
 
-    public Detail findDetailOfUser(ResultSet resultSet) {
+    public Detail findDetailsOfUser(ResultSet resultSet) {
         try {
             return new Detail(resultSet.getLong(DETAILS_ID_COLUMN));
         }catch (Exception ex) {
-            throw new UserException("Failed to find user", ex);
+            throw new UserException("Failed to find details of user", ex);
         }
     }
 
@@ -82,8 +82,8 @@ public class UserRepository {
                     if (!roles.contains(findRoleOfUser(resultSet))) {
                         roles.add(findRoleOfUser(resultSet));
                     }
-                    if (!details.contains(findDetailOfUser(resultSet))) {
-                        details.add(findDetailOfUser(resultSet));
+                    if (!details.contains(findDetailsOfUser(resultSet))) {
+                        details.add(findDetailsOfUser(resultSet));
                     }
                     user.setRoles(roles);
                     user.setDetails(details);
