@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +16,27 @@ public class UserRepository {
     public static final String NAME_COLUMN = "name";
     public static final String ROLE_ID_COLUMN = "role_id";
     public static final String ROLE_NAME_COLUMN = "role_name";
-    public static final String FIND_BY_ID = """
-            SELECT *
-                FROM users 
-                    LEFT JOIN user_role_links  ON users.id = user_role_links.user_id 
-                    LEFT JOIN roles ON user_role_links.role_id = roles.id
-                    LEFT JOIN details  ON details.user_id = users.id  
-                        WHERE users.id = ?
+    public static final String DETAILS_ID_COLUMN = "detail_id";
+
+    public static final String QUERY_FIND_BY_ID = """
+               SELECT u.id, u.user_name, u.password, u.surname, u.name, r.id role_id, r.role_name, d.id detail_id
+               FROM users u
+                    LEFT JOIN user_role_links url  ON u.id = url.user_id
+                    LEFT JOIN roles r ON url.role_id = r.id
+                    LEFT JOIN details d ON d.user_id = u.id 
+                WHERE u.id = ?
             """;
-    public static final String FIND_ALL = "SELECT * FROM users";
-    public static final String SAVE = "INSERT INTO users(user_name, password, surname, name) VALUES (?, ?, ?, ?)";
-    public static final String UPDATE = "UPDATE users SET user_name = ?, password = ?, surname = ?, name = ? where id = ?";
-    public static final String SAVE_USER_ROLE_LINKS = "INSERT INTO user_role_links(user_id, role_id) VALUES (?,?)";
-    public static final String SAVE_DETAILS = """
+    public static final String QUERY_FIND_ALL = "SELECT * FROM users";
+    public static final String QUERY_SAVE = "INSERT INTO users(user_name, password, surname, name) VALUES (?, ?, ?, ?)";
+    public static final String QUERY_UPDATE = "UPDATE users SET user_name = ?, password = ?, surname = ?, name = ? WHERE id = ?";
+    public static final String QUERY_SAVE_USER_ROLE_LINKS = "INSERT INTO user_role_links(user_id, role_id) VALUES (?,?)";
+    public static final String QUERY_SAVE_DETAILS = """
                 INSERT INTO details(relationship_type,user_id,relationship_id) 
                     VALUES (?::relationship_type_enum,?,?)
             """;
-    public static final String DELETE_DETAILS = "DELETE FROM details WHERE user_id = ? ";
-    public static final String DELETE_USER_ROLE_LINKS = "DELETE FROM user_role_links WHERE user_id = ? ";
-    public static final String DELETE = "DELETE FROM users WHERE id = ? ";
+    public static final String QUERY_DELETE_DETAILS = "DELETE FROM details WHERE user_id = ? ";
+    public static final String QUERY_DELETE_USER_ROLE_LINKS = "DELETE FROM user_role_links WHERE user_id = ? ";
+    public static final String QUERY_DELETE = "DELETE FROM users WHERE id = ? ";
 
     private final DataSource dataSource;
 
@@ -43,46 +44,63 @@ public class UserRepository {
         this.dataSource = dataSource;
     }
 
-    public List<User> findById(Long id) {
+
+    public Role findRoleOfUser(ResultSet resultSet) {
+        try {
+            return new Role(resultSet.getLong(ROLE_ID_COLUMN),
+                    resultSet.getString(ROLE_NAME_COLUMN));
+        } catch (Exception ex) {
+            throw new UserException("Failed to find user", ex);
+        }
+    }
+
+    public Detail findDetailOfUser(ResultSet resultSet) {
+        try {
+            return new Detail(resultSet.getLong(DETAILS_ID_COLUMN));
+        }catch (Exception ex) {
+            throw new UserException("Failed to find user", ex);
+        }
+    }
+
+    public List<User> findById(Long id){
         List<User> users = new ArrayList<>();
         List<Role> roles = new ArrayList<>();
         List<Detail> details = new ArrayList<>();
         User user = new User();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)
+             PreparedStatement preparedStatement = connection.prepareStatement(QUERY_FIND_BY_ID)
         ) {
             preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                user.setId(resultSet.getLong(ID_COLUMN));
-                user.setUsername(resultSet.getString(USER_NAME_COLUMN));
-                user.setPassword(resultSet.getString(PASSWORD_COLUMN));
-                user.setSurname(resultSet.getString(SURNAME_COLUMN));
-                user.setName(resultSet.getString(NAME_COLUMN));
-                if (!roles.contains(new Role(resultSet.getLong(ROLE_ID_COLUMN),
-                        resultSet.getString(ROLE_NAME_COLUMN)))) {
-                    roles.add(new Role(resultSet.getLong(ROLE_ID_COLUMN),
-                            resultSet.getString(ROLE_NAME_COLUMN)));
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    user.setId(resultSet.getLong(ID_COLUMN));
+                    user.setUsername(resultSet.getString(USER_NAME_COLUMN));
+                    user.setPassword(resultSet.getString(PASSWORD_COLUMN));
+                    user.setSurname(resultSet.getString(SURNAME_COLUMN));
+                    user.setName(resultSet.getString(NAME_COLUMN));
+                    if (!roles.contains(findRoleOfUser(resultSet))) {
+                        roles.add(findRoleOfUser(resultSet));
+                    }
+                    if (!details.contains(findDetailOfUser(resultSet))) {
+                        details.add(findDetailOfUser(resultSet));
+                    }
+                    user.setRoles(roles);
+                    user.setDetails(details);
                 }
-                if (!details.contains(new Detail(resultSet.getLong(10)))) {
-                    details.add(new Detail(resultSet.getLong(10)));
-                }
-                user.setRoles(roles);
-                user.setDetails(details);
+                users.add(user);
             }
-            users.add(user);
-        } catch (SQLException s) {
-            s.printStackTrace();
+        } catch (Exception ex) {
+            throw new UserException("Failed to find user", ex);
         }
         return users;
     }
 
-    public List<User> findAll() throws UserException {
+    public List<User> findAll() {
         List<User> users = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(FIND_ALL);
+             ResultSet resultSet = statement.executeQuery(QUERY_FIND_ALL);
         ) {
             while (resultSet.next()) {
                 User user = new User();
@@ -95,44 +113,27 @@ public class UserRepository {
                 user.setName(resultSet.getString(NAME_COLUMN));
                 users.add(user);
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             throw new UserException("Failed to find all users", ex);
         }
         return users;
     }
 
-    public void saveUserRoleLinks(Connection connection, User user, Long id) throws SQLException, UserException {
-        try (PreparedStatement preparedStatementForRoles = connection
-                .prepareStatement(SAVE_USER_ROLE_LINKS)
-        ) {
+    public void saveUserRoleLinks(Connection connection, User user, Long id) {
+        try (PreparedStatement preparedStatementForRoles = connection.prepareStatement(QUERY_SAVE_USER_ROLE_LINKS)) {
             for (int i = 0; i < user.getRoles().size(); i++) {
                 preparedStatementForRoles.setLong(1, id);
                 preparedStatementForRoles.setLong(2, user.getRoles().get(i).getId());
                 preparedStatementForRoles.executeUpdate();
             }
-        } catch (SQLException ex) {
-            throw new UserException("Failed to update user", ex);
+        } catch (Exception ex) {
+            throw new UserException("Failed to save user_role_links", ex);
         }
     }
 
-    public void saveDetails(Connection connection, User user, Long id) throws SQLException, UserException {
-        try (PreparedStatement preparedStatementForDetails = connection
-                .prepareStatement(SAVE_DETAILS)
-        ) {
-            for (int i = 0; i < user.getDetails().size(); i++) {
-                preparedStatementForDetails.setString(1, user.getDetails().get(i).getType());
-                preparedStatementForDetails.setLong(2, id);
-                preparedStatementForDetails.setLong(3, user.getDetails().get(i).getRelationship().getId());
-                preparedStatementForDetails.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            throw new UserException("Failed to update user", ex);
-        }
-    }
-
-    public boolean save(User user) throws UserException, SQLException {
+    public boolean save(User user) throws Exception {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE, Statement.RETURN_GENERATED_KEYS)
+             PreparedStatement preparedStatement = connection.prepareStatement(QUERY_SAVE, Statement.RETURN_GENERATED_KEYS)
         ) {
             try {
                 connection.setAutoCommit(false);
@@ -147,13 +148,12 @@ public class UserRepository {
                     Long id = generatedKeys.getLong(1);
 
                     saveUserRoleLinks(connection, user, id);
-                    saveDetails(connection, user, id);
                 }
 
                 connection.commit();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 connection.rollback();
-                throw new UserException("Failed to update user", ex);
+                throw new UserException("Failed to save user", ex);
             } finally {
                 connection.setAutoCommit(true);
             }
@@ -161,9 +161,9 @@ public class UserRepository {
         return true;
     }
 
-    public boolean update(User user) throws UserException, SQLException {
+    public boolean update(User user) throws Exception {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+             PreparedStatement preparedStatement = connection.prepareStatement(QUERY_UPDATE);
         ) {
             try {
                 connection.setAutoCommit(false);
@@ -176,9 +176,9 @@ public class UserRepository {
                 preparedStatement.executeUpdate();
 
                 connection.commit();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 connection.rollback();
-                throw new UserException("Failed to update user", ex);
+                throw new UserException("Failed to delete user", ex);
             } finally {
                 connection.setAutoCommit(true);
             }
@@ -186,35 +186,35 @@ public class UserRepository {
         return true;
     }
 
-    public void deleteUserRoleLink(Connection connection, Long id) throws SQLException, UserException {
-        try (PreparedStatement preparedStatementForRoles = connection.prepareStatement(DELETE_USER_ROLE_LINKS)
+    public void deleteUserRoleLink(Connection connection, Long id) throws Exception {
+        try (PreparedStatement preparedStatementForRoles = connection.prepareStatement(QUERY_DELETE_USER_ROLE_LINKS)
         ) {
             try {
                 preparedStatementForRoles.setLong(1, id);
                 preparedStatementForRoles.executeUpdate();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 connection.rollback();
                 throw new UserException("Failed to delete links", ex);
             }
         }
     }
 
-    public void deleteDetails(Connection connection, Long id) throws SQLException, UserException {
-        try (PreparedStatement preparedStatementForDetails = connection.prepareStatement(DELETE_DETAILS)
+    public void deleteDetails(Connection connection, Long id) throws Exception {
+        try (PreparedStatement preparedStatementForDetails = connection.prepareStatement(QUERY_DELETE_DETAILS)
         ) {
             try {
                 preparedStatementForDetails.setLong(1, id);
                 preparedStatementForDetails.executeUpdate();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 connection.rollback();
                 throw new UserException("Failed to delete links", ex);
             }
         }
     }
 
-    public boolean delete(Long id) throws SQLException, UserException {
+    public boolean delete(Long id) throws Exception {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
+             PreparedStatement preparedStatement = connection.prepareStatement(QUERY_DELETE);
         ) {
             try {
                 connection.setAutoCommit(false);
@@ -223,7 +223,7 @@ public class UserRepository {
                 preparedStatement.setLong(1, id);
                 preparedStatement.executeUpdate();
                 connection.commit();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 connection.rollback();
                 throw new UserException("Failed to delete user", ex);
             } finally {

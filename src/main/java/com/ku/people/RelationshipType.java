@@ -10,13 +10,13 @@ public enum RelationshipType {
     GRANDFATHER ("grandfather"),
     MOTHER ("mother");
 
-    private final String relationshipType;
+    private final String value;
 
-    RelationshipType (String relationshipType){
-        this.relationshipType = relationshipType;
+    RelationshipType (String value){
+        this.value = value;
     }
 
-    public String getRelationshipType() {
-        return relationshipType;
+    public String getValue() {
+        return value;
     }
 }

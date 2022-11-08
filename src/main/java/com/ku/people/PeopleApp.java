@@ -21,7 +21,7 @@ public class PeopleApp {
 //            add(new Role(1L));
 //        }};
 //        List<Detail> details = new ArrayList<>() {{
-//            add(new Detail(RelationshipType.WIFE.getRelationshipType(), new Relationship(47L)));
+//            add(new Detail(RelationshipType.WIFE.getValue(), new Relationship(47L)));
 //
 //        }};
 //        User user = new User();
@@ -40,6 +40,5 @@ public class PeopleApp {
 //        System.out.println(userRepository.delete(148L));
 
     }
-
 
 }
