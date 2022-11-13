@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements Repository{
-
     public static final String FIND_BY_ID_QUERY = """
         SELECT u.id, u.user_name, u.password, u.surname, u.name, r.id role_id, r.role_name, d.id detail_id
         FROM users u
@@ -64,20 +63,20 @@ public class UserRepository implements Repository{
     }
 
     private void fillUser(User user, ResultSet resultSet) throws Exception {
-            user.setId(resultSet.getLong(ID_COLUMN));
-            user.setUsername(resultSet.getString(USER_NAME_COLUMN));
-            user.setPassword(resultSet.getString(PASSWORD_COLUMN));
-            user.setSurname(resultSet.getString(SURNAME_COLUMN));
-            user.setName(resultSet.getString(NAME_COLUMN));
+        user.setId(resultSet.getLong(ID_COLUMN));
+        user.setUsername(resultSet.getString(USER_NAME_COLUMN));
+        user.setPassword(resultSet.getString(PASSWORD_COLUMN));
+        user.setSurname(resultSet.getString(SURNAME_COLUMN));
+        user.setName(resultSet.getString(NAME_COLUMN));
     }
 
     private Role buildRole(ResultSet resultSet) throws Exception {
-            return new Role(resultSet.getLong(ROLE_ID_COLUMN),
-                    resultSet.getString(ROLE_NAME_COLUMN));
+        return new Role(resultSet.getLong(ROLE_ID_COLUMN),
+                resultSet.getString(ROLE_NAME_COLUMN));
     }
 
     private Detail buildDetails(ResultSet resultSet) throws Exception {
-            return new Detail(resultSet.getLong(DETAIL_ID_COLUMN));
+        return new Detail(resultSet.getLong(DETAIL_ID_COLUMN));
     }
 
     public List<User> findAll() {
@@ -111,10 +110,10 @@ public class UserRepository implements Repository{
     }
 
     private void buildQuery(PreparedStatement preparedStatement, User user) throws Exception {
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getSurname());
-            preparedStatement.setString(4, user.getName());
+        preparedStatement.setString(1, user.getUsername());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getSurname());
+        preparedStatement.setString(4, user.getName());
     }
 
     public void update(User user) throws Exception {
@@ -154,16 +153,16 @@ public class UserRepository implements Repository{
     private void deleteUserRoleLinks    (Connection connection, Long id) throws Exception {
         try (PreparedStatement preparedStatementForRoles = connection.prepareStatement(DELETE_USER_ROLE_LINKS_QUERY)
         ) {
-                preparedStatementForRoles.setLong(1, id);
-                preparedStatementForRoles.executeUpdate();
+            preparedStatementForRoles.setLong(1, id);
+            preparedStatementForRoles.executeUpdate();
         }
     }
 
     private void deleteDetails(Connection connection, Long id) throws Exception {
         try (PreparedStatement preparedStatementForDetails = connection.prepareStatement(DELETE_DETAIL_QUERY)
         ) {
-                preparedStatementForDetails.setLong(1, id);
-                preparedStatementForDetails.executeUpdate();
+            preparedStatementForDetails.setLong(1, id);
+            preparedStatementForDetails.executeUpdate();
         }
     }
 }
