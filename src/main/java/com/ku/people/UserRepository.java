@@ -10,6 +10,24 @@ import java.util.List;
 
 public class UserRepository implements Repository{
 
+    public static final String FIND_BY_ID_QUERY = """
+        SELECT u.id, u.user_name, u.password, u.surname, u.name, r.id role_id, r.role_name, d.id detail_id
+        FROM users u
+            LEFT JOIN user_role_links url  ON u.id = url.user_id
+            LEFT JOIN roles r ON url.role_id = r.id
+            LEFT JOIN details d ON d.user_id = u.id 
+        WHERE u.id = ?
+    """;
+    public static final String FIND_ALL_QUERY = "SELECT * FROM users";
+    public static final String SAVE_QUERY = """
+        INSERT INTO users(user_name, password, surname, name) VALUES (?, ?, ?, ?)
+    """;
+    public static final String UPDATE_QUERY = """
+        UPDATE users SET user_name = ?, password = ?, surname = ?, name = ? WHERE id = ?
+    """;
+    public static final String DELETE_DETAIL_QUERY = "DELETE FROM details WHERE user_id = ?";
+    public static final String DELETE_USER_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE user_id = ?";
+    public static final String DELETE_QUERY = "DELETE FROM users WHERE id = ?";
     private final DataSource dataSource;
 
     public UserRepository(DataSource dataSource) {
