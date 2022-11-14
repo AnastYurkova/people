@@ -16,6 +16,11 @@ public class Authority {
         this.roles = roles;
     }
 
+    public Authority(Long id, String authorityName) {
+        this.id = id;
+        this.authorityName = authorityName;
+    }
+
     public List<Role> getRoles() {
         return roles;
     }

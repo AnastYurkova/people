@@ -19,6 +19,12 @@ public class Relationship {
         this.details = details;
     }
 
+    public Relationship(Long id, LocalDate createdAtUtc, String status) {
+        this.id = id;
+        this.createdAtUtc = createdAtUtc;
+        this.status = status;
+    }
+
     public Relationship(Long id) {
         this.id = id;
     }

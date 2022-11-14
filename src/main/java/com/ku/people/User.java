@@ -24,6 +24,18 @@ public class User {
         this.details = details;
     }
 
+    public User(Long id, String username, String password, String surname, String name) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.username = username;
+        this.surname = surname;
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
+
     public List<Detail> getDetails() {
         return details;
     }

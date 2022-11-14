@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.Enum;
 
 public enum RelationshipType {
     HUSBAND ("husband"),

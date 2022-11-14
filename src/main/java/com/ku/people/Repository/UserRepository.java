@@ -1,4 +1,10 @@
-package com.ku.people;
+package com.ku.people.Repository;
+
+import com.ku.people.Detail;
+import com.ku.people.Exception.RepositoryException;
+import com.ku.people.Repository.Repository;
+import com.ku.people.Role;
+import com.ku.people.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -8,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository implements Repository{
+public class UserRepository implements Repository {
     public static final String FIND_BY_ID_QUERY = """
         SELECT u.id, u.user_name, u.password, u.surname, u.name, r.id role_id, r.role_name, d.id detail_id
         FROM users u
@@ -58,7 +64,7 @@ public class UserRepository implements Repository{
                 return user;
             }
         } catch (Exception ex) {
-            throw new UserException("Failed to find user", ex);
+            throw new RepositoryException(String.format("Failed to find user where id == %d!",id), ex);
         }
     }
 
@@ -92,7 +98,7 @@ public class UserRepository implements Repository{
             }
             return users;
         } catch (Exception ex) {
-            throw new UserException("Failed to find all users", ex);
+            throw new RepositoryException("Failed to find all users:table users is empty", ex);
         }
     }
 
@@ -104,7 +110,7 @@ public class UserRepository implements Repository{
                 buildQuery(preparedStatement, user);
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new UserException("Failed to save user", ex);
+                throw new RepositoryException("Failed to save user: this user already exist", ex);
             }
         }
     }
@@ -125,7 +131,7 @@ public class UserRepository implements Repository{
                 preparedStatement.setLong(5, user.getId());
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new UserException("Failed to delete user", ex);
+                throw new RepositoryException(String.format("Failed to update user with id=%d. This user is not exist!", user.getId()), ex);
             }
         }
     }
@@ -143,7 +149,7 @@ public class UserRepository implements Repository{
                 connection.commit();
             } catch (Exception ex) {
                 connection.rollback();
-                throw new UserException("Failed to delete user", ex);
+                throw new RepositoryException(String.format("Failed to delete user with id=%d. This user is not exist!", id), ex);
             } finally {
                 connection.setAutoCommit(true);
             }
@@ -151,10 +157,10 @@ public class UserRepository implements Repository{
     }
 
     private void deleteUserRoleLinks    (Connection connection, Long id) throws Exception {
-        try (PreparedStatement preparedStatementForRoles = connection.prepareStatement(DELETE_USER_ROLE_LINKS_QUERY)
+        try (PreparedStatement preparedStatementForUserRoleLinks = connection.prepareStatement(DELETE_USER_ROLE_LINKS_QUERY)
         ) {
-            preparedStatementForRoles.setLong(1, id);
-            preparedStatementForRoles.executeUpdate();
+            preparedStatementForUserRoleLinks.setLong(1, id);
+            preparedStatementForUserRoleLinks.executeUpdate();
         }
     }
 
