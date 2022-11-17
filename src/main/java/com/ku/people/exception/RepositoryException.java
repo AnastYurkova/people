@@ -1,4 +1,4 @@
-package com.ku.people.Exception;
+package com.ku.people.exception;
 
 public class RepositoryException extends RuntimeException{
     public RepositoryException() {
@@ -7,5 +7,9 @@ public class RepositoryException extends RuntimeException{
 
     public RepositoryException(String message, Throwable cause){
         super(message, cause);
+    }
+
+    public RepositoryException(String s) {
+
     }
 }

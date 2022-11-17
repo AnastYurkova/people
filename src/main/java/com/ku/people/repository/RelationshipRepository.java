@@ -1,8 +1,8 @@
-package com.ku.people.Repository;
+package com.ku.people.repository;
 
-import com.ku.people.Detail;
-import com.ku.people.Relationship;
-import com.ku.people.Exception.RepositoryException;
+import com.ku.people.entity.Detail;
+import com.ku.people.entity.Relationship;
+import com.ku.people.exception.RepositoryException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -29,6 +29,7 @@ public class RelationshipRepository implements Repository {
     """;
     public static final String DELETE_DETAIL_QUERY = "DELETE FROM details WHERE relationship_id = ?";
     public static final String DELETE_QUERY = "DELETE FROM relationships WHERE id = ?";
+
     private final DataSource dataSource;
 
     public RelationshipRepository(DataSource dataSource) {
@@ -54,8 +55,8 @@ public class RelationshipRepository implements Repository {
                 }
                 return relationship;
             }
-        }catch (Exception ex) {
-            throw new RepositoryException(String.format("Failed to find relationship where id == %d!",id), ex);
+        } catch (Exception ex) {
+            throw new RepositoryException(String.format("Failed to find relationship where id = %d!",id), ex);
         }
     }
 
@@ -82,7 +83,7 @@ public class RelationshipRepository implements Repository {
             }
             return relationships;
         } catch (Exception ex) {
-            throw new RepositoryException("Failed to find all relationships:table relationships is empty", ex);
+            throw new RepositoryException("Failed to find all relationships: table relationships is empty", ex);
         }
     }
 
@@ -113,8 +114,8 @@ public class RelationshipRepository implements Repository {
                 preparedStatement.setLong(3, relationship.getId());
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new RepositoryException(String.format("Failed to update relationship with id=%d. This relationship is not exist!", relationship.getId()), ex);
-
+                String message = "Failed to update relationship with id = %d. This relationship is not exist!";
+                throw new RepositoryException(String.format(message, relationship.getId()), ex);
             }
         }
         return true;
@@ -132,14 +133,14 @@ public class RelationshipRepository implements Repository {
                 connection.commit();
             } catch (Exception ex) {
                 connection.rollback();
-                throw new RepositoryException(String.format("Failed to delete relationship with id=%d. This relationship is not exist!", id), ex);
+                String message = "Failed to delete relationship with id = %d. This relationship is not exist!";
+                throw new RepositoryException(String.format(message, id), ex);
             } finally {
                 connection.setAutoCommit(true);
             }
         }
         return true;
     }
-
 
     private void deleteDetails(Connection connection, Long id) throws Exception {
         try (PreparedStatement preparedStatementForDetails = connection.prepareStatement(DELETE_DETAIL_QUERY)

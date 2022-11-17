@@ -1,5 +1,7 @@
 package com.ku.people;
 
+import com.ku.people.entity.Authority;
+import com.ku.people.entity.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

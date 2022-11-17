@@ -1,8 +1,8 @@
-package com.ku.people.Repository;
+package com.ku.people.repository;
 
-import com.ku.people.Authority;
-import com.ku.people.Exception.RepositoryException;
-import com.ku.people.Role;
+import com.ku.people.entity.Authority;
+import com.ku.people.exception.RepositoryException;
+import com.ku.people.entity.Role;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ public class AuthorityRepository implements Repository {
         SELECT a.id, a.authority_name, ral.role_id, r.role_name 
         FROM authorities a
             LEFT JOIN role_authority_links ral ON a.id = ral.authority_id
-            LEFT JOIN roles r  ON r.id  = ral.role_id
+            LEFT JOIN roles r ON r.id = ral.role_id
         WHERE a.id = ?
     """;
     public static final String FIND_ALL_QUERY = "SELECT * FROM authorities";
@@ -48,14 +48,13 @@ public class AuthorityRepository implements Repository {
                         if (!roles.contains(buildRoles(resultSet))) {
                             roles.add(buildRoles(resultSet));
                         }
-
                     } while (resultSet.next());
                     authority.setRoles(roles);
                 }
                 return authority;
             }
-        }catch (Exception ex) {
-            throw new RepositoryException(String.format("Failed to find authority where id == %d!",id), ex);
+        } catch (Exception ex) {
+            throw new RepositoryException(String.format("Failed to find authority where id = %d!", id), ex);
         }
     }
 
@@ -82,7 +81,7 @@ public class AuthorityRepository implements Repository {
             }
             return authorities;
         } catch (Exception ex) {
-            throw new RepositoryException("Failed to find all authorities:table authorities is empty", ex);
+            throw new RepositoryException("Failed to find all authorities: table authorities is empty", ex);
         }
     }
 
@@ -91,7 +90,7 @@ public class AuthorityRepository implements Repository {
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY)
         ) {
             try {
-                buildQuery(preparedStatement, authority);
+                preparedStatement.setString(1, authority.getAuthorityName());
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
                 throw new RepositoryException("Failed to save authority: this authority already exist", ex);
@@ -100,20 +99,17 @@ public class AuthorityRepository implements Repository {
         return true;
     }
 
-    private void buildQuery(PreparedStatement preparedStatement, Authority authority) throws Exception {
-        preparedStatement.setString(1, authority.getAuthorityName());
-    }
-
     public boolean update(Authority authority) throws Exception {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
         ) {
             try {
-                buildQuery(preparedStatement, authority);
+                preparedStatement.setString(1, authority.getAuthorityName());
                 preparedStatement.setLong(2, authority.getId());
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new RepositoryException(String.format("Failed to update authority with id=%d. This authority is not exist!", authority.getId()), ex);
+                String message = "Failed to update authority with id=%d. This authority is not exist!";
+                throw new RepositoryException(String.format(message, authority.getId()), ex);
             }
         }
         return true;
@@ -131,7 +127,8 @@ public class AuthorityRepository implements Repository {
                 connection.commit();
             } catch (Exception ex) {
                 connection.rollback();
-                throw new RepositoryException(String.format("Failed to delete authority with id=%d. This authority is not exist!", id), ex);
+                String message = "Failed to delete authority with id=%d. This authority is not exist!";
+                throw new RepositoryException(String.format(message, id), ex);
             } finally {
                 connection.setAutoCommit(true);
             }
@@ -140,11 +137,10 @@ public class AuthorityRepository implements Repository {
     }
 
     private void deleteRoleAuthorityLinks (Connection connection, Long id) throws Exception {
-        try (PreparedStatement preparedStatementForRoleAuthorityLinks = connection.prepareStatement(DELETE_USER_AUTHORITY_LINKS_QUERY)
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_AUTHORITY_LINKS_QUERY)
         ) {
-            preparedStatementForRoleAuthorityLinks.setLong(1, id);
-            preparedStatementForRoleAuthorityLinks.executeUpdate();
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
         }
     }
-
 }

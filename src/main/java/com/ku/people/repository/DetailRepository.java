@@ -1,32 +1,38 @@
-package com.ku.people.Repository;
+package com.ku.people.repository;
 
-import com.ku.people.Detail;
-import com.ku.people.Relationship;
-import com.ku.people.Exception.RepositoryException;
-import com.ku.people.User;
+import com.ku.people.entity.Detail;
+import com.ku.people.entity.Relationship;
+import com.ku.people.exception.RepositoryException;
+import com.ku.people.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DetailRepository implements Repository {
     public static final String FIND_BY_ID_QUERY = """
-        SELECT d.id, d.relationship_type, u.id user_id, u.user_name, u.password,u.surname, u.name, r.id relationship_id, r.created_at_utc, r.relationship_status
+        SELECT
+            d.id, d.relationship_type, u.id user_id, u.user_name, u.password,u.surname,
+            u.name, r.id relationship_id, r.created_at_utc, r.relationship_status
         FROM details d
            LEFT JOIN users u ON u.id = d.user_id
            LEFT JOIN relationships r  ON r.id = d.relationship_id
         WHERE d.id = ?
     """;
     public static final String FIND_ALL_QUERY = """
-        SELECT d.id, d.relationship_type, u.id user_id, u.user_name, u.password,u.surname, u.name, r.id relationship_id, r.created_at_utc, r.relationship_status
+        SELECT
+            d.id, d.relationship_type, u.id user_id, u.user_name, u.password,u.surname,
+            u.name, r.id relationship_id, r.created_at_utc, r.relationship_status
         FROM details d
            LEFT JOIN users u ON u.id = d.user_id
            LEFT JOIN relationships r  ON r.id = d.relationship_id
-""";
+    """;
     public static final String SAVE_QUERY = """
         INSERT INTO details(relationship_type, user_id, relationship_id) VALUES (?::relationship_type_enum, ?, ?)
     """;
@@ -34,11 +40,13 @@ public class DetailRepository implements Repository {
         UPDATE details SET relationship_type = ?::relationship_type_enum, user_id = ?, relationship_id = ? WHERE id = ?
     """;
     public static final String DELETE_QUERY = "DELETE FROM details WHERE id = ?";
+
     private final DataSource dataSource;
 
     public DetailRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
 
     public Detail findById(Long id) {
         try (Connection connection = dataSource.getConnection();
@@ -54,8 +62,8 @@ public class DetailRepository implements Repository {
                 }
                 return detail;
             }
-        }catch (Exception ex) {
-            throw new RepositoryException(String.format("Failed to find detail where id == %d!",id), ex);
+        } catch (Exception ex) {
+            throw new RepositoryException(String.format("Failed to find detail where id = %d!",id), ex);
         }
     }
 
@@ -93,7 +101,7 @@ public class DetailRepository implements Repository {
             }
             return details;
         } catch (Exception ex) {
-            throw new RepositoryException("Failed to find all details:table details is empty", ex);
+            throw new RepositoryException("Failed to find all details: table details is empty", ex);
         }
     }
 
@@ -105,16 +113,28 @@ public class DetailRepository implements Repository {
                 buildQuery(preparedStatement, detail);
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new RepositoryException("Failed to save detail: this detail already exist", ex);            }
+                throw new RepositoryException("Failed to save detail: this detail already exist", ex);
+            }
         }
         return true;
     }
 
     private void buildQuery(PreparedStatement preparedStatement, Detail detail) throws Exception {
         preparedStatement.setString(1, detail.getType());
-        preparedStatement.setLong(2, detail.getUser().getId());
-        preparedStatement.setLong(3, detail.getRelationship().getId());
+        Optional.ofNullable(detail.getUser())
+                .ifPresent(user -> setId(preparedStatement, user.getId()));
+        Optional.ofNullable(detail.getRelationship())
+                .ifPresent(relationship -> setId(preparedStatement, relationship.getId()));
     }
+
+    private static void setId(PreparedStatement preparedStatement, Long id) {
+        try {
+            preparedStatement.setLong(2,id);
+        } catch (SQLException e) {
+            throw new RepositoryException("Failed to save a detail.");
+        }
+    }
+
 
     public boolean update(Detail detail) throws Exception {
         try (Connection connection = dataSource.getConnection();
@@ -125,8 +145,8 @@ public class DetailRepository implements Repository {
                 preparedStatement.setLong(4, detail.getId());
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new RepositoryException(String.format("Failed to update detail with id=%d. This detail is not exist!", detail.getId()), ex);
-
+                String message = "Failed to update detail with id=%d. This detail is not exist!";
+                throw new RepositoryException(String.format(message, detail.getId()), ex);
             }
         }
         return true;
@@ -140,16 +160,10 @@ public class DetailRepository implements Repository {
                 preparedStatement.setLong(1, id);
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new RepositoryException(String.format("Failed to delete detail with id=%d. This detail is not exist!", id), ex);
-
+                String message = "Failed to delete detail with id=%d. This detail is not exist!";
+                throw new RepositoryException(String.format(message, id), ex);
             }
         }
         return true;
     }
-
-
-
-
-
-
 }

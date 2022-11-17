@@ -1,11 +1,13 @@
 package com.ku.people;
 
+import com.ku.people.entity.Detail;
+import com.ku.people.entity.Relationship;
+import com.ku.people.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 class DetailTest {
 

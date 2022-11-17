@@ -1,9 +1,9 @@
-package com.ku.people.Repository;
+package com.ku.people.repository;
 
-import com.ku.people.Authority;
-import com.ku.people.Exception.RepositoryException;
-import com.ku.people.Role;
-import com.ku.people.User;
+import com.ku.people.entity.Authority;
+import com.ku.people.exception.RepositoryException;
+import com.ku.people.entity.Role;
+import com.ku.people.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -31,6 +31,7 @@ public class RoleRepository implements Repository {
     public static final String DELETE_USER_AUTHORITY_LINKS_QUERY = "DELETE FROM role_authority_links WHERE role_id = ?";
     public static final String DELETE_USER_ROLE_LINKS_QUERY = "DELETE FROM user_role_links WHERE role_id = ?";
     public static final String DELETE_QUERY = "DELETE FROM roles WHERE id = ?";
+
     private final DataSource dataSource;
 
     public RoleRepository(DataSource dataSource) {
@@ -62,7 +63,7 @@ public class RoleRepository implements Repository {
                 return role;
             }
         }catch (Exception ex) {
-            throw new RepositoryException(String.format("Failed to find role where id == %d!",id), ex);
+            throw new RepositoryException(String.format("Failed to find role where id = %d!",id), ex);
         }
     }
 
@@ -76,7 +77,7 @@ public class RoleRepository implements Repository {
                 resultSet.getString(USER_NAME_COLUMN),
                 resultSet.getString(PASSWORD_COLUMN),
                 resultSet.getString(SURNAME_COLUMN),
-                resultSet.getString(NAME_COLUMN) );
+                resultSet.getString(NAME_COLUMN));
     }
 
     private Authority buildAuthorities(ResultSet resultSet) throws Exception {
@@ -97,7 +98,7 @@ public class RoleRepository implements Repository {
             }
             return roles;
         } catch (Exception ex) {
-            throw new RepositoryException("Failed to find all roles:table roles is empty", ex);
+            throw new RepositoryException("Failed to find all roles: table roles is empty", ex);
         }
     }
 
@@ -128,7 +129,8 @@ public class RoleRepository implements Repository {
                 preparedStatement.setLong(2, role.getId());
                 preparedStatement.executeUpdate();
             } catch (Exception ex) {
-                throw new RepositoryException(String.format("Failed to update role with id=%d. This role is not exist!", role.getId()), ex);
+                String message = "Failed to update role with id = %d. This role is not exist!";
+                throw new RepositoryException(String.format(message, role.getId()), ex);
             }
         }
         return true;
@@ -147,7 +149,8 @@ public class RoleRepository implements Repository {
                 connection.commit();
             } catch (Exception ex) {
                 connection.rollback();
-                throw new RepositoryException(String.format("Failed to delete role with id=%d. This role is not exist!", id), ex);
+                String message = "Failed to delete role with id = %d. This role is not exist!";
+                throw new RepositoryException(String.format(message, id), ex);
             } finally {
                 connection.setAutoCommit(true);
             }
@@ -170,6 +173,4 @@ public class RoleRepository implements Repository {
             preparedStatementForRoleAuthorityLinks.executeUpdate();
         }
     }
-
-
 }

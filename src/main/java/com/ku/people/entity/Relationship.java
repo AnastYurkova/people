@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.entity;
 
 import java.time.LocalDate;
 import java.util.List;

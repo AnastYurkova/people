@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.entity;
 
 public class Detail {
     private Long id;
