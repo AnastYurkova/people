@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.entity;
 
 import java.util.List;
 
@@ -22,6 +22,18 @@ public class User {
         this.surname = surname;
         this.roles = roles;
         this.details = details;
+    }
+
+    public User(Long id, String username, String password, String surname, String name) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.username = username;
+        this.surname = surname;
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     public List<Detail> getDetails() {

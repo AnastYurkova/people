@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.entity;
 
 import java.util.List;
 
@@ -16,6 +16,15 @@ public class Role {
         this.name = name;
         this.users = users;
         this.authorities = authorities;
+    }
+
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Role(Long id) {
+        this.id = id;
     }
 
     public List<Authority> getAuthorities() {

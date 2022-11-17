@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.entity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +17,16 @@ public class Relationship {
         this.createdAtUtc = createdAtUtc;
         this.status = status;
         this.details = details;
+    }
+
+    public Relationship(Long id, LocalDate createdAtUtc, String status) {
+        this.id = id;
+        this.createdAtUtc = createdAtUtc;
+        this.status = status;
+    }
+
+    public Relationship(Long id) {
+        this.id = id;
     }
 
     public List<Detail> getDetails() {

@@ -1,4 +1,4 @@
-package com.ku.people;
+package com.ku.people.entity;
 
 public class Detail {
     private Long id;
@@ -13,6 +13,14 @@ public class Detail {
         this.id = id;
         this.type = type;
         this.user = user;
+        this.relationship = relationship;
+    }
+
+    public Detail(Long id) {
+        this.id = id;
+    }
+    public Detail(String type, Relationship relationship) {
+        this.type = type;
         this.relationship = relationship;
     }
 
@@ -101,7 +109,7 @@ public class Detail {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", type = ").append(getType())
-                .append(", userId= ").append(getUser() == null ? null : getRelationship().getId())
+                .append(", userId= ").append(getUser() == null ? null : getUser().getId())
                 .append(", relationshipId = ")
                 .append(getRelationship() == null ? null : getRelationship().getId())
                 .append("}")
