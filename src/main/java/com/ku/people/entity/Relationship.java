@@ -1,18 +1,34 @@
 package com.ku.people.entity;
 
-import java.time.LocalDate;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+import java.util.Set;
+
+@Entity
+@Table(name = "relationships")
 public class Relationship {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "created_at_utc")
     private LocalDate createdAtUtc;
+    @Column(name = "relationship_status")
     private String status;
-    private List<Detail> details;
+    @OneToMany( mappedBy="relationship", fetch = FetchType.LAZY)
+    private Set<Detail> details;
 
     public Relationship() {
     }
 
-    public Relationship(Long id, LocalDate createdAtUtc, String status, List<Detail> details) {
+    public Relationship(Long id, LocalDate createdAtUtc, String status, Set<Detail> details) {
         this.id = id;
         this.createdAtUtc = createdAtUtc;
         this.status = status;
@@ -29,11 +45,11 @@ public class Relationship {
         this.id = id;
     }
 
-    public List<Detail> getDetails() {
+    public Set<Detail> getDetails() {
         return details;
     }
 
-    public void setDetails(List<Detail> details) {
+    public void setDetails(Set<Detail> details) {
         this.details = details;
     }
 
@@ -91,33 +107,8 @@ public class Relationship {
         }
 
         if (getStatus() == null) {
-            if (aThat.getStatus() != null) {
-                return false;
-            }
-        } else if (!getStatus().equals(aThat.getStatus())) {
-            return false;
-        }
-
-        if (getDetails() == null && aThat.getDetails() != null) {
-            return false;
-        } else if (aThat.getDetails() == null && getDetails() != null) {
-            return false;
-        } else if (aThat.getDetails() != null && getDetails() != null) {
-            if (getDetails().size() != aThat.getDetails().size()) {
-                return false;
-            }
-            for (int i = 0; i < getDetails().size(); i++) {
-                Detail detail = getDetails().get(i);
-                if (detail.getId() == null) {
-                    if (aThat.getDetails().get(i).getId() != null) {
-                        return false;
-                    }
-                } else if (!detail.getId().equals(aThat.getDetails().get(i).getId())) {
-                    return false;
-                }
-            }
-        }
-        return true;
+            return aThat.getStatus() == null;
+        } else return getStatus().equals(aThat.getStatus());
     }
 
     @Override
@@ -126,12 +117,6 @@ public class Relationship {
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getCreatedAtUtc() != null ? getCreatedAtUtc().hashCode() : 0);
         result = prime * result + (getStatus() != null ? getStatus().hashCode() : 0);
-        if (getDetails() != null) {
-            for (int i = 0; i < getDetails().size(); i++) {
-                Detail detail = getDetails().get(i);
-                result = prime * result + (detail.getId() != null ? detail.getId().hashCode() : 0);
-            }
-        }
         return result;
     }
 
@@ -140,13 +125,7 @@ public class Relationship {
                 .append(" { id = ").append(getId())
                 .append(", createdAtUtc = ").append(getCreatedAtUtc())
                 .append(", status = ").append(getStatus())
-                .append("}, {Details id = ")
-                .append(getDetails() == null
-                        ? List.of()
-                        : getDetails().stream()
-                            .map(Detail::getId)
-                            .toList())
-                .append("}")
+                .append(" }")
                 .toString();
     }
 }

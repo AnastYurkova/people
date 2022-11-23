@@ -1,17 +1,40 @@
 package com.ku.people.entity;
 
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
+import java.util.Set;
+
+@Entity
+@Table(name = "roles")
 public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "role_name")
     private String name;
-    private List<User> users;
-    private List<Authority> authorities;
+    @ManyToMany
+    @JoinTable(
+            name = "user_role_links",
+            joinColumns = {@JoinColumn(name = "role_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private Set<User> users;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<Authority> authorities;
 
     public Role() {
     }
 
-    public Role(Long id, String name, List<User> users, List<Authority> authorities) {
+    public Role(Long id, String name, Set<User> users, Set<Authority> authorities) {
         this.id = id;
         this.name = name;
         this.users = users;
@@ -27,19 +50,19 @@ public class Role {
         this.id = id;
     }
 
-    public List<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
@@ -81,55 +104,8 @@ public class Role {
         }
 
         if (getName() == null) {
-            if (aThat.getName() != null) {
-                return false;
-            }
-        } else if (!getName().equals(aThat.getName())) {
-            return false;
-        }
-
-        if (getUsers() == null && aThat.getUsers() != null) {
-            return false;
-        } else if (aThat.getUsers() == null && getUsers() != null) {
-            return false;
-        } else if (aThat.getUsers() != null && getUsers() != null) {
-            if (getUsers().size() != aThat.getUsers().size()) {
-                return false;
-            }
-            for (int i = 0; i < getUsers().size(); i++) {
-                User user = getUsers().get(i);
-                if (aThat.getId() == null) {
-                    if (aThat.getUsers().get(i).getId() != null) {
-                        return false;
-                    }
-                } else if (!user.getId().equals(aThat.getUsers().get(i).getId())) {
-                    return false;
-                }
-            }
-
-        }
-
-        if (getAuthorities() == null && aThat.getAuthorities() != null) {
-            return false;
-        } else if (aThat.getAuthorities() == null && getAuthorities() != null) {
-            return false;
-        } else if (aThat.getAuthorities() != null && getAuthorities() != null) {
-            if (getAuthorities().size() != aThat.getAuthorities().size()) {
-                return false;
-            }
-            for (int i = 0; i < getAuthorities().size(); i++) {
-                Authority authority = getAuthorities().get(i);
-                if (authority.getId() == null) {
-                    if (aThat.getAuthorities().get(i).getId() != null) {
-                        return false;
-                    }
-                } else if (!authority.getId().equals(aThat.getAuthorities().get(i).getId())) {
-                    return false;
-                }
-            }
-
-        }
-        return true;
+            return aThat.getName() == null;
+        } else return getName().equals(aThat.getName());
     }
 
     @Override
@@ -137,38 +113,15 @@ public class Role {
         int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getName() != null ? getName().hashCode() : 0);
-        if (getUsers() != null) {
-            for (int i = 0; i < getUsers().size(); i++) {
-                User user = getUsers().get(i);
-                result = prime * result + (user.getId() != null ? user.getId().hashCode() : 0);
-            }
-        }
-        if (getAuthorities() != null) {
-            for (int i = 0; i < getAuthorities().size(); i++) {
-                Authority authority = getAuthorities().get(i);
-                result = prime * result + (authority.getId() != null ? authority.getId().hashCode() : 0);
-            }
-        }
         return result;
     }
 
+    @Override
     public String toString() {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", name = ").append(getName())
-                .append("} contains {User id = ")
-                .append(getUsers() == null
-                        ? List.of()
-                        : getUsers().stream()
-                            .map(User::getId)
-                            .toList())
-                .append("} {Authorities id = ")
-                .append(getAuthorities() == null
-                        ? List.of()
-                        : getAuthorities().stream()
-                            .map(Authority::getId)
-                            .toList())
-                .append("}")
+                .append(" }")
                 .toString();
     }
 }

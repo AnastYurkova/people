@@ -1,9 +1,28 @@
 package com.ku.people.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "details")
 public class Detail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "relationship_type")
     private String type;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "relationship_id")
     private Relationship relationship;
 
     public Detail() {
@@ -19,6 +38,7 @@ public class Detail {
     public Detail(Long id) {
         this.id = id;
     }
+
     public Detail(String type, Relationship relationship) {
         this.type = type;
         this.relationship = relationship;
@@ -84,15 +104,7 @@ public class Detail {
         } else if (!getType().equals(aThat.getType())) {
             return false;
         }
-
-        if (getUser() == null) {
-            if (aThat.getUser() != null) {
-                return false;
-            }
-        } else if (!getUser().equals(aThat.getUser())) {
-            return false;
-        }
-        return getRelationship() == null ? aThat.getRelationship() == null : getRelationship().equals(aThat.getRelationship());
+        return getUser() == null ? aThat.getUser() == null : getUser().equals(aThat.getUser());
     }
 
     @Override
@@ -101,7 +113,6 @@ public class Detail {
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getType() != null ? getType().hashCode() : 0);
         result = prime * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = prime * result + (getRelationship() != null ? getRelationship().hashCode() : 0);
         return result;
     }
 
@@ -109,10 +120,9 @@ public class Detail {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", type = ").append(getType())
-                .append(", userId= ").append(getUser() == null ? null : getUser().getId())
-                .append(", relationshipId = ")
-                .append(getRelationship() == null ? null : getRelationship().getId())
-                .append("}")
+                .append(", userId = ").append(getUser() == null ? null : getUser().getId())
+                .append(", relationshipId = ").append(getRelationship() == null ? null : getRelationship().getId())
+                .append(" }")
                 .toString();
     }
 }

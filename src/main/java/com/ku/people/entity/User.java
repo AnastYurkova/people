@@ -1,20 +1,45 @@
 package com.ku.people.entity;
 
 import java.util.List;
+import java.util.Set;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "user_name")
     private String username;
+    @Column(name = "password")
     private String password;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "name")
     private String name;
-    private List<Role> roles;
-    private List<Detail> details;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private Set<Role> roles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Detail> details;
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String surname, String name, List<Role> roles, List<Detail> details) {
+    public User(Long id, String username, String password, String surname, String name, Set<Role> roles, Set<Detail> details) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -36,11 +61,11 @@ public class User {
         this.id = id;
     }
 
-    public List<Detail> getDetails() {
+    public Set<Detail> getDetails() {
         return details;
     }
 
-    public void setDetails(List<Detail> details) {
+    public void setDetails(Set<Detail> details) {
         this.details = details;
     }
 
@@ -64,11 +89,11 @@ public class User {
         return name;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -145,46 +170,6 @@ public class User {
             return false;
         }
 
-        if (getRoles() == null && aThat.getRoles() != null) {
-            return false;
-        } else if (aThat.getRoles() == null && getRoles() != null) {
-            return false;
-        } else if (aThat.getRoles() != null && getRoles() != null) {
-            if (getRoles().size() != aThat.getRoles().size()) {
-                return false;
-            }
-
-            for (int i = 0; i < getRoles().size(); i++) {
-                Role role = getRoles().get(i);
-                if (role.getId() == null) {
-                    if (aThat.getRoles().get(i).getId() != null) {
-                        return false;
-                    }
-                } else if (!role.getId().equals(aThat.getRoles().get(i).getId())) {
-                    return false;
-                }
-            }
-        }
-
-        if (getDetails() == null && aThat.getDetails() != null) {
-            return false;
-        } else if (aThat.getDetails() == null && getDetails() != null) {
-            return false;
-        } else if (aThat.getDetails() != null && getDetails() != null) {
-            if (getDetails().size() != aThat.getDetails().size()) {
-                return false;
-            }
-            for (int i = 0; i < getDetails().size(); i++) {
-                Detail detail = getDetails().get(i);
-                if (detail.getId() == null) {
-                    if (aThat.getDetails().get(i).getId() != null) {
-                        return false;
-                    }
-                } else if (!detail.getId().equals(aThat.getDetails().get(i).getId())) {
-                    return false;
-                }
-            }
-        }
         return true;
     }
 
@@ -196,18 +181,6 @@ public class User {
         result = prime * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = prime * result + (getSurname() != null ? getSurname().hashCode() : 0);
         result = prime * result + (getName() != null ? getName().hashCode() : 0);
-        if (getRoles() != null) {
-            for (int i = 0; i < getRoles().size(); i++) {
-                Role role = getRoles().get(i);
-                result = prime * result + (role.getId() != null ? role.getId().hashCode() : 0);
-            }
-        }
-        if (getDetails() != null) {
-            for (int i = 0; i < getDetails().size(); i++) {
-                Detail detail = getDetails().get(i);
-                result = prime * result + (detail.getId() != null ? detail.getId().hashCode() : 0);
-            }
-        }
         return result;
     }
 
@@ -220,18 +193,18 @@ public class User {
                 .append(", surname = ").append(getSurname())
                 .append(", name = ").append(getName())
                 .append("} contains {Role id = ")
-                .append(getRoles() ==  null
+                .append(getRoles() == null
                         ? List.of()
                         : getRoles().stream()
-                            .map(Role::getId)
-                            .toList())
+                        .map(Role::getId)
+                        .toList())
                 .append("}, {details = ")
-                .append(getDetails() ==  null
+                .append(getDetails() == null
                         ? List.of()
                         : getDetails().stream()
-                            .map(Detail::getId)
-                            .toList())
-                .append("}")
+                        .map(Detail::getId)
+                        .toList())
+                .append(" }")
                 .toString();
     }
 }
