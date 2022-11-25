@@ -5,7 +5,7 @@
 
     <changeSet id="14" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            CREATE TYPE relationship_type_enum AS ENUM ('husband', 'wife', 'son', 'daughter', 'father', 'grandmother', 'grandfather', 'mother')
+            CREATE TYPE relationship_type_enum AS ENUM ('HUSBAND', 'WIFE', 'SON', 'DAUGHTER', 'FATHER', 'GRANDMOTHER', 'GRANDFATHER', 'MOTHER')
         </sql>
         <rollback>
             <sql>

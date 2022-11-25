@@ -2,6 +2,8 @@ package com.ku.people.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,21 +23,22 @@ public class Relationship {
     @Column(name = "created_at_utc")
     private LocalDate createdAtUtc;
     @Column(name = "relationship_status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private RelationshipStatus status;
     @OneToMany( mappedBy="relationship", fetch = FetchType.LAZY)
     private Set<Detail> details;
 
     public Relationship() {
     }
 
-    public Relationship(Long id, LocalDate createdAtUtc, String status, Set<Detail> details) {
+    public Relationship(Long id, LocalDate createdAtUtc, RelationshipStatus status, Set<Detail> details) {
         this.id = id;
         this.createdAtUtc = createdAtUtc;
         this.status = status;
         this.details = details;
     }
 
-    public Relationship(Long id, LocalDate createdAtUtc, String status) {
+    public Relationship(Long id, LocalDate createdAtUtc, RelationshipStatus status) {
         this.id = id;
         this.createdAtUtc = createdAtUtc;
         this.status = status;
@@ -69,11 +72,11 @@ public class Relationship {
         this.createdAtUtc = createdAtUtc;
     }
 
-    public String getStatus() {
+    public RelationshipStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RelationshipStatus status) {
         this.status = status;
     }
 

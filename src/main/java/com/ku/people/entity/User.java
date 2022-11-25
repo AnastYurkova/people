@@ -192,18 +192,6 @@ public class User {
                 .append(", password = ").append(getPassword())
                 .append(", surname = ").append(getSurname())
                 .append(", name = ").append(getName())
-                .append("} contains {Role id = ")
-                .append(getRoles() == null
-                        ? List.of()
-                        : getRoles().stream()
-                        .map(Role::getId)
-                        .toList())
-                .append("}, {details = ")
-                .append(getDetails() == null
-                        ? List.of()
-                        : getDetails().stream()
-                        .map(Detail::getId)
-                        .toList())
                 .append(" }")
                 .toString();
     }

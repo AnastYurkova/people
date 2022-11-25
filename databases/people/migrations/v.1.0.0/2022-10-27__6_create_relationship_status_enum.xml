@@ -5,7 +5,7 @@
 
     <changeSet id="12" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            CREATE TYPE relationship_status_enum AS ENUM ('sad', 'ok', 'happy')
+            CREATE TYPE relationship_status_enum AS ENUM ('SAD', 'OK', 'HAPPY')
         </sql>
         <rollback>
             <sql>

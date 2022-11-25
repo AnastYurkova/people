@@ -4,16 +4,15 @@ import com.ku.people.entity.Authority;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class AuthorityRepository {
     public static final String FIND_BY_ID_QUERY = """
-         from Authority a
-             left join fetch a.roles
-         where a.id = :id
+        from Authority a
+            left join fetch a.roles
+        where a.id = :id
     """;
     public static final String FIND_ALL_QUERY = "from Authority";
     private final SessionFactory sessionFactory;
@@ -41,49 +40,46 @@ public class AuthorityRepository {
     }
 
     public boolean save(Authority authority) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(authority);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                session.persist(authority);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("Failed to save authority: this authority already exist", e);
             }
-            throw new RepositoryException("Failed to save authority: this authority already exist", e);
         }
         return true;
     }
 
     public boolean update(Authority authority) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(authority);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                session.merge(authority);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                String message = "Failed to update authority with id = %d. This authority is not exist!";
+                throw new RepositoryException(String.format(message, authority.getId()), e);
             }
-            String message = "Failed to update authority with id = %d. This authority is not exist!";
-            throw new RepositoryException(String.format(message, authority.getId()), e);
         }
         return true;
     }
 
     public boolean delete(Long id) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            Authority Authority = session.getReference(Authority.class, id);
-            session.remove(Authority);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                Authority Authority = session.getReference(Authority.class, id);
+                session.remove(Authority);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                String message = "Failed to delete authority. This authority is not exist!";
+                throw new RepositoryException(String.format(message), e);
             }
-            String message = "Failed to delete authority. This authority is not exist!";
-            throw new RepositoryException(String.format(message), e);
         }
         return true;
     }

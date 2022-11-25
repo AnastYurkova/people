@@ -2,6 +2,8 @@ package com.ku.people.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +19,8 @@ public class Detail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "relationship_type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private RelationshipType type;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -28,7 +31,7 @@ public class Detail {
     public Detail() {
     }
 
-    public Detail(Long id, String type, User user, Relationship relationship) {
+    public Detail(Long id, RelationshipType type, User user, Relationship relationship) {
         this.id = id;
         this.type = type;
         this.user = user;
@@ -39,7 +42,7 @@ public class Detail {
         this.id = id;
     }
 
-    public Detail(String type, Relationship relationship) {
+    public Detail(RelationshipType type, Relationship relationship) {
         this.type = type;
         this.relationship = relationship;
     }
@@ -52,11 +55,11 @@ public class Detail {
         this.id = id;
     }
 
-    public String getType() {
+    public RelationshipType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(RelationshipType type) {
         this.type = type;
     }
 

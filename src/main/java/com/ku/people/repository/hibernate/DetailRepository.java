@@ -1,6 +1,7 @@
 package com.ku.people.repository.hibernate;
 
 import com.ku.people.entity.Detail;
+import com.ku.people.entity.Relationship;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,14 @@ public class DetailRepository {
         where d.id = :id
     """;
     public static final String FIND_ALL_QUERY = "from Detail";
+    public static final String SAVE_QUERY = """
+        insert into details(relationship_type, user_id, relationship_id)
+        values (?\\:\\:relationship_type_enum, ?, ?)
+    """;
+    public static final String UPDATE_QUERY = """
+         update details set relationship_type = ?\\:\\:relationship_type_enum, user_id = ?, relationship_id = ?
+         where id = ?
+    """;
     private final SessionFactory sessionFactory;
 
     public DetailRepository(SessionFactory sessionFactory) {
@@ -40,49 +49,55 @@ public class DetailRepository {
     }
 
     public boolean save(Detail detail) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(detail);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                session.createNativeQuery(SAVE_QUERY, Detail.class)
+                        .setParameter(1, detail.getType().getValue())
+                        .setParameter(2, detail.getUser().getId())
+                        .setParameter(3, detail.getRelationship().getId())
+                        .executeUpdate();
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("Failed to save detail: this detail already exist", e);
             }
-            throw new RepositoryException("Failed to save detail: this detail already exist", e);
         }
         return true;
     }
 
     public boolean update(Detail detail) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(detail);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                session.createNativeQuery(UPDATE_QUERY, Detail.class)
+                        .setParameter(1, detail.getType().getValue())
+                        .setParameter(2, detail.getUser().getId())
+                        .setParameter(3, detail.getRelationship().getId())
+                        .setParameter(4, detail.getId())
+                        .executeUpdate();
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                String message = "Failed to update detail with id = %d. This detail is not exist!";
+                throw new RepositoryException(String.format(message, detail.getId()), e);
             }
-            String message = "Failed to update detail with id = %d. This detail is not exist!";
-            throw new RepositoryException(String.format(message, detail.getId()), e);
         }
         return true;
     }
 
     public boolean delete(Long id) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            Detail Detail = session.getReference(Detail.class, id);
-            session.remove(Detail);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                Detail Detail = session.getReference(Detail.class, id);
+                session.remove(Detail);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                String message = "Failed to delete detail. This Detail is not exist!";
+                throw new RepositoryException(String.format(message), e);
             }
-            String message = "Failed to delete detail. This Detail is not exist!";
-            throw new RepositoryException(String.format(message), e);
         }
         return true;
     }

@@ -1,9 +1,9 @@
 package com.ku.people.entity;
 
 public enum RelationshipStatus {
-    SAD ("sad"),
-    OK ("ok"),
-    HAPPY ("happy");
+    SAD ("SAD"),
+    OK ("OK"),
+    HAPPY ("HAPPY");
     private final String value;
 
     RelationshipStatus (String value){

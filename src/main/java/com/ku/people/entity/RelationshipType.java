@@ -1,14 +1,14 @@
 package com.ku.people.entity;
 
 public enum RelationshipType {
-    HUSBAND ("husband"),
-    WIFE ("wife"),
-    SON ("son"),
-    DAUGHTER ("daughter"),
-    FATHER ("father"),
-    GRANDMOTHER ("grandmother"),
-    GRANDFATHER ("grandfather"),
-    MOTHER ("mother");
+    HUSBAND ("HUSBAND"),
+    WIFE ("WIFE"),
+    SON ("SON"),
+    DAUGHTER ("DAUGHTER"),
+    FATHER ("FATHER"),
+    GRANDMOTHER ("GRANDMOTHER"),
+    GRANDFATHER ("GRANDFATHER"),
+    MOTHER ("MOTHER");
 
     private final String value;
 

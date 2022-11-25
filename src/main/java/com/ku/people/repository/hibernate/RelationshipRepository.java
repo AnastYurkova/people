@@ -12,13 +12,18 @@ import java.util.List;
 
 public class RelationshipRepository {
     public static final String FIND_BY_ID_QUERY = """
-         from Relationship r
-             left join fetch r.details
-         where r.id = :id
+        from Relationship r
+            left join fetch r.details
+        where r.id = :id
     """;
     public static final String FIND_ALL_QUERY = "from Relationship";
-    public static final String SAVE_QUERY = """ 
-        insert into Relationship (created_at_utc, relationship_status) values (?1, ?2)
+    public static final String SAVE_QUERY = """
+        insert into relationships(created_at_utc, relationship_status)
+        values(?, ?\\:\\:relationship_status_enum)
+    """;
+    public static final String UPDATE_QUERY = """
+        update relationships set created_at_utc = ?, relationship_status = ?\\:\\:relationship_status_enum
+        where id = ?
     """;
     private final SessionFactory sessionFactory;
 
@@ -45,54 +50,52 @@ public class RelationshipRepository {
     }
 
     public boolean save(Relationship relationship) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-
-            Query<Relationship> query = session.createQuery(SAVE_QUERY, Relationship.class);
-            query.setParameter("1", relationship.getCreatedAtUtc());
-            query.setParameter("2", relationship.getStatus());
-            query.executeUpdate();
-
-            transaction.commit();
-        } catch (Exception e) {
-//            if (transaction != null) {
-//                transaction.rollback();
-//            }
-            throw new RepositoryException("Failed to save relationship: this relationship already exist", e);
+            try {
+                session.beginTransaction();
+                session.createNativeQuery(SAVE_QUERY, Relationship.class)
+                        .setParameter(1, relationship.getCreatedAtUtc())
+                        .setParameter(2, relationship.getStatus().getValue())
+                        .executeUpdate();
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("Failed to save relationship: this relationship already exist", e);
+            }
         }
         return true;
     }
 
     public boolean update(Relationship relationship) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(relationship);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                session.createNativeQuery(UPDATE_QUERY, Relationship.class)
+                        .setParameter(1, relationship.getCreatedAtUtc())
+                        .setParameter(2, relationship.getStatus().getValue())
+                        .setParameter(3, relationship.getId())
+                        .executeUpdate();
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("Failed to save relationship: this relationship already exist", e);
             }
-            String message = "Failed to update relationship with id = %d. This relationship is not exist!";
-            throw new RepositoryException(String.format(message, relationship.getId()), e);
         }
         return true;
     }
 
     public boolean delete(Long id) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            Relationship relationship = session.getReference(Relationship.class, id);
-            session.remove(relationship);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+            try {
+                session.beginTransaction();
+                Relationship relationship = session.getReference(Relationship.class, id);
+                session.remove(relationship);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                String message = "Failed to delete relationship. This relationship is not exist!";
+                throw new RepositoryException(String.format(message), e);
             }
-            String message = "Failed to delete relationship. This relationship is not exist!";
-            throw new RepositoryException(String.format(message), e);
         }
         return true;
     }
