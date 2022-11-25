@@ -10,12 +10,13 @@ import java.util.List;
 
 public class RoleRepository {
     public static final String FIND_BY_ID_QUERY = """
-        from Role r
-            left join fetch r.users
-            left join fetch r.authorities
-        where r.id = :id
+        FROM Role r
+            LEFT JOIN FETCH r.users
+            LEFT JOIN FETCH r.authorities
+        WHERE r.id = :id
     """;
-    public static final String FIND_ALL_QUERY = "from Role";
+    public static final String FIND_ALL_QUERY = "FROM Role";
+
     private final SessionFactory sessionFactory;
 
     public RoleRepository(SessionFactory sessionFactory) {
@@ -46,12 +47,12 @@ public class RoleRepository {
                 session.beginTransaction();
                 session.persist(role);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 throw new RepositoryException("Failed to save role: this role already exist", e);
             }
         }
-        return true;
     }
 
     public boolean update(Role role) {
@@ -60,13 +61,13 @@ public class RoleRepository {
                 session.beginTransaction();
                 session.merge(role);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to update role with id = %d. This role is not exist!";
                 throw new RepositoryException(String.format(message, role.getId()), e);
             }
         }
-        return true;
     }
 
     public boolean delete(Long id) {
@@ -76,12 +77,12 @@ public class RoleRepository {
                 Role Role = session.getReference(Role.class, id);
                 session.remove(Role);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to delete role. This role is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }
-        return true;
     }
 }

@@ -12,18 +12,19 @@ import java.util.List;
 
 public class DetailRepository {
     public static final String FIND_BY_ID_QUERY = """
-        from Detail d
-        where d.id = :id
+        FROM Detail d
+        WHERE d.id = :id
     """;
-    public static final String FIND_ALL_QUERY = "from Detail";
+    public static final String FIND_ALL_QUERY = "FROM Detail";
     public static final String SAVE_QUERY = """
-        insert into details(relationship_type, user_id, relationship_id)
-        values (?\\:\\:relationship_type_enum, ?, ?)
+        INSERT INTO details(relationship_type, user_id, relationship_id)
+        VALUES (?\\:\\:relationship_type_enum, ?, ?)
     """;
     public static final String UPDATE_QUERY = """
-         update details set relationship_type = ?\\:\\:relationship_type_enum, user_id = ?, relationship_id = ?
-         where id = ?
+         UPDATE details SET relationship_type = ?\\:\\:relationship_type_enum, user_id = ?, relationship_id = ?
+         WHERE id = ?
     """;
+
     private final SessionFactory sessionFactory;
 
     public DetailRepository(SessionFactory sessionFactory) {
@@ -53,17 +54,17 @@ public class DetailRepository {
             try {
                 session.beginTransaction();
                 session.createNativeQuery(SAVE_QUERY, Detail.class)
-                        .setParameter(1, detail.getType().getValue())
+                        .setParameter(1, detail.getType())
                         .setParameter(2, detail.getUser().getId())
                         .setParameter(3, detail.getRelationship().getId())
                         .executeUpdate();
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 throw new RepositoryException("Failed to save detail: this detail already exist", e);
             }
         }
-        return true;
     }
 
     public boolean update(Detail detail) {
@@ -71,19 +72,19 @@ public class DetailRepository {
             try {
                 session.beginTransaction();
                 session.createNativeQuery(UPDATE_QUERY, Detail.class)
-                        .setParameter(1, detail.getType().getValue())
+                        .setParameter(1, detail.getType())
                         .setParameter(2, detail.getUser().getId())
                         .setParameter(3, detail.getRelationship().getId())
                         .setParameter(4, detail.getId())
                         .executeUpdate();
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to update detail with id = %d. This detail is not exist!";
                 throw new RepositoryException(String.format(message, detail.getId()), e);
             }
         }
-        return true;
     }
 
     public boolean delete(Long id) {
@@ -93,12 +94,12 @@ public class DetailRepository {
                 Detail Detail = session.getReference(Detail.class, id);
                 session.remove(Detail);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to delete detail. This Detail is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }
-        return true;
     }
 }

@@ -10,11 +10,12 @@ import java.util.List;
 
 public class AuthorityRepository {
     public static final String FIND_BY_ID_QUERY = """
-        from Authority a
-            left join fetch a.roles
-        where a.id = :id
+        FROM Authority a
+            LEFT JOIN FETCH a.roles
+        WHERE a.id = :id
     """;
-    public static final String FIND_ALL_QUERY = "from Authority";
+    public static final String FIND_ALL_QUERY = "FROM Authority";
+
     private final SessionFactory sessionFactory;
 
     public AuthorityRepository(SessionFactory sessionFactory) {
@@ -45,12 +46,12 @@ public class AuthorityRepository {
                 session.beginTransaction();
                 session.persist(authority);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 throw new RepositoryException("Failed to save authority: this authority already exist", e);
             }
         }
-        return true;
     }
 
     public boolean update(Authority authority) {
@@ -59,13 +60,13 @@ public class AuthorityRepository {
                 session.beginTransaction();
                 session.merge(authority);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to update authority with id = %d. This authority is not exist!";
                 throw new RepositoryException(String.format(message, authority.getId()), e);
             }
         }
-        return true;
     }
 
     public boolean delete(Long id) {
@@ -75,12 +76,12 @@ public class AuthorityRepository {
                 Authority Authority = session.getReference(Authority.class, id);
                 session.remove(Authority);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to delete authority. This authority is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }
-        return true;
     }
 }

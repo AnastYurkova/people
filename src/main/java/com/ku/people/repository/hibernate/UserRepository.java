@@ -10,12 +10,13 @@ import java.util.List;
 
 public class UserRepository {
     public static final String FIND_BY_ID_QUERY = """
-         from User u
-             left join fetch u.roles
-             left join fetch u.details
-         where u.id = :id
+         FROM User u
+             LEFT JOIN FETCH u.roles
+             LEFT JOIN FETCH u.details
+         WHERE u.id = :id
     """;
-    public static final String FIND_ALL_QUERY = "from User";
+    public static final String FIND_ALL_QUERY = "FROM User";
+
     private final SessionFactory sessionFactory;
 
     public UserRepository(SessionFactory sessionFactory) {
@@ -46,12 +47,12 @@ public class UserRepository {
                 session.beginTransaction();
                 session.persist(user);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 throw new RepositoryException("Failed to save user: this user already exist", e);
             }
         }
-        return true;
     }
 
     public boolean update(User user) {
@@ -60,13 +61,13 @@ public class UserRepository {
                 session.beginTransaction();
                 session.merge(user);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to update user with id = %d. This user is not exist!";
                 throw new RepositoryException(String.format(message, user.getId()), e);
             }
         }
-        return true;
     }
 
     public boolean delete(Long id) {
@@ -76,12 +77,12 @@ public class UserRepository {
                 User user = session.getReference(User.class, id);
                 session.remove(user);
                 session.getTransaction().commit();
+                return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 String message = "Failed to delete user. This user is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }
-        return true;
     }
 }
