@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            ALTER TYPE relationship_type_enum RENAME VALUE 'husband' TO 'HUSBAND';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'wife' TO 'WIFE';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'son' TO 'SON';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'daughter' TO 'DAUGHTER';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'mother' TO 'MOTHER';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'father' TO 'FATHER';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'grandmother' TO 'GRANDMOTHER';
+            ALTER TYPE relationship_type_enum RENAME VALUE 'grandfather' TO 'GRANDFATHER';
+        </sql>
+        <rollback>
+            <sql>
+                DROP TYPE relationship_type_enum
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

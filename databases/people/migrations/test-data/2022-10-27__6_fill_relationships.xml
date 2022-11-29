@@ -13,9 +13,9 @@
             select
             '2022-01-01'::date + (FLOOR(random() * 300) + 1)::integer,
             case
-            when s.sery % 2 = 0 then 'SAD'::relationship_status_enum
-            when s.sery % 3 = 0 then 'OK'::relationship_status_enum
-            else 'HAPPY'::relationship_status_enum
+            when s.sery % 2 = 0 then 'sad'::relationship_status_enum
+            when s.sery % 3 = 0 then 'ok'::relationship_status_enum
+            else 'happy'::relationship_status_enum
             end
             from series s
         </sql>
