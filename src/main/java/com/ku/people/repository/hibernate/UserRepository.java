@@ -1,5 +1,6 @@
 package com.ku.people.repository.hibernate;
 
+import com.ku.people.entity.Authority;
 import com.ku.people.entity.User;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
@@ -16,6 +17,10 @@ public class UserRepository {
          WHERE u.id = :id
     """;
     public static final String FIND_ALL_QUERY = "FROM User";
+    public static final String UPDATE_QUERY = """
+        UPDATE users SET user_name = :user_name, password = :password, surname = :surname, name = :name
+        WHERE id = :id
+    """;
 
     private final SessionFactory sessionFactory;
 
@@ -59,7 +64,13 @@ public class UserRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.beginTransaction();
-                session.merge(user);
+                session.createNativeQuery(UPDATE_QUERY, User.class)
+                        .setParameter("user_name", user.getUsername())
+                        .setParameter("password", user.getPassword())
+                        .setParameter("surname", user.getSurname())
+                        .setParameter("name", user.getName())
+                        .setParameter("id", user.getId())
+                        .executeUpdate();
                 session.getTransaction().commit();
                 return true;
             } catch (Exception e) {
@@ -80,7 +91,7 @@ public class UserRepository {
                 return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                String message = "Failed to delete user. This user is not exist!";
+                String message = "Failed to delete user  with id = %d. This user is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }

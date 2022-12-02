@@ -24,7 +24,7 @@ public class Relationship {
     @Column(name = "relationship_status")
     @Enumerated(EnumType.STRING)
     private RelationshipStatus status;
-    @OneToMany( mappedBy="relationship", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="relationship", fetch = FetchType.LAZY)
     private Set<Detail> details;
 
     public Relationship() {

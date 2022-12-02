@@ -80,7 +80,8 @@ public class RelationshipRepository {
                 return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw new RepositoryException("Failed to save relationship: this relationship already exist", e);
+                String message = "Failed to update relationship with id = %d: this relationship is not exist";
+                throw new RepositoryException(String.format(message, relationship.getId()), e);
             }
         }
     }

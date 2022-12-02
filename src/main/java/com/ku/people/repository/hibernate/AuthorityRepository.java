@@ -1,6 +1,7 @@
 package com.ku.people.repository.hibernate;
 
 import com.ku.people.entity.Authority;
+import com.ku.people.entity.Detail;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,9 @@ public class AuthorityRepository {
         WHERE a.id = :id
     """;
     public static final String FIND_ALL_QUERY = "FROM Authority";
+    public static final String UPDATE_QUERY = """
+        UPDATE authorities SET authority_name = :authority_name WHERE id = :id
+    """;
 
     private final SessionFactory sessionFactory;
 
@@ -24,19 +28,19 @@ public class AuthorityRepository {
 
     public Authority findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Authority> query = session.createQuery(FIND_BY_ID_QUERY, Authority.class);
-            query.setParameter("id", id);
-            return query.getSingleResult();
-        } catch (Exception ex) {
-            throw new RepositoryException(String.format("Failed to find authority where id = %d!", id), ex);
+            return  session.createQuery(FIND_BY_ID_QUERY, Authority.class).setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new RepositoryException(String.format("Failed to find authority where id = %d!", id), e);
         }
     }
 
     public List<Authority> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ALL_QUERY, Authority.class).list();
-        } catch (Exception ex) {
-            throw new RepositoryException("Failed to find all authorities: table authorities is empty!", ex);
+            return session.createQuery(FIND_ALL_QUERY, Authority.class)
+                    .list();
+        } catch (Exception e) {
+            throw new RepositoryException("Failed to find all authorities: table authorities is empty!", e);
         }
     }
 
@@ -49,7 +53,7 @@ public class AuthorityRepository {
                 return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw new RepositoryException("Failed to save authority: this authority already exist", e);
+                throw new RepositoryException("Failed to save authority: this authority already exist", e   );
             }
         }
     }
@@ -58,7 +62,10 @@ public class AuthorityRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.beginTransaction();
-                session.merge(authority);
+                session.createNativeQuery(UPDATE_QUERY, Authority.class)
+                        .setParameter("authority_name", authority.getAuthorityName())
+                        .setParameter("id", authority.getId())
+                        .executeUpdate();
                 session.getTransaction().commit();
                 return true;
             } catch (Exception e) {
@@ -73,13 +80,13 @@ public class AuthorityRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.beginTransaction();
-                Authority Authority = session.getReference(Authority.class, id);
-                session.remove(Authority);
+                Authority authority = session.getReference(Authority.class, id);
+                session.remove(authority);
                 session.getTransaction().commit();
                 return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                String message = "Failed to delete authority. This authority is not exist!";
+                String message = "Failed to delete authority with id = %d. This authority is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }

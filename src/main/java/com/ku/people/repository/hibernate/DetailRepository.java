@@ -97,7 +97,7 @@ public class DetailRepository {
                 return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                String message = "Failed to delete detail. This Detail is not exist!";
+                String message = "Failed to delete detail with id = %d. This Detail is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }

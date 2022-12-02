@@ -1,5 +1,6 @@
 package com.ku.people.repository.hibernate;
 
+import com.ku.people.entity.Authority;
 import com.ku.people.entity.Role;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
@@ -16,6 +17,9 @@ public class RoleRepository {
         WHERE r.id = :id
     """;
     public static final String FIND_ALL_QUERY = "FROM Role";
+    public static final String UPDATE_QUERY = """
+        UPDATE roles SET role_name = :role_name WHERE id = :id
+    """;
 
     private final SessionFactory sessionFactory;
 
@@ -59,7 +63,10 @@ public class RoleRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.beginTransaction();
-                session.merge(role);
+                session.createNativeQuery(UPDATE_QUERY, Role.class)
+                        .setParameter("role_name", role.getName())
+                        .setParameter("id", role.getId())
+                        .executeUpdate();
                 session.getTransaction().commit();
                 return true;
             } catch (Exception e) {
@@ -80,7 +87,7 @@ public class RoleRepository {
                 return true;
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                String message = "Failed to delete role. This role is not exist!";
+                String message = "Failed to delete role with id = %d. This role is not exist!";
                 throw new RepositoryException(String.format(message), e);
             }
         }
