@@ -1,16 +1,37 @@
 package com.ku.people.entity;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
+import java.util.Set;
+
+@Entity
+@Table(name = "authorities")
 public class Authority {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "authority_name")
     private String authorityName;
-    private List<Role> roles;
+    @ManyToMany
+    @JoinTable(
+            name = "role_authority_links",
+            joinColumns = {@JoinColumn(name = "authority_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Role> roles;
 
     public Authority() {
     }
 
-    public Authority(Long id, String authorityName, List<Role> roles) {
+    public Authority(Long id, String authorityName, Set<Role> roles) {
         this.id = id;
         this.authorityName = authorityName;
         this.roles = roles;
@@ -21,11 +42,11 @@ public class Authority {
         this.authorityName = authorityName;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -67,34 +88,8 @@ public class Authority {
         }
 
         if (getAuthorityName() == null) {
-            if (aThat.getAuthorityName() != null) {
-                return false;
-            }
-        } else if (!getAuthorityName().equals(aThat.getAuthorityName())) {
-            return false;
-        }
-
-
-        if (getRoles() == null && aThat.getRoles() != null) {
-            return false;
-        } else if (aThat.getRoles() == null && getRoles() != null) {
-            return false;
-        } else if (aThat.getRoles() != null && getRoles() != null) {
-            if (getRoles().size() != aThat.getRoles().size()) {
-                return false;
-            }
-            for (int i = 0; i < getRoles().size(); i++) {
-                Role role = getRoles().get(i);
-                if (role.getId() == null) {
-                    if (aThat.getRoles().get(i).getId() != null) {
-                        return false;
-                    }
-                } else if (!role.getId().equals(aThat.getRoles().get(i).getId())) {
-                    return false;
-                }
-            }
-        }
-        return true;
+            return aThat.getAuthorityName() == null;
+        } else return getAuthorityName().equals(aThat.getAuthorityName());
     }
 
     @Override
@@ -102,12 +97,6 @@ public class Authority {
         int result = 1, prime = 31;
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getAuthorityName() != null ? getAuthorityName().hashCode() : 0);
-        if (getRoles() != null) {
-            for (int i = 0; i < getRoles().size(); i++) {
-                Role role = getRoles().get(i);
-                result = prime * result + (role.getId() != null ? role.getId().hashCode() : 0);
-            }
-        }
         return result;
     }
 
@@ -115,13 +104,7 @@ public class Authority {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", authorityName = ").append(getAuthorityName())
-                .append("} contains {Role id = ")
-                .append(getRoles() == null
-                        ? List.of()
-                        : getRoles().stream()
-                            .map(Role::getId)
-                            .toList())
-                .append("}")
+                .append(" }")
                 .toString();
     }
 }

@@ -2,7 +2,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <include file="v.1.0.0/cumulative-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="test-data/cumulative-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="v.1.1.0/cumulative-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="2022-11-28_1_change_relationship_status_enum_to_uppercase.xml" relativeToChangelogFile="true"/>
+    <include file="2022-11-28_2_change_relationship_type_enum_to_uppercase.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

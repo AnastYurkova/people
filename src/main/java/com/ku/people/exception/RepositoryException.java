@@ -9,7 +9,7 @@ public class RepositoryException extends RuntimeException{
         super(message, cause);
     }
 
-    public RepositoryException(String s) {
-
+    public RepositoryException(String message) {
+        super(message);
     }
 }

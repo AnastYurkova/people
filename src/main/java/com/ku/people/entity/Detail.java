@@ -1,15 +1,37 @@
 package com.ku.people.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "details")
 public class Detail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String type;
+    @Column(name = "relationship_type")
+    @Enumerated(EnumType.STRING)
+    private RelationshipType type;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "relationship_id")
     private Relationship relationship;
 
     public Detail() {
     }
 
-    public Detail(Long id, String type, User user, Relationship relationship) {
+    public Detail(Long id, RelationshipType type, User user, Relationship relationship) {
         this.id = id;
         this.type = type;
         this.user = user;
@@ -19,7 +41,8 @@ public class Detail {
     public Detail(Long id) {
         this.id = id;
     }
-    public Detail(String type, Relationship relationship) {
+
+    public Detail(RelationshipType type, Relationship relationship) {
         this.type = type;
         this.relationship = relationship;
     }
@@ -32,11 +55,11 @@ public class Detail {
         this.id = id;
     }
 
-    public String getType() {
+    public RelationshipType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(RelationshipType type) {
         this.type = type;
     }
 
@@ -84,15 +107,7 @@ public class Detail {
         } else if (!getType().equals(aThat.getType())) {
             return false;
         }
-
-        if (getUser() == null) {
-            if (aThat.getUser() != null) {
-                return false;
-            }
-        } else if (!getUser().equals(aThat.getUser())) {
-            return false;
-        }
-        return getRelationship() == null ? aThat.getRelationship() == null : getRelationship().equals(aThat.getRelationship());
+        return getUser() == null ? aThat.getUser() == null : getUser().equals(aThat.getUser());
     }
 
     @Override
@@ -101,7 +116,6 @@ public class Detail {
         result = prime * result + (getId() != null ? getId().hashCode() : 0);
         result = prime * result + (getType() != null ? getType().hashCode() : 0);
         result = prime * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = prime * result + (getRelationship() != null ? getRelationship().hashCode() : 0);
         return result;
     }
 
@@ -109,10 +123,9 @@ public class Detail {
         return new StringBuilder(getClass().getSimpleName())
                 .append(" { id = ").append(getId())
                 .append(", type = ").append(getType())
-                .append(", userId= ").append(getUser() == null ? null : getUser().getId())
-                .append(", relationshipId = ")
-                .append(getRelationship() == null ? null : getRelationship().getId())
-                .append("}")
+                .append(", userId = ").append(getUser() == null ? null : getUser().getId())
+                .append(", relationshipId = ").append(getRelationship() == null ? null : getRelationship().getId())
+                .append(" }")
                 .toString();
     }
 }

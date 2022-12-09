@@ -1,4 +1,4 @@
-package com.ku.people.repository;
+package com.ku.people.repository.jdbc;
 
 public interface Repository {
     String ID_COLUMN = "id";
