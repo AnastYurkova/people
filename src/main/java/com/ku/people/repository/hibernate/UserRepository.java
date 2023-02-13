@@ -1,29 +1,32 @@
 package com.ku.people.repository.hibernate;
 
-import com.ku.people.entity.Authority;
 import com.ku.people.entity.User;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class UserRepository {
     public static final String FIND_BY_ID_QUERY = """
-         FROM User u
-             LEFT JOIN FETCH u.roles
-             LEFT JOIN FETCH u.details
-         WHERE u.id = :id
-    """;
+                 FROM User u
+                     LEFT JOIN FETCH u.roles
+                     LEFT JOIN FETCH u.details
+                 WHERE u.id = :id
+            """;
     public static final String FIND_ALL_QUERY = "FROM User";
     public static final String UPDATE_QUERY = """
-        UPDATE users SET user_name = :user_name, password = :password, surname = :surname, name = :name
-        WHERE id = :id
-    """;
+                UPDATE users SET user_name = :user_name, password = :password, surname = :surname, name = :name
+                WHERE id = :id
+            """;
 
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public UserRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

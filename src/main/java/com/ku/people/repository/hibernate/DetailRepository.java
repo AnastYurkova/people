@@ -1,29 +1,29 @@
 package com.ku.people.repository.hibernate;
 
 import com.ku.people.entity.Detail;
-import com.ku.people.entity.Relationship;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class DetailRepository {
     public static final String FIND_BY_ID_QUERY = """
-        FROM Detail d
-        WHERE d.id = :id
-    """;
+                FROM Detail d
+                WHERE d.id = :id
+            """;
     public static final String FIND_ALL_QUERY = "FROM Detail";
     public static final String SAVE_QUERY = """
-        INSERT INTO details(relationship_type, user_id, relationship_id)
-        VALUES (?\\:\\:relationship_type_enum, ?, ?)
-    """;
+                INSERT INTO details(relationship_type, user_id, relationship_id)
+                VALUES (?\\:\\:relationship_type_enum, ?, ?)
+            """;
     public static final String UPDATE_QUERY = """
-         UPDATE details SET relationship_type = ?\\:\\:relationship_type_enum, user_id = ?, relationship_id = ?
-         WHERE id = ?
-    """;
+                 UPDATE details SET relationship_type = ?\\:\\:relationship_type_enum, user_id = ?, relationship_id = ?
+                 WHERE id = ?
+            """;
 
     private final SessionFactory sessionFactory;
 

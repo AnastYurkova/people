@@ -1,25 +1,26 @@
 package com.ku.people.repository.hibernate;
 
-import com.ku.people.entity.Authority;
 import com.ku.people.entity.Role;
 import com.ku.people.exception.RepositoryException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class RoleRepository {
     public static final String FIND_BY_ID_QUERY = """
-        FROM Role r
-            LEFT JOIN FETCH r.users
-            LEFT JOIN FETCH r.authorities
-        WHERE r.id = :id
-    """;
+                FROM Role r
+                    LEFT JOIN FETCH r.users
+                    LEFT JOIN FETCH r.authorities
+                WHERE r.id = :id
+            """;
     public static final String FIND_ALL_QUERY = "FROM Role";
     public static final String UPDATE_QUERY = """
-        UPDATE roles SET role_name = :role_name WHERE id = :id
-    """;
+                UPDATE roles SET role_name = :role_name WHERE id = :id
+            """;
 
     private final SessionFactory sessionFactory;
 

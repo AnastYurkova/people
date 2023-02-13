@@ -8,6 +8,5 @@ public enum RelationshipType {
     FATHER,
     GRANDMOTHER,
     GRANDFATHER,
-    MOTHER;
-
+    MOTHER
 }
