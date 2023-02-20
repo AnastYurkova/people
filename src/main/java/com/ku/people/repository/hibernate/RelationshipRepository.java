@@ -12,19 +12,19 @@ import java.util.List;
 @Repository
 public class RelationshipRepository {
     public static final String FIND_BY_ID_QUERY = """
-                FROM Relationship r
-                    LEFT JOIN FETCH r.details
-                WHERE r.id = :id
-            """;
+         FROM Relationship r
+             LEFT JOIN FETCH r.details
+         WHERE r.id = :id
+    """;
     public static final String FIND_ALL_QUERY = "FROM Relationship";
     public static final String SAVE_QUERY = """
-                INSERT INTO relationships(created_at_utc, relationship_status)
-                VALUES(?, ?\\:\\:relationship_status_enum)
-            """;
+         INSERT INTO relationships(created_at_utc, relationship_status)
+         VALUES(?, ?\\:\\:relationship_status_enum)
+    """;
     public static final String UPDATE_QUERY = """
-                UPDATE relationships SET created_at_utc = ?, relationship_status = ?\\:\\:relationship_status_enum
-                WHERE id = ?
-            """;
+         UPDATE relationships SET created_at_utc = ?, relationship_status = ?\\:\\:relationship_status_enum
+         WHERE id = ?
+    """;
 
     private final SessionFactory sessionFactory;
 

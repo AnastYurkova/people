@@ -11,14 +11,14 @@ import java.util.List;
 @Repository
 public class AuthorityRepository {
     public static final String FIND_BY_ID_QUERY = """
-                FROM Authority a
-                    LEFT JOIN FETCH a.roles
-                WHERE a.id = :id
-            """;
+          FROM Authority a
+               EFT JOIN FETCH a.roles
+          WHERE a.id = :id
+    """;
     public static final String FIND_ALL_QUERY = "FROM Authority";
     public static final String UPDATE_QUERY = """
-                UPDATE authorities SET authority_name = :authority_name WHERE id = :id
-            """;
+          UPDATE authorities SET authority_name = :authority_name WHERE id = :id
+    """;
 
     private final SessionFactory sessionFactory;
 

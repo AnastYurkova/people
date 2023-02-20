@@ -13,16 +13,16 @@ import java.util.List;
 @Repository
 public class UserRepository {
     public static final String FIND_BY_ID_QUERY = """
-                 FROM User u
-                     LEFT JOIN FETCH u.roles
-                     LEFT JOIN FETCH u.details
-                 WHERE u.id = :id
-            """;
+          FROM User u
+              LEFT JOIN FETCH u.roles
+              LEFT JOIN FETCH u.details
+         WHERE u.id = :id
+    """;
     public static final String FIND_ALL_QUERY = "FROM User";
     public static final String UPDATE_QUERY = """
-                UPDATE users SET user_name = :user_name, password = :password, surname = :surname, name = :name
-                WHERE id = :id
-            """;
+        UPDATE users SET user_name = :user_name, password = :password, surname = :surname, name = :name
+        WHERE id = :id
+    """;
 
     private final SessionFactory sessionFactory;
 
