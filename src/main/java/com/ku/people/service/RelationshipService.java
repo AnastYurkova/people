@@ -2,10 +2,11 @@ package com.ku.people.service;
 
 
 import com.ku.people.entity.Relationship;
-import com.ku.people.repository.hibernate.RelationshipRepository;
+import com.ku.people.repository.dataJPA.RelationshipRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -17,7 +18,7 @@ public class RelationshipService {
         this.relationshipRepository = relationshipRepository;
     }
 
-    public Relationship findById(Long id) {
+    public Optional<Relationship> findById(Long id) {
         return relationshipRepository.findById(id);
     }
 
@@ -30,11 +31,11 @@ public class RelationshipService {
     }
 
     public void update(Relationship relationship) {
-        relationshipRepository.update(relationship);
+        relationshipRepository.save(relationship);
     }
 
-    public void delete(Long id) {
-        relationshipRepository.delete(id);
+    public void delete(Relationship relationship) {
+        relationshipRepository.delete(relationship);
     }
 
 }

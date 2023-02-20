@@ -1,6 +1,6 @@
 package com.ku.people;
 
-import com.ku.people.repository.hibernate.UserRepository;
+import com.ku.people.repository.dataJPA.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

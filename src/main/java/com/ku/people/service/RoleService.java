@@ -2,10 +2,11 @@ package com.ku.people.service;
 
 
 import com.ku.people.entity.Role;
-import com.ku.people.repository.hibernate.RoleRepository;
+import com.ku.people.repository.dataJPA.RoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -17,7 +18,7 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public Role findById(Long id) {
+    public Optional<Role> findById(Long id) {
         return roleRepository.findById(id);
     }
 
@@ -30,11 +31,11 @@ public class RoleService {
     }
 
     public void update(Role role) {
-        roleRepository.update(role);
+        roleRepository.save(role);
     }
 
-    public void delete(Long id) {
-        roleRepository.delete(id);
+    public void delete(Role role) {
+        roleRepository.delete(role);
     }
 
 }

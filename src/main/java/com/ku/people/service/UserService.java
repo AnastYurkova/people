@@ -2,10 +2,11 @@ package com.ku.people.service;
 
 
 import com.ku.people.entity.User;
-import com.ku.people.repository.hibernate.UserRepository;
+import com.ku.people.repository.dataJPA.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -18,7 +19,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -31,11 +32,11 @@ public class UserService {
     }
 
     public void update(User user) {
-        userRepository.update(user);
+        userRepository.save(user);
     }
 
-    public void delete(Long id) {
-        userRepository.delete(id);
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 
 }

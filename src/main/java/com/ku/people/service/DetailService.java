@@ -2,10 +2,11 @@ package com.ku.people.service;
 
 
 import com.ku.people.entity.Detail;
-import com.ku.people.repository.hibernate.DetailRepository;
+import com.ku.people.repository.dataJPA.DetailRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -17,7 +18,7 @@ public class DetailService {
         this.detailRepository = detailRepository;
     }
 
-    public Detail findById(Long id) {
+    public Optional<Detail> findById(Long id) {
         return detailRepository.findById(id);
     }
 
@@ -30,11 +31,11 @@ public class DetailService {
     }
 
     public void update(Detail relationship) {
-        detailRepository.update(relationship);
+        detailRepository.save(relationship);
     }
 
-    public void delete(Long id) {
-        detailRepository.delete(id);
+    public void delete(Detail detail) {
+        detailRepository.delete(detail);
     }
 
 }

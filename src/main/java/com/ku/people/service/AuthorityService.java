@@ -2,10 +2,11 @@ package com.ku.people.service;
 
 
 import com.ku.people.entity.Authority;
-import com.ku.people.repository.hibernate.AuthorityRepository;
+import com.ku.people.repository.dataJPA.AuthorityRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorityService {
@@ -16,7 +17,7 @@ public class AuthorityService {
         this.authorityRepository = authorityRepository;
     }
 
-    public Authority findById(Long id) {
+    public Optional<Authority> findById(Long id) {
         return authorityRepository.findById(id);
     }
 
@@ -29,11 +30,11 @@ public class AuthorityService {
     }
 
     public void update(Authority relationship) {
-        authorityRepository.update(relationship);
+        authorityRepository.save(relationship);
     }
 
-    public void delete(Long id) {
-        authorityRepository.delete(id);
+    public void delete(Authority authority) {
+        authorityRepository.delete(authority);
     }
 
 }
