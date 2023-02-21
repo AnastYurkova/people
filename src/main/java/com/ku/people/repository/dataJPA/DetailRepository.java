@@ -11,6 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface DetailRepository extends JpaRepository<Detail, Long> {
-    @Query("FROM Detail d WHERE d.id = :id")
-    Optional<Detail> findById(Long id);
+
 }
