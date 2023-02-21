@@ -12,7 +12,7 @@
 //public class AuthorityRepository {
 //    public static final String FIND_BY_ID_QUERY = """
 //          FROM Authority a
-//               EFT JOIN FETCH a.roles
+//               LEFT JOIN FETCH a.roles
 //          WHERE a.id = :id
 //    """;
 //    public static final String FIND_ALL_QUERY = "FROM Authority";
