@@ -1,13 +1,10 @@
 package com.ku.people.service;
 
-
 import com.ku.people.entity.Role;
-import com.ku.people.repository.dataJPA.RoleRepository;
+import com.ku.people.repository.RoleRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class RoleService {

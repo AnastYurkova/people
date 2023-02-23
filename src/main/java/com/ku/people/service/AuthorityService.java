@@ -1,10 +1,8 @@
 package com.ku.people.service;
 
-
 import com.ku.people.entity.Authority;
-import com.ku.people.repository.dataJPA.AuthorityRepository;
+import com.ku.people.repository.AuthorityRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

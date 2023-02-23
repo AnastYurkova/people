@@ -1,13 +1,10 @@
 package com.ku.people.service;
 
-
 import com.ku.people.entity.Relationship;
-import com.ku.people.repository.dataJPA.RelationshipRepository;
+import com.ku.people.repository.RelationshipRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class RelationshipService {

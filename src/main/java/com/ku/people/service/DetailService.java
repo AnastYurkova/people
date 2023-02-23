@@ -1,13 +1,10 @@
 package com.ku.people.service;
 
-
 import com.ku.people.entity.Detail;
-import com.ku.people.repository.dataJPA.DetailRepository;
+import com.ku.people.repository.DetailRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class DetailService {
