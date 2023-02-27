@@ -1,5 +1,8 @@
 package com.ku.people.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +29,8 @@ public class Authority {
             joinColumns = {@JoinColumn(name = "authority_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Role> roles;
 
     public Authority() {

@@ -1,5 +1,8 @@
 package com.ku.people.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,8 +30,12 @@ public class Role {
             joinColumns = {@JoinColumn(name = "role_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<User> users;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Authority> authorities;
 
     public Role() {

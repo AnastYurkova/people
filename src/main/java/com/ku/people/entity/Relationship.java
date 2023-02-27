@@ -1,5 +1,8 @@
 package com.ku.people.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,6 +28,8 @@ public class Relationship {
     @Enumerated(EnumType.STRING)
     private RelationshipStatus status;
     @OneToMany(mappedBy="relationship", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Detail> details;
 
     public Relationship() {
