@@ -1,38 +1,37 @@
 package com.ku.people.service;
 
+import com.ku.people.dto.AuthorityDto;
+import com.ku.people.dto.AuthorityListDto;
+import com.ku.people.dto.AuthoritySaveDto;
 import com.ku.people.entity.Authority;
+import com.ku.people.mapper.AuthorityMapper;
 import com.ku.people.repository.AuthorityRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AuthorityService {
 
-    private final AuthorityRepository authorityRepository;
+    private AuthorityRepository authorityRepository;
 
-    public AuthorityService(AuthorityRepository authorityRepository) {
-        this.authorityRepository = authorityRepository;
+    private AuthorityMapper authorityMapper;
+
+    public AuthorityDto findById(Long id) {
+        Authority authority = authorityRepository.findById(id).get();
+        return authorityMapper.toDto(authority);
     }
 
-    public Optional<Authority> findById(Long id) {
-        return authorityRepository.findById(id);
+    public List<AuthorityListDto> findAll() {
+        List<Authority> authorities = authorityRepository.findAll();
+        return authorityMapper.toListDto(authorities);
     }
 
-    public List<Authority> findAll() {
-        return authorityRepository.findAll();
-    }
-
-    public void save(Authority relationship) {
-        authorityRepository.save(relationship);
-    }
-
-    public void update(Authority relationship) {
-        authorityRepository.save(relationship);
-    }
-
-    public void delete(Authority authority) {
-        authorityRepository.delete(authority);
+    public Authority save(AuthoritySaveDto authoritySaveDto) {
+        Authority authority = authorityMapper.fromSaveDto(authoritySaveDto);
+        return authorityRepository.save(authority);
     }
 
 }

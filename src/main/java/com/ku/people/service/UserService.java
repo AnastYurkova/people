@@ -1,39 +1,37 @@
 package com.ku.people.service;
 
 
+import com.ku.people.dto.UserDto;
+import com.ku.people.dto.UserListDto;
+import com.ku.people.dto.UserSaveDto;
 import com.ku.people.entity.User;
+import com.ku.people.mapper.UserMapper;
 import com.ku.people.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private UserMapper userMapper;
+
+    public UserDto findById(Long id) {
+        User user = userRepository.findById(id).get();
+        return userMapper.toDto(user);
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public List<UserListDto> findAll() {
+        List<User> users = userRepository.findAll();
+        return userMapper.toListDto(users);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public User save(UserSaveDto userSaveDto) {
+        User user = userMapper.fromSaveDto(userSaveDto);
+        return userRepository.save(user);
     }
-
-    public void save(User user) {
-        userRepository.save(user);
-    }
-
-    public void update(User user) {
-        userRepository.save(user);
-    }
-
-    public void delete(User user) {
-        userRepository.delete(user);
-    }
-
 }

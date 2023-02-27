@@ -1,38 +1,38 @@
 package com.ku.people.service;
 
+import com.ku.people.dto.RelationshipDto;
+import com.ku.people.dto.RelationshipListDto;
+import com.ku.people.dto.RelationshipSaveDto;
 import com.ku.people.entity.Relationship;
+import com.ku.people.mapper.RelationshipMapper;
 import com.ku.people.repository.RelationshipRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RelationshipService {
 
-    private final RelationshipRepository relationshipRepository;
+    private RelationshipRepository relationshipRepository;
 
-    public RelationshipService(RelationshipRepository relationshipRepository) {
-        this.relationshipRepository = relationshipRepository;
+
+    private RelationshipMapper relationshipMapper;
+
+    public RelationshipDto findById(Long id) {
+        Relationship relationship = relationshipRepository.findById(id).get();
+        return relationshipMapper.toDto(relationship);
     }
 
-    public Optional<Relationship> findById(Long id) {
-        return relationshipRepository.findById(id);
+    public List<RelationshipListDto> findAll() {
+        List<Relationship> relationships = relationshipRepository.findAll();
+        return relationshipMapper.toListDto(relationships);
     }
 
-    public List<Relationship> findAll() {
-        return relationshipRepository.findAll();
-    }
-
-    public void save(Relationship relationship) {
-        relationshipRepository.save(relationship);
-    }
-
-    public void update(Relationship relationship) {
-        relationshipRepository.save(relationship);
-    }
-
-    public void delete(Relationship relationship) {
-        relationshipRepository.delete(relationship);
+    public Relationship save(RelationshipSaveDto relationshipSaveDto) {
+        Relationship relationship = relationshipMapper.fromSaveDto(relationshipSaveDto);
+        return relationshipRepository.save(relationship);
     }
 
 }
