@@ -1,17 +1,14 @@
 package com.ku.people.dto;
 
-import com.ku.people.entity.Role;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Accessors(chain = true)
 public class AuthorityDto {
     private Long id;
     private String authorityName;
-    private Set<Role> roles;
+    private Set<RoleListDto> roles;
 }

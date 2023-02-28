@@ -17,20 +17,19 @@ public class RoleService {
 
     private RoleRepository roleRepository;
 
-    private RoleMapper roleMapper;
 
     public RoleDto findById(Long id) {
         Role role = roleRepository.findById(id).get();
-        return roleMapper.toDto(role);
+        return RoleMapper.toDto(role);
     }
 
     public List<RoleListDto> findAll() {
         List<Role> roles = roleRepository.findAll();
-        return roleMapper.toListDto(roles);
+        return RoleMapper.toListDto(roles);
     }
 
     public Role save(RoleSaveDto roleSaveDto) {
-        Role role = roleMapper.fromSaveDto(roleSaveDto);
+        Role role = RoleMapper.fromSaveDto(roleSaveDto);
         return roleRepository.save(role);
     }
 

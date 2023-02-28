@@ -1,19 +1,15 @@
 package com.ku.people.dto;
 
-import com.ku.people.entity.Relationship;
 import com.ku.people.entity.RelationshipType;
-import com.ku.people.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Accessors(chain = true)
 public class DetailDto {
     private Long id;
     private RelationshipType type;
-    private User user;
-    private Relationship relationship;
+    private UserDto user;
+    private RelationshipDto relationship;
 }
 

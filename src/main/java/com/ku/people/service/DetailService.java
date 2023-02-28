@@ -20,20 +20,19 @@ public class DetailService {
 
     private  DetailRepository detailRepository;
 
-    private DetailMapper detailMapper;
 
     public DetailDto findById(Long id) {
         Detail detail = detailRepository.findById(id).get();
-        return detailMapper.toDto(detail);
+        return DetailMapper.toDto(detail);
     }
 
     public List<DetailListDto> findAll() {
         List<Detail> details = detailRepository.findAll();
-        return detailMapper.toListDto(details);
+        return DetailMapper.toListDto(details);
     }
 
     public Detail save(DetailSaveDto detailSaveDto) {
-        Detail detail = detailMapper.fromSaveDto(detailSaveDto);
+        Detail detail = DetailMapper.fromSaveDto(detailSaveDto);
         return detailRepository.save(detail);
     }
 

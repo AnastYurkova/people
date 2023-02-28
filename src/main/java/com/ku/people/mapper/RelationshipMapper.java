@@ -9,35 +9,43 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Component
 public class RelationshipMapper {
-    public RelationshipDto toDto(Relationship relationship) {
-        RelationshipDto relationshipDto = new RelationshipDto();
-        relationshipDto.setId(relationship.getId());
-        relationshipDto.setCreatedAtUtc(relationship.getCreatedAtUtc());
-        relationshipDto.setStatus(relationship.getStatus());
-        relationshipDto.setDetails(relationship.getDetails());
-        return relationshipDto;
+    public static RelationshipDto toDto(Relationship relationship) {
+        return new RelationshipDto()
+                .setId(relationship.getId())
+                .setCreatedAtUtc(relationship.getCreatedAtUtc())
+                .setStatus(relationship.getStatus())
+                .setDetails(DetailMapper.toListDto(relationship.getDetails()));
     }
 
-    public List<RelationshipListDto> toListDto(List<Relationship> relationships) {
+    public static List<RelationshipListDto> toListDto(List<Relationship> relationships) {
         List<RelationshipListDto> relationshipListDtos = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            RelationshipListDto relationshipListDto = new RelationshipListDto();
-            relationshipListDto.setId(relationship.getId());
-            relationshipListDto.setCreatedAtUtc(relationship.getCreatedAtUtc());
-            relationshipListDto.setStatus(relationship.getStatus());
-            relationshipListDtos.add(relationshipListDto);
+            relationshipListDtos.add(toListDto(relationship));
         }
         return relationshipListDtos;
     }
 
-    public Relationship fromSaveDto(RelationshipSaveDto relationshipSaveDto) {
-        Relationship relationship = new Relationship();
-        relationship.setCreatedAtUtc(relationshipSaveDto.getCreatedAtUtc());
-        relationship.setStatus(relationshipSaveDto.getStatus());
-        relationship.setDetails(new HashSet<>());
-        return relationship;
+    public static Set<RelationshipListDto> toListDto(Set<Relationship> relationships) {
+        List<RelationshipListDto> relationshipListDtos = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            relationshipListDtos.add(toListDto(relationship));
+        }
+        return new HashSet<>(relationshipListDtos);
+    }
+
+    public static RelationshipListDto toListDto(Relationship relationship) {
+        return new RelationshipListDto()
+                .setId(relationship.getId())
+                .setCreatedAtUtc(relationship.getCreatedAtUtc())
+                .setStatus(relationship.getStatus());
+    }
+
+    public static Relationship fromSaveDto(RelationshipSaveDto relationshipSaveDto) {
+        return new Relationship()
+                .setCreatedAtUtc(relationshipSaveDto.getCreatedAtUtc())
+                .setStatus(relationshipSaveDto.getStatus());
     }
 }

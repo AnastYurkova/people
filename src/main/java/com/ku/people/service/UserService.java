@@ -18,20 +18,19 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    private UserMapper userMapper;
 
     public UserDto findById(Long id) {
         User user = userRepository.findById(id).get();
-        return userMapper.toDto(user);
+        return UserMapper.toDto(user);
     }
 
     public List<UserListDto> findAll() {
         List<User> users = userRepository.findAll();
-        return userMapper.toListDto(users);
+        return UserMapper.toListDto(users);
     }
 
     public User save(UserSaveDto userSaveDto) {
-        User user = userMapper.fromSaveDto(userSaveDto);
+        User user = UserMapper.fromSaveDto(userSaveDto);
         return userRepository.save(user);
     }
 }

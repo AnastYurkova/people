@@ -9,34 +9,42 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Component
 public class RoleMapper {
-    public RoleDto toDto(Role role) {
-        RoleDto roleDto = new RoleDto();
-        roleDto.setId(role.getId());
-        roleDto.setName(role.getName());
-        roleDto.setAuthorities(role.getAuthorities());
-        roleDto.setUsers(role.getUsers());
-        return roleDto;
+
+    public static RoleDto toDto(Role role) {
+        return new RoleDto()
+                .setId(role.getId())
+                .setName(role.getName())
+                .setAuthorities(AuthorityMapper.toListDto(role.getAuthorities()))
+                .setUsers(UserMapper.toListDto(role.getUsers()));
     }
 
-    public List<RoleListDto> toListDto(List<Role> roles) {
+    public static List<RoleListDto> toListDto(List<Role> roles) {
         List<RoleListDto> roleListDtos = new ArrayList<>();
         for (Role role : roles) {
-            RoleListDto roleListDto = new RoleListDto();
-            roleListDto.setId(role.getId());
-            roleListDto.setName(role.getName());
-            roleListDtos.add(roleListDto);
+            roleListDtos.add(toListDto(role));
         }
         return roleListDtos;
     }
 
-    public Role fromSaveDto(RoleSaveDto roleSaveDto) {
-        Role role = new Role();
-        role.setName(roleSaveDto.getName());
-        role.setUsers(new HashSet<>());
-        role.setAuthorities(new HashSet<>());
-        return role;
+    public static Set<RoleListDto> toListDto(Set<Role> roles) {
+        List<RoleListDto> roleListDtos = new ArrayList<>();
+        for (Role role : roles) {
+            roleListDtos.add(toListDto(role));
+        }
+        return new HashSet<>(roleListDtos);
+    }
+
+    public static RoleListDto toListDto(Role role) {
+        return new RoleListDto()
+                .setId(role.getId())
+                .setName(role.getName());
+    }
+
+    public static Role fromSaveDto(RoleSaveDto roleSaveDto) {
+        return new Role()
+                .setName(roleSaveDto.getName());
     }
 }

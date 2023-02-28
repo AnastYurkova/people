@@ -7,35 +7,45 @@ import com.ku.people.entity.Detail;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Component
 public class DetailMapper {
-    public DetailDto toDto(Detail detail) {
-        DetailDto detailDto = new DetailDto();
-        detailDto.setId(detail.getId());
-        detailDto.setUser(detail.getUser());
-        detailDto.setRelationship(detail.getRelationship());
+
+    public static DetailDto toDto(Detail detail) {
+        DetailDto detailDto = new DetailDto()
+                .setId(detail.getId())
+                .setUser(UserMapper.toDto(detail.getUser()))
+                .setRelationship(RelationshipMapper.toDto(detail.getRelationship()));
         detailDto.setType(detail.getType());
         return detailDto;
     }
 
-    public List<DetailListDto> toListDto(List<Detail> details) {
+    public static List<DetailListDto> toListDto(List<Detail> details) {
         List<DetailListDto> detailListDtos = new ArrayList<>();
         for (Detail detail : details) {
-            DetailListDto detailListDto = new DetailListDto();
-            detailListDto.setId(detail.getId());
-            detailListDto.setType(detail.getType());
-            detailListDtos.add(detailListDto);
+            detailListDtos.add(toListDto(detail));
         }
         return detailListDtos;
     }
 
-    public Detail fromSaveDto(DetailSaveDto roleSaveDto) {
-        Detail detail = new Detail();
-        detail.setType(roleSaveDto.getType());
-        detail.setRelationship(roleSaveDto.getRelationship());
-        detail.setUser(roleSaveDto.getUser());
-        return detail;
+    public static Set<DetailListDto> toListDto(Set<Detail> details) {
+        List<DetailListDto> detailListDtos = new ArrayList<>();
+        for (Detail detail : details) {
+            detailListDtos.add(toListDto(detail));
+        }
+        return new HashSet<>(detailListDtos);
+    }
+
+    public static DetailListDto toListDto(Detail detail) {
+        return new DetailListDto()
+                .setId(detail.getId())
+                .setType(detail.getType());
+    }
+
+    public static Detail fromSaveDto(DetailSaveDto roleSaveDto) {
+        return new Detail()
+                .setType(roleSaveDto.getType());
     }
 }
