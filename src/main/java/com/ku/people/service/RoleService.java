@@ -6,13 +6,12 @@ import com.ku.people.dto.RoleSaveDto;
 import com.ku.people.entity.Role;
 import com.ku.people.mapper.RoleMapper;
 import com.ku.people.repository.RoleRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class RoleService {
 
     private RoleRepository roleRepository;
@@ -33,4 +32,8 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 }

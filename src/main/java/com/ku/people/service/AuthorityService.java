@@ -7,6 +7,7 @@ import com.ku.people.entity.Authority;
 import com.ku.people.mapper.AuthorityMapper;
 import com.ku.people.repository.AuthorityRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public class AuthorityService {
         return authorityRepository.save(authority);
     }
 
+    @Autowired
+    public void setAuthorityRepository(AuthorityRepository authorityRepository) {
+        this.authorityRepository = authorityRepository;
+    }
 }

@@ -12,11 +12,10 @@ import java.util.Set;
 
 public class AuthorityMapper {
     public static AuthorityDto toDto(Authority authority) {
-        AuthorityDto authorityDto = new AuthorityDto();
-        authorityDto.setId(authority.getId());
-        authorityDto.setAuthorityName(authority.getAuthorityName());
-        authorityDto.setRoles(RoleMapper.toListDto(authority.getRoles()));
-        return authorityDto;
+        return new AuthorityDto()
+                .setId(authority.getId())
+                .setAuthorityName(authority.getAuthorityName())
+                .setRoles(RoleMapper.toListDto(authority.getRoles()));
     }
 
     public static List<AuthorityListDto> toListDto(List<Authority> authorities) {

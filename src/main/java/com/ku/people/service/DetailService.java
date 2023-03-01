@@ -3,22 +3,20 @@ package com.ku.people.service;
 import com.ku.people.dto.DetailDto;
 import com.ku.people.dto.DetailListDto;
 import com.ku.people.dto.DetailSaveDto;
-import com.ku.people.dto.UserDto;
-import com.ku.people.dto.UserListDto;
-import com.ku.people.dto.UserSaveDto;
 import com.ku.people.entity.Detail;
-import com.ku.people.entity.User;
 import com.ku.people.mapper.DetailMapper;
 import com.ku.people.repository.DetailRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class DetailService {
 
-    private  DetailRepository detailRepository;
+    private DetailRepository detailRepository;
 
 
     public DetailDto findById(Long id) {
@@ -36,4 +34,8 @@ public class DetailService {
         return detailRepository.save(detail);
     }
 
+    @Autowired
+    public void setDetailRepository(DetailRepository detailRepository) {
+        this.detailRepository = detailRepository;
+    }
 }

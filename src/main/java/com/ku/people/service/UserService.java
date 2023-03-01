@@ -7,13 +7,12 @@ import com.ku.people.dto.UserSaveDto;
 import com.ku.people.entity.User;
 import com.ku.people.mapper.UserMapper;
 import com.ku.people.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class UserService {
 
     private UserRepository userRepository;
@@ -32,5 +31,10 @@ public class UserService {
     public User save(UserSaveDto userSaveDto) {
         User user = UserMapper.fromSaveDto(userSaveDto);
         return userRepository.save(user);
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

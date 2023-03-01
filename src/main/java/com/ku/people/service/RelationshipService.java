@@ -7,6 +7,7 @@ import com.ku.people.entity.Relationship;
 import com.ku.people.mapper.RelationshipMapper;
 import com.ku.people.repository.RelationshipRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,4 +34,8 @@ public class RelationshipService {
         return relationshipRepository.save(relationship);
     }
 
+    @Autowired
+    public void setRelationshipRepository(RelationshipRepository relationshipRepository) {
+        this.relationshipRepository = relationshipRepository;
+    }
 }
