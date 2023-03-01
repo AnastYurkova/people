@@ -12,8 +12,4 @@ import java.util.Optional;
 public interface DetailRepository extends JpaRepository<Detail, Long> {
     @Query("FROM Detail d LEFT JOIN FETCH d.user LEFT JOIN FETCH d.relationship WHERE d.id = :id")
     Optional<Detail> findById(Long id);
-
-//    @Query("INSERT INTO details(relationship_type, user_id, relationship_id) " +
-//            "VALUES (?\\\\:\\\\:relationship_type_enum, ?, ?)")
-//    Optional<Detail> save();
 }

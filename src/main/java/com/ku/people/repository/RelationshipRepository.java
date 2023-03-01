@@ -11,8 +11,4 @@ import java.util.Optional;
 public interface RelationshipRepository extends JpaRepository<Relationship, Long> {
     @Query("FROM Relationship r LEFT JOIN FETCH r.details WHERE r.id = :id")
     Optional<Relationship> findById(Long id);
-
-//    @Query("INSERT INTO relationships(created_at_utc, relationship_status) " +
-//            "VALUES(?, ?\\\\:\\\\:relationship_status_enum))")
-//    Optional<Relationship> save();
 }

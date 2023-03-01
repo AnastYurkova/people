@@ -9,3 +9,4 @@ public class AuthorityListDto {
     private Long id;
     private String authorityName;
 }
+

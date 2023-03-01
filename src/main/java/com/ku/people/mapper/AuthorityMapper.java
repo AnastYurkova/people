@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AuthorityMapper {
     public static AuthorityDto toDto(Authority authority) {
@@ -19,11 +20,7 @@ public class AuthorityMapper {
     }
 
     public static List<AuthorityListDto> toListDto(List<Authority> authorities) {
-        List<AuthorityListDto> authorityListDtos = new ArrayList<>();
-        for (Authority authority : authorities) {
-            authorityListDtos.add(toListDto(authority));
-        }
-        return authorityListDtos;
+        return authorities.stream().map(AuthorityMapper::toListDto).collect(Collectors.toList());
     }
 
     public static Set<AuthorityListDto> toListDto(Set<Authority> authorities) {
@@ -42,7 +39,6 @@ public class AuthorityMapper {
 
     public static Authority fromSaveDto(AuthoritySaveDto authoritySaveDto) {
         return new Authority()
-                .setAuthorityName(authoritySaveDto.getAuthorityName())
-                .setRoles(new HashSet<>());
+                .setAuthorityName(authoritySaveDto.getAuthorityName());
     }
 }

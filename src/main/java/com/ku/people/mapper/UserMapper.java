@@ -4,12 +4,12 @@ import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
 import com.ku.people.entity.User;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserMapper {
 
@@ -24,11 +24,8 @@ public class UserMapper {
     }
 
     public static List<UserListDto> toListDto(List<User> users) {
-        List<UserListDto> userListDtos = new ArrayList<>();
-        for (User user : users) {
-            userListDtos.add(toListDto(user));
-        }
-        return userListDtos;
+        return users.stream().map(UserMapper::toListDto).collect(Collectors.toList());
+
     }
 
     public static Set<UserListDto> toListDto(Set<User> users) {

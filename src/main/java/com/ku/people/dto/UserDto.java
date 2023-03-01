@@ -15,3 +15,4 @@ public class UserDto {
     private Set<RoleListDto> roles;
     private Set<DetailListDto> details;
 }
+

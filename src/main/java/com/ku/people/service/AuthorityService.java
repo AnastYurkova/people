@@ -6,14 +6,12 @@ import com.ku.people.dto.AuthoritySaveDto;
 import com.ku.people.entity.Authority;
 import com.ku.people.mapper.AuthorityMapper;
 import com.ku.people.repository.AuthorityRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class AuthorityService {
 
     private AuthorityRepository authorityRepository;

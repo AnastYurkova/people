@@ -13,3 +13,4 @@ public class RelationshipListDto {
     private LocalDate createdAtUtc;
     private RelationshipStatus status;
 }
+

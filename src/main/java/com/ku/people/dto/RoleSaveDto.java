@@ -8,3 +8,4 @@ import lombok.experimental.Accessors;
 public class RoleSaveDto {
     private String name;
 }
+

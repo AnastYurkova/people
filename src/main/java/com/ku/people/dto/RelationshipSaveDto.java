@@ -12,3 +12,4 @@ public class RelationshipSaveDto {
     private LocalDate createdAtUtc;
     private RelationshipStatus status;
 }
+

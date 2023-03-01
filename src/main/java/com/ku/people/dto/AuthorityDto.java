@@ -12,3 +12,4 @@ public class AuthorityDto {
     private String authorityName;
     private Set<RoleListDto> roles;
 }
+

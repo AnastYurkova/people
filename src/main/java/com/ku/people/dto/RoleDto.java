@@ -13,3 +13,4 @@ public class RoleDto {
     private Set<UserListDto> users;
     private Set<AuthorityListDto> authorities;
 }
+

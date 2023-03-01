@@ -4,12 +4,12 @@ import com.ku.people.dto.RoleDto;
 import com.ku.people.dto.RoleListDto;
 import com.ku.people.dto.RoleSaveDto;
 import com.ku.people.entity.Role;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RoleMapper {
 
@@ -22,11 +22,7 @@ public class RoleMapper {
     }
 
     public static List<RoleListDto> toListDto(List<Role> roles) {
-        List<RoleListDto> roleListDtos = new ArrayList<>();
-        for (Role role : roles) {
-            roleListDtos.add(toListDto(role));
-        }
-        return roleListDtos;
+        return roles.stream().map(RoleMapper::toListDto).collect(Collectors.toList());
     }
 
     public static Set<RoleListDto> toListDto(Set<Role> roles) {

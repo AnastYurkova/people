@@ -15,3 +15,4 @@ public class RelationshipDto {
     private RelationshipStatus status;
     private Set<DetailListDto> details;
 }
+

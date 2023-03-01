@@ -8,3 +8,4 @@ import lombok.experimental.Accessors;
 public class AuthoritySaveDto {
     private String authorityName;
 }
+

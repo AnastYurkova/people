@@ -6,14 +6,12 @@ import com.ku.people.dto.DetailSaveDto;
 import com.ku.people.entity.Detail;
 import com.ku.people.mapper.DetailMapper;
 import com.ku.people.repository.DetailRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class DetailService {
 
     private DetailRepository detailRepository;
