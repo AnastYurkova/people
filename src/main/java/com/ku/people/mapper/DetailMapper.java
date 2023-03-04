@@ -5,8 +5,6 @@ import com.ku.people.dto.DetailListDto;
 import com.ku.people.dto.DetailSaveDto;
 import com.ku.people.entity.Detail;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,15 +20,15 @@ public class DetailMapper {
     }
 
     public static List<DetailListDto> toListDto(List<Detail> details) {
-        return details.stream().map(DetailMapper::toListDto).collect(Collectors.toList());
+        return details.stream()
+                .map(DetailMapper::toListDto)
+                .collect(Collectors.toList());
     }
 
     public static Set<DetailListDto> toListDto(Set<Detail> details) {
-        HashSet<DetailListDto> detailListDtos = new HashSet<>();
-        for (Detail detail : details) {
-            detailListDtos.add(toListDto(detail));
-        }
-        return detailListDtos;
+        return details.stream()
+                .map(DetailMapper::toListDto)
+                .collect(Collectors.toSet());
     }
 
     public static DetailListDto toListDto(Detail detail) {

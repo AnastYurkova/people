@@ -5,8 +5,6 @@ import com.ku.people.dto.RelationshipListDto;
 import com.ku.people.dto.RelationshipSaveDto;
 import com.ku.people.entity.Relationship;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,15 +19,15 @@ public class RelationshipMapper {
     }
 
     public static List<RelationshipListDto> toListDto(List<Relationship> relationships) {
-        return relationships.stream().map(RelationshipMapper::toListDto).collect(Collectors.toList());
+        return relationships.stream()
+                .map(RelationshipMapper::toListDto)
+                .collect(Collectors.toList());
     }
 
     public static Set<RelationshipListDto> toListDto(Set<Relationship> relationships) {
-        HashSet<RelationshipListDto> relationshipListDtos = new HashSet<>();
-        for (Relationship relationship : relationships) {
-            relationshipListDtos.add(toListDto(relationship));
-        }
-        return relationshipListDtos;
+        return relationships.stream()
+                .map(RelationshipMapper::toListDto)
+                .collect(Collectors.toSet());
     }
 
     public static RelationshipListDto toListDto(Relationship relationship) {

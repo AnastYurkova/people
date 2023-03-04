@@ -5,18 +5,18 @@
 
     <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            with series as (
-            select generate_series(1, 100) as sery
+            WITH series AS (
+             SELECT generate_series(1, 100) AS sery
             )
 
-            insert into user_role_links(user_id, role_id)
-            select
-            s.sery,
-            case
-            when s.sery % 2 = 0 then 2
-            else 1
-            end
-            from series s
+            INSERT INTO user_role_links(user_id, role_id)
+            SELECT
+                s.sery,
+                CASE
+                    WHEN s.sery % 2 = 0 THEN 2
+                    ELSE 1
+                END
+            FROM series s
         </sql>
     </changeSet>
 

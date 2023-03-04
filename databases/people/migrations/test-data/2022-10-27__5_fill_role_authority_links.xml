@@ -5,12 +5,12 @@
 
     <changeSet id="5" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            insert into role_authority_links(role_id, authority_id)
-            select
-            random()*((select count (*) from roles)-1)+1,
-            random()*((select count (*) from authorities)-1)+1
+            INSERT INTO role_authority_links(role_id, authority_id)
+            SELECT
+                random()*((select count (*) from roles)-1)+1,
+                random()*((select count (*) from authorities)-1)+1
 
-            from (select generate_series(1,10)) v
+            FROM (select generate_series(1,10)) v
             ON CONFLICT DO NOTHING
         </sql>
     </changeSet>

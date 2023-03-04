@@ -5,25 +5,25 @@
 
     <changeSet id="7" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            with series as (
-            select generate_series(1, 100) as sery
+            WITH series AS (
+                SELECT generate_series(1, 100) AS sery
             )
 
-            insert into details(relationship_type, user_id, relationship_id)
-            select
-            case
-            when s.sery % 5 = 0 then 'husband'::relationship_type_enum
-            when s.sery % 4 = 0 then 'wife'::relationship_type_enum
-            when s.sery % 3 = 0 then 'son'::relationship_type_enum
-            when s.sery % 2 = 0 then 'daughter'::relationship_type_enum
-            when s.sery % 11 = 0 then 'father'::relationship_type_enum
-            when s.sery % 13 = 0 then 'mother'::relationship_type_enum
-            when s.sery % 9 = 0 then 'grandmother'::relationship_type_enum
-            else 'grandfather'::relationship_type_enum
-            end,
-            random()*((s.sery)-1)+1,
-            random()*((s.sery)-1)+1
-            from series s
+            INSERT INTO details(relationship_type, user_id, relationship_id)
+            SELECT
+                CASE
+                    WHEN s.sery % 5 = 0 then 'husband'::relationship_type_enum
+                    WHEN s.sery % 4 = 0 then 'wife'::relationship_type_enum
+                    WHEN s.sery % 3 = 0 then 'son'::relationship_type_enum
+                    WHEN s.sery % 2 = 0 then 'daughter'::relationship_type_enum
+                    WHEN s.sery % 11 = 0 then 'father'::relationship_type_enum
+                    WHEN s.sery % 13 = 0 then 'mother'::relationship_type_enum
+                    WHEN s.sery % 9 = 0 then 'grandmother'::relationship_type_enum
+                    ELSE 'grandfather'::relationship_type_enum
+                END,
+                random()*((s.sery)-1)+1,
+                random()*((s.sery)-1)+1
+            FROM series s
         </sql>
     </changeSet>
 </databaseChangeLog>

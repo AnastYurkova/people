@@ -5,8 +5,6 @@ import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
 import com.ku.people.entity.User;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,16 +22,15 @@ public class UserMapper {
     }
 
     public static List<UserListDto> toListDto(List<User> users) {
-        return users.stream().map(UserMapper::toListDto).collect(Collectors.toList());
-
+        return users.stream()
+                .map(UserMapper::toListDto)
+                .collect(Collectors.toList());
     }
 
     public static Set<UserListDto> toListDto(Set<User> users) {
-        HashSet<UserListDto> userListDtos = new HashSet<>();
-        for (User user : users) {
-            userListDtos.add(toListDto(user));
-        }
-        return userListDtos;
+        return users.stream()
+                .map(UserMapper::toListDto)
+                .collect(Collectors.toSet());
     }
 
     public static UserListDto toListDto(User user) {
