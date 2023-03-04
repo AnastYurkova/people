@@ -9,8 +9,8 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="authority_name" type="varchar(256)">
-            <constraints nullable="false"/>
-        </column>
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

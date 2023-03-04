@@ -5,31 +5,31 @@
 
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            with series as (
-            select generate_series(1, 100) as sery
+            WITH series AS (
+                SELECT generate_series(1, 100) AS sery
             )
 
-            insert into users(user_name, "password", surname, "name")
-            select
-            case
-            when s.sery % 5 = 0 then 'Nastya'
-            when s.sery % 4 = 0 then 'Vlad'
-            when s.sery % 3 = 0 then 'Katya'
-            when s.sery % 2 = 0 then 'Polina'
-            when s.sery = 1  then 'Yarick'
-            else 'Andrew'
-            end,
-            lpad(s.sery::varchar, 8, '0'),
-            case
-            when s.sery % 5 = 0 then 'Yurkova'
-            when s.sery % 4 = 0 then 'Kolyago'
-            when s.sery % 3 = 0 then 'Kamenko'
-            when s.sery % 2 = 0 then 'Starostenko'
-            when s.sery = 1  then 'Vasilevski'
-            else 'Yuriev'
-            end,
-            'User' || s.sery
-            from series s
+            INSERT INTO users(user_name, "password", surname, "name")
+            SELECT
+                CASE
+                    WHEN s.sery % 5 = 0 then 'Nastya'
+                    WHEN s.sery % 4 = 0 then 'Vlad'
+                    WHEN s.sery % 3 = 0 then 'Katya'
+                    WHEN s.sery % 2 = 0 then 'Polina'
+                    WHEN s.sery = 1  then 'Yarick'
+                    ELSE 'Andrew'
+                END,
+                lpad(s.sery::varchar, 8, '0'),
+                CASE
+                    WHEN s.sery % 5 = 0 then 'Yurkova'
+                    WHEN s.sery % 4 = 0 then 'Kolyago'
+                    WHEN s.sery % 3 = 0 then 'Kamenko'
+                    WHEN s.sery % 2 = 0 then 'Starostenko'
+                    WHEN s.sery = 1  then 'Vasilevski'
+                    ELSE 'Yuriev'
+                END,
+                'User' || s.sery
+            FROM series s
         </sql>
     </changeSet>
 </databaseChangeLog>

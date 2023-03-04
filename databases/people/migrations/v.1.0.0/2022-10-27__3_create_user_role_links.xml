@@ -6,7 +6,7 @@
     <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
         <createTable tableName="user_role_links">
             <column name="user_id" type="int">
-            <constraints nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="role_id" type="int">
                 <constraints nullable="false"/>

@@ -5,7 +5,7 @@
 
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            insert into roles(role_name) values
+            INSERT INTO roles(role_name) VALUES
             ('Admin'),
             ('User')
         </sql>

@@ -9,8 +9,8 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="role_name" type="varchar(64)">
-            <constraints nullable="false"/>
-        </column>
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>
