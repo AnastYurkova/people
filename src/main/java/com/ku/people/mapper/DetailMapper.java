@@ -26,11 +26,11 @@ public class DetailMapper {
     }
 
     public static Set<DetailListDto> toListDto(Set<Detail> details) {
-        List<DetailListDto> detailListDtos = new ArrayList<>();
+        HashSet<DetailListDto> detailListDtos = new HashSet<>();
         for (Detail detail : details) {
             detailListDtos.add(toListDto(detail));
         }
-        return new HashSet<>(detailListDtos);
+        return detailListDtos;
     }
 
     public static DetailListDto toListDto(Detail detail) {

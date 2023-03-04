@@ -18,9 +18,9 @@ import javax.persistence.Table;
 
 import java.util.Set;
 
+@Entity
 @Data
 @Accessors(chain = true)
-@Entity
 @Table(name = "roles")
 public class Role {
     @Id

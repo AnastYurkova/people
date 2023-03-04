@@ -29,11 +29,11 @@ public class UserMapper {
     }
 
     public static Set<UserListDto> toListDto(Set<User> users) {
-        List<UserListDto> userListDtos = new ArrayList<>();
+        HashSet<UserListDto> userListDtos = new HashSet<>();
         for (User user : users) {
             userListDtos.add(toListDto(user));
         }
-        return new HashSet<>(userListDtos);
+        return userListDtos;
     }
 
     public static UserListDto toListDto(User user) {

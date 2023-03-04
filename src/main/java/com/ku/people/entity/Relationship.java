@@ -18,9 +18,9 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Set;
 
+@Entity
 @Data
 @Accessors(chain = true)
-@Entity
 @Table( name = "relationships")
 public class Relationship {
     @Id

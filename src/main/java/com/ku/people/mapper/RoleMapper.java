@@ -26,11 +26,11 @@ public class RoleMapper {
     }
 
     public static Set<RoleListDto> toListDto(Set<Role> roles) {
-        List<RoleListDto> roleListDtos = new ArrayList<>();
+        HashSet<RoleListDto> roleListDtos = new HashSet<>();
         for (Role role : roles) {
             roleListDtos.add(toListDto(role));
         }
-        return new HashSet<>(roleListDtos);
+        return roleListDtos;
     }
 
     public static RoleListDto toListDto(Role role) {

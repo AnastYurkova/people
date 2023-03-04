@@ -24,11 +24,11 @@ public class AuthorityMapper {
     }
 
     public static Set<AuthorityListDto> toListDto(Set<Authority> authorities) {
-        List<AuthorityListDto> authorityListDtos = new ArrayList<>();
+        HashSet<AuthorityListDto> authorityListDtos = new HashSet<>();
         for (Authority authority : authorities) {
             authorityListDtos.add(toListDto(authority));
         }
-        return new HashSet<>(authorityListDtos);
+        return authorityListDtos;
     }
 
     public static AuthorityListDto toListDto(Authority authority) {

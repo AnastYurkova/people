@@ -25,11 +25,11 @@ public class RelationshipMapper {
     }
 
     public static Set<RelationshipListDto> toListDto(Set<Relationship> relationships) {
-        List<RelationshipListDto> relationshipListDtos = new ArrayList<>();
+        HashSet<RelationshipListDto> relationshipListDtos = new HashSet<>();
         for (Relationship relationship : relationships) {
             relationshipListDtos.add(toListDto(relationship));
         }
-        return new HashSet<>(relationshipListDtos);
+        return relationshipListDtos;
     }
 
     public static RelationshipListDto toListDto(Relationship relationship) {

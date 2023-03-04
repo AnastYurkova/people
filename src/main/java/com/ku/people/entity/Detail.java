@@ -15,9 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@Entity
 @Data
 @Accessors(chain = true)
-@Entity
 @Table(name = "details")
 public class Detail {
     @Id
