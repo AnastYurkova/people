@@ -3,9 +3,12 @@ package com.ku.people.controller;
 import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
-import com.ku.people.dto.UserUpdateDto;
 import com.ku.people.entity.User;
 import com.ku.people.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,36 +21,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User controller", description = "The User API")
 public class UserController {
     private UserService userService;
 
-    @PostMapping
-    public User save(@RequestBody UserSaveDto userSaveDto) {
-        return userService.save(userSaveDto);
-    }
-
     @GetMapping("/{id}")
-    public UserDto findById(@PathVariable("id") Long id) {
+    @Operation(summary = "Find User by id")
+    public UserDto findById(@PathVariable("id") @Parameter(description = "User identifier") Long id) {
         return userService.findById(id);
     }
 
     @GetMapping
+    @Operation(summary = "Find all users")
     public List<UserListDto> findAll() {
         return userService.findAll();
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        userService.delete(id);
+    @PostMapping
+    @Operation(summary = "Save user")
+    public User save(@RequestBody @Parameter(description = "Information about saving user") UserSaveDto userSaveDto) {
+        return userService.save(userSaveDto);
     }
 
     @PutMapping
-    public boolean update(@RequestBody UserUpdateDto userUpdateDto) {
-        userService.update(userUpdateDto);
+    @Operation(summary = "Update user data")
+    public boolean update(@RequestBody @Parameter(description = "Information about updating user") UserSaveDto userSaveDto) {
+        userService.update(userSaveDto);
         return true;
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete user")
+    public void delete(@PathVariable("id") @Parameter(description = "Identifier of deleting user") Long id) {
+        userService.delete(id);
     }
 
     @Autowired

@@ -3,7 +3,6 @@ package com.ku.people.mapper;
 import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
-import com.ku.people.dto.UserUpdateDto;
 import com.ku.people.entity.User;
 
 import java.util.List;
@@ -21,11 +20,6 @@ public class UserMapper {
                 .setRoles(RoleMapper.toListDto(user.getRoles()))
                 .setDetails(DetailMapper.toListDto(user.getDetails()));
     }
-
-//    public static User fromDto(UserDto userDto) {
-//
-//
-//    }
 
     public static List<UserListDto> toListDto(List<User> users) {
         return users.stream()
@@ -48,18 +42,9 @@ public class UserMapper {
     }
 
     public static User fromSaveDto(UserSaveDto userSaveDto) {
-        return new User()
-                .setName(userSaveDto.getName())
+        return new User().setName(userSaveDto.getName())
                 .setSurname(userSaveDto.getSurname())
                 .setUsername(userSaveDto.getUsername())
                 .setPassword(userSaveDto.getPassword());
-    }
-
-    public static User fromUpdateDto(UserUpdateDto userUpdateDto) {
-        return new User().setId(userUpdateDto.getId())
-                .setName(userUpdateDto.getName())
-                .setSurname(userUpdateDto.getSurname())
-                .setUsername(userUpdateDto.getUsername())
-                .setPassword(userUpdateDto.getPassword());
     }
 }

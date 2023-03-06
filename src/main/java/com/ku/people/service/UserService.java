@@ -4,16 +4,13 @@ package com.ku.people.service;
 import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
-import com.ku.people.dto.UserUpdateDto;
 import com.ku.people.entity.User;
-import com.ku.people.mapper.DetailMapper;
 import com.ku.people.mapper.UserMapper;
 import com.ku.people.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,14 +33,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void update(UserSaveDto userSaveDto) {
+        User updated = UserMapper.fromSaveDto(userSaveDto);
+        userRepository.save(updated);
+    }
+
     public void delete(Long id) {
         User user = userRepository.findById(id).get();
         userRepository.delete(user);
-    }
-
-    public void update(UserUpdateDto userUpdateDto) {
-        User updated = UserMapper.fromUpdateDto(userUpdateDto);
-        userRepository.save(updated);
     }
 
     @Autowired
