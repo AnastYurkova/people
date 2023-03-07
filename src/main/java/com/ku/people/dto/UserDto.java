@@ -8,24 +8,30 @@ import java.util.Set;
 
 @Data
 @Accessors(chain = true)
-@Schema(description = "Information about user")
+@Schema(description = "User Dto")
 public class UserDto {
-    @Schema(description = "User identifier")
+    @Schema(description = "User id",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
     private Long id;
 
-    @Schema(description = "Username")
+    @Schema(description = "Username",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "nst.yrk")
     private String username;
 
-    @Schema(description = "User's surname")
+    @Schema(description = "Surname",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "Yurkova")
     private String surname;
 
-    @Schema(description = "User's name")
+    @Schema(description = "Name",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "Anastasia")
     private String name;
 
-    @Schema(description = "List of user roles")
+    @Schema(description = "List of user roles",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "id = 1, name = admin")
     private Set<RoleListDto> roles;
 
-    @Schema(description = "Additional information about user")
+    @Schema(description = "Additional information about user",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "id = 23, type = WIFE")
     private Set<DetailListDto> details;
 }
 

@@ -7,7 +7,6 @@ import com.ku.people.entity.User;
 import com.ku.people.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +28,9 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find User by id")
-    public UserDto findById(@PathVariable("id") @Parameter(description = "User identifier") Long id) {
+    public UserDto findById(
+            @PathVariable("id")
+            @Parameter(description = "User id", example = "99", required = true) Long id) {
         return userService.findById(id);
     }
 
@@ -41,20 +42,23 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Save user")
-    public User save(@RequestBody @Parameter(description = "Information about saving user") UserSaveDto userSaveDto) {
+    public User save(@RequestBody
+                     @Parameter(description = "Information about saving user", required = true) UserSaveDto userSaveDto) {
         return userService.save(userSaveDto);
     }
 
     @PutMapping
-    @Operation(summary = "Update user data")
-    public boolean update(@RequestBody @Parameter(description = "Information about updating user") UserSaveDto userSaveDto) {
+    @Operation(summary = "Update user")
+    public boolean update(@RequestBody
+                          @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto) {
         userService.update(userSaveDto);
         return true;
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user")
-    public void delete(@PathVariable("id") @Parameter(description = "Identifier of deleting user") Long id) {
+    public void delete(@PathVariable("id")
+                       @Parameter(description = "Id of deleting user", example = "99", required = true) Long id) {
         userService.delete(id);
     }
 

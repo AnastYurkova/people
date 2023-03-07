@@ -8,16 +8,20 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Schema(description = "Information for list of users")
 public class UserListDto {
-    @Schema(description = "User identifier")
+    @Schema(description = "User id",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
     private Long id;
 
-    @Schema(description = "Username")
+    @Schema(description = "Username",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "nst.yrk")
     private String username;
 
-    @Schema(description = "User's surname")
+    @Schema(description = "Surname",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "Yurkova")
     private String surname;
 
-    @Schema(description = "User's name")
+    @Schema(description = "Name",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "Anastasia")
     private String name;
 }
 

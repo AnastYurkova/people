@@ -8,19 +8,24 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Schema(description = "Information about saving user")
 public class UserSaveDto {
-    @Schema(description = "User identifier")
+    @Schema(description = "User id",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
     private Long id;
 
-    @Schema(description = "Username")
+    @Schema(description = "Username",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "nst.yrk")
     private String username;
 
-    @Schema(description = "User's surname")
+    @Schema(description = "Surname",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "Yurkova")
     private String surname;
 
-    @Schema(description = "User's name")
+    @Schema(description = "Name",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "Anastasia")
     private String name;
 
-    @Schema(description = "User's password")
+    @Schema(description = "Password",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "12345678")
     private String password;
 }
 
