@@ -44,7 +44,8 @@ public class RelationshipController {
 
     @PostMapping
     @Operation(summary = "Save relationship")
-    public Relationship save(@RequestBody
+    public Relationship save(
+        @RequestBody
         @Parameter(description = "Information about saving relationship", required = true) RelationshipSaveDto relationshipSaveDto
     ) {
         return relationshipService.save(relationshipSaveDto);
@@ -52,7 +53,8 @@ public class RelationshipController {
 
     @PutMapping
     @Operation(summary = "Update relationship")
-    public boolean update(@RequestBody
+    public boolean update
+        (@RequestBody
         @Parameter(description = "Information about updating relationship", required = true) RelationshipSaveDto relationshipSaveDto
     ) {
         relationshipService.update(relationshipSaveDto);

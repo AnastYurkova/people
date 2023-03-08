@@ -19,8 +19,7 @@ public class RoleDto {
     @Schema(description = "Users", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<UserListDto> users;
 
-    @Schema(description = "Authorities",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Authorities", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<AuthorityListDto> authorities;
 }
 

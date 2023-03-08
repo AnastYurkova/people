@@ -43,7 +43,8 @@ public class AuthorityController {
 
     @PostMapping
     @Operation(summary = "Save role")
-    public Authority save(@RequestBody
+    public Authority save(
+        @RequestBody
         @Parameter(description = "Information about saving authority", required = true) AuthoritySaveDto authoritySaveDto
     ) {
         return authorityService.save(authoritySaveDto);
@@ -51,7 +52,8 @@ public class AuthorityController {
 
     @PutMapping
     @Operation(summary = "Update role")
-    public boolean update(@RequestBody
+    public boolean update(
+        @RequestBody
         @Parameter(description = "Information about updating authority", required = true) AuthoritySaveDto authoritySaveDto
     ) {
         authorityService.update(authoritySaveDto);

@@ -43,14 +43,16 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Save user")
-    public User save(@RequestBody
+    public User save(
+        @RequestBody
         @Parameter(description = "Information about saving user", required = true) UserSaveDto userSaveDto) {
         return userService.save(userSaveDto);
     }
 
     @PutMapping
     @Operation(summary = "Update user")
-    public boolean update(@RequestBody
+    public boolean update(
+        @RequestBody
         @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto) {
         userService.update(userSaveDto);
         return true;
