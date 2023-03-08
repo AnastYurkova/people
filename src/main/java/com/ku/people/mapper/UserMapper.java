@@ -42,7 +42,17 @@ public class UserMapper {
     }
 
     public static User fromSaveDto(UserSaveDto userSaveDto) {
-        return new User().setName(userSaveDto.getName())
+        return new User()
+                .setName(userSaveDto.getName())
+                .setSurname(userSaveDto.getSurname())
+                .setUsername(userSaveDto.getUsername())
+                .setPassword(userSaveDto.getPassword());
+    }
+
+    public static User fromSaveDtoForUpdate(UserSaveDto userSaveDto) {
+        return new User()
+                .setId(userSaveDto.getId())
+                .setName(userSaveDto.getName())
                 .setSurname(userSaveDto.getSurname())
                 .setUsername(userSaveDto.getUsername())
                 .setPassword(userSaveDto.getPassword());

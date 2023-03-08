@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -30,6 +31,19 @@ public class RoleService {
     public Role save(RoleSaveDto roleSaveDto) {
         Role role = RoleMapper.fromSaveDto(roleSaveDto);
         return roleRepository.save(role);
+    }
+
+    public void update(RoleSaveDto roleSaveDto) {
+        Role updated = RoleMapper.fromSaveDtoForUpdate(roleSaveDto);
+        roleRepository.save(updated);
+    }
+
+    public void delete(Long id) {
+        Optional<Role> optional = roleRepository.findById(id);
+        if (optional.isPresent()) {
+            Role role = optional.get();
+            roleRepository.delete(role);
+        }
     }
 
     @Autowired

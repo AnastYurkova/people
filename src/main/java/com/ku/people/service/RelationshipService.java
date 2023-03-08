@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RelationshipService {
@@ -30,6 +31,19 @@ public class RelationshipService {
     public Relationship save(RelationshipSaveDto relationshipSaveDto) {
         Relationship relationship = RelationshipMapper.fromSaveDto(relationshipSaveDto);
         return relationshipRepository.save(relationship);
+    }
+
+    public void update(RelationshipSaveDto relationshipSaveDto) {
+        Relationship updated = RelationshipMapper.fromSaveDtoForUpdate(relationshipSaveDto);
+        relationshipRepository.save(updated);
+    }
+
+    public void delete(Long id) {
+        Optional<Relationship> optional = relationshipRepository.findById(id);
+        if (optional.isPresent()) {
+            Relationship relationship = optional.get();
+            relationshipRepository.delete(relationship);
+        }
     }
 
     @Autowired

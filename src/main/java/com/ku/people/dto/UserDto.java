@@ -10,28 +10,23 @@ import java.util.Set;
 @Accessors(chain = true)
 @Schema(description = "User Dto")
 public class UserDto {
-    @Schema(description = "User id",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
+    @Schema(description = "User id", requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
     private Long id;
 
-    @Schema(description = "Username",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "nst.yrk")
+    @Schema(description = "Username", requiredMode = Schema.RequiredMode.REQUIRED, example = "nst.yrk")
     private String username;
 
-    @Schema(description = "Surname",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "Yurkova")
+    @Schema(description = "Surname", requiredMode = Schema.RequiredMode.REQUIRED, example = "Yurkova")
     private String surname;
 
-    @Schema(description = "Name",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "Anastasia")
+    @Schema(description = "Name", requiredMode = Schema.RequiredMode.REQUIRED, example = "Anastasia")
     private String name;
 
-    @Schema(description = "List of user roles",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "id = 1, name = admin")
+    @Schema(description = "Roles", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<RoleListDto> roles;
 
-    @Schema(description = "Additional information about user",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "id = 23, type = WIFE")
+    @Schema(description = "Details",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<DetailListDto> details;
 }
 

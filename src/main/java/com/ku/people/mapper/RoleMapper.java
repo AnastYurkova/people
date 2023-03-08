@@ -41,4 +41,10 @@ public class RoleMapper {
         return new Role()
                 .setName(roleSaveDto.getName());
     }
+
+    public static Role fromSaveDtoForUpdate(RoleSaveDto roleSaveDto) {
+        return new Role()
+                .setId(roleSaveDto.getId())
+                .setName(roleSaveDto.getName());
+    }
 }

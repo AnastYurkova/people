@@ -42,4 +42,11 @@ public class RelationshipMapper {
                 .setCreatedAtUtc(relationshipSaveDto.getCreatedAtUtc())
                 .setStatus(relationshipSaveDto.getStatus());
     }
+
+    public static Relationship fromSaveDtoForUpdate(RelationshipSaveDto relationshipSaveDto) {
+        return new Relationship()
+                .setId(relationshipSaveDto.getId())
+                .setCreatedAtUtc(relationshipSaveDto.getCreatedAtUtc())
+                .setStatus(relationshipSaveDto.getStatus());
+    }
 }

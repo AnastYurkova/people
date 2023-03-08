@@ -1,6 +1,7 @@
 package com.ku.people.service;
 
 
+import com.fasterxml.jackson.annotation.OptBoolean;
 import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,19 +36,20 @@ public class UserService {
     }
 
     public void update(UserSaveDto userSaveDto) {
-        User updated = UserMapper.fromSaveDto(userSaveDto);
+        User updated = UserMapper.fromSaveDtoForUpdate(userSaveDto);
         userRepository.save(updated);
     }
 
     public void delete(Long id) {
-        User user = userRepository.findById(id).get();
-        userRepository.delete(user);
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isPresent()) {
+            User user = optional.get();
+            userRepository.delete(user);
+        }
     }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-
 }

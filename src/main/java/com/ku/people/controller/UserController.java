@@ -29,8 +29,9 @@ public class UserController {
     @GetMapping("/{id}")
     @Operation(summary = "Find User by id")
     public UserDto findById(
-            @PathVariable("id")
-            @Parameter(description = "User id", example = "99", required = true) Long id) {
+        @PathVariable("id")
+        @Parameter(description = "User id", example = "99", required = true) Long id
+    ) {
         return userService.findById(id);
     }
 
@@ -43,14 +44,14 @@ public class UserController {
     @PostMapping
     @Operation(summary = "Save user")
     public User save(@RequestBody
-                     @Parameter(description = "Information about saving user", required = true) UserSaveDto userSaveDto) {
+        @Parameter(description = "Information about saving user", required = true) UserSaveDto userSaveDto) {
         return userService.save(userSaveDto);
     }
 
     @PutMapping
     @Operation(summary = "Update user")
     public boolean update(@RequestBody
-                          @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto) {
+        @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto) {
         userService.update(userSaveDto);
         return true;
     }
@@ -58,7 +59,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user")
     public void delete(@PathVariable("id")
-                       @Parameter(description = "Id of deleting user", example = "99", required = true) Long id) {
+        @Parameter(description = "Id of deleting user", example = "99", required = true) Long id
+    ) {
         userService.delete(id);
     }
 

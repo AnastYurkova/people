@@ -37,8 +37,14 @@ public class DetailMapper {
                 .setType(detail.getType());
     }
 
-    public static Detail fromSaveDto(DetailSaveDto roleSaveDto) {
+    public static Detail fromSaveDto(DetailSaveDto detailSaveDto) {
         return new Detail()
-                .setType(roleSaveDto.getType());
+                .setType(detailSaveDto.getType());
+    }
+
+    public static Detail fromSaveDtoForUpdate(DetailSaveDto detailSaveDto) {
+        return new Detail()
+                .setId(detailSaveDto.getId())
+                .setType(detailSaveDto.getType());
     }
 }
