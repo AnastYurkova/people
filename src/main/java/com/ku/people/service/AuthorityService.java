@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthorityService {
@@ -18,31 +17,23 @@ public class AuthorityService {
     private AuthorityRepository authorityRepository;
 
     public AuthorityDto findById(Long id) {
-        Authority authority = authorityRepository.findById(id).get();
-        return AuthorityMapper.toDto(authority);
+        return authorityRepository.findById(id);
     }
 
     public List<AuthorityListDto> findAll() {
-        List<Authority> authorities = authorityRepository.findAll();
-        return AuthorityMapper.toListDto(authorities);
+        return authorityRepository.findAll();
     }
 
-    public Authority save(AuthoritySaveDto authoritySaveDto) {
-        Authority authority = AuthorityMapper.fromSaveDto(authoritySaveDto);
-        return authorityRepository.save(authority);
+    public AuthoritySaveDto save(AuthoritySaveDto authoritySaveDto) {
+        return authorityRepository.save(authoritySaveDto);
     }
 
     public void update(AuthoritySaveDto authoritySaveDto) {
-        Authority authority = AuthorityMapper.fromSaveDtoForUpdate(authoritySaveDto);
-        authorityRepository.save(authority);
+        authorityRepository.update(authoritySaveDto);
     }
 
     public void delete(Long id) {
-        Optional<Authority> optional = authorityRepository.findById(id);
-        if (optional.isPresent()) {
-            Authority authority = optional.get();
-            authorityRepository.delete(authority);
-        }
+        authorityRepository.delete(id);
     }
 
     @Autowired

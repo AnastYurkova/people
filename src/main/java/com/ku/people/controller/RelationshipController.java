@@ -44,7 +44,7 @@ public class RelationshipController {
 
     @PostMapping
     @Operation(summary = "Save relationship")
-    public Relationship save(
+    public RelationshipSaveDto save(
         @RequestBody
         @Parameter(description = "Information about saving relationship", required = true) RelationshipSaveDto relationshipSaveDto
     ) {

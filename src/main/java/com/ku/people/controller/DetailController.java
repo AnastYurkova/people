@@ -43,7 +43,7 @@ public class DetailController {
 
     @PostMapping
     @Operation(summary = "Save detail")
-    public Detail save(
+    public DetailSaveDto save(
         @RequestBody
         @Parameter(description = "Information about saving detail", required = true) DetailSaveDto detailSaveDto
     ) {
@@ -52,12 +52,11 @@ public class DetailController {
 
     @PutMapping
     @Operation(summary = "Update detail")
-    public boolean update(
+    public void update(
         @RequestBody
         @Parameter(description = "Information about updating detail", required = true) DetailSaveDto detailSaveDto
     ) {
         detailService.update(detailSaveDto);
-        return true;
     }
 
     @DeleteMapping("/{id}")

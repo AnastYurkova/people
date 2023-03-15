@@ -43,7 +43,7 @@ public class RoleController {
 
     @PostMapping
     @Operation(summary = "Save role")
-    public Role save(
+    public RoleSaveDto save(
         @RequestBody
         @Parameter(description = "Information about saving role", required = true) RoleSaveDto roleSaveDto
     ) {
@@ -52,12 +52,11 @@ public class RoleController {
 
     @PutMapping
     @Operation(summary = "Update role")
-    public boolean update(
+    public void update(
         @RequestBody
         @Parameter(description = "Information about updating role", required = true) RoleSaveDto roleSaveDto
     ) {
         roleService.update(roleSaveDto);
-        return true;
     }
 
     @DeleteMapping("/{id}")

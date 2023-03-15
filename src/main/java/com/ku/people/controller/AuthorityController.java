@@ -42,8 +42,8 @@ public class AuthorityController {
     }
 
     @PostMapping
-    @Operation(summary = "Save role")
-    public Authority save(
+    @Operation(summary = "Save authority")
+    public AuthoritySaveDto save(
         @RequestBody
         @Parameter(description = "Information about saving authority", required = true) AuthoritySaveDto authoritySaveDto
     ) {
@@ -51,7 +51,7 @@ public class AuthorityController {
     }
 
     @PutMapping
-    @Operation(summary = "Update role")
+    @Operation(summary = "Update authority")
     public boolean update(
         @RequestBody
         @Parameter(description = "Information about updating authority", required = true) AuthoritySaveDto authoritySaveDto

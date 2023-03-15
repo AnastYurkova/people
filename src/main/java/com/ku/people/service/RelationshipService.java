@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RelationshipService {
@@ -19,31 +18,23 @@ public class RelationshipService {
 
 
     public RelationshipDto findById(Long id) {
-        Relationship relationship = relationshipRepository.findById(id).get();
-        return RelationshipMapper.toDto(relationship);
+        return relationshipRepository.findById(id);
     }
 
     public List<RelationshipListDto> findAll() {
-        List<Relationship> relationships = relationshipRepository.findAll();
-        return RelationshipMapper.toListDto(relationships);
+        return relationshipRepository.findAll();
     }
 
-    public Relationship save(RelationshipSaveDto relationshipSaveDto) {
-        Relationship relationship = RelationshipMapper.fromSaveDto(relationshipSaveDto);
-        return relationshipRepository.save(relationship);
+    public RelationshipSaveDto save(RelationshipSaveDto relationshipSaveDto) {
+        return relationshipRepository.save(relationshipSaveDto);
     }
 
     public void update(RelationshipSaveDto relationshipSaveDto) {
-        Relationship updated = RelationshipMapper.fromSaveDtoForUpdate(relationshipSaveDto);
-        relationshipRepository.save(updated);
+        relationshipRepository.update(relationshipSaveDto);
     }
 
     public void delete(Long id) {
-        Optional<Relationship> optional = relationshipRepository.findById(id);
-        if (optional.isPresent()) {
-            Relationship relationship = optional.get();
-            relationshipRepository.delete(relationship);
-        }
+        relationshipRepository.delete(id);
     }
 
     @Autowired

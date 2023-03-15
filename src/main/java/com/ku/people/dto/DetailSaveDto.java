@@ -14,5 +14,11 @@ public class DetailSaveDto {
 
     @Schema(description = "Relationship type", requiredMode = Schema.RequiredMode.REQUIRED, example = "WIFE")
     private RelationshipType type;
+
+    @Schema(description = "User", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    private Long userId;
+
+    @Schema(description = "Relationship", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
+    private Long relationshipId;
 }
 

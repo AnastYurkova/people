@@ -16,9 +16,9 @@ public class DetailDto {
     private RelationshipType type;
 
     @Schema(description = "User", requiredMode = Schema.RequiredMode.REQUIRED)
-    private UserDto user;
+    private Long userId;
 
     @Schema(description = "Relationship", requiredMode = Schema.RequiredMode.REQUIRED)
-    private RelationshipDto relationship;
+    private Long relationshipId;
 }
 
