@@ -39,4 +39,10 @@ public class AuthorityMapper {
         return new Authority()
                 .setAuthorityName(authoritySaveDto.getAuthorityName());
     }
+
+    public static Authority fromSaveDtoForUpdate(AuthoritySaveDto authoritySaveDto) {
+        return new Authority()
+                .setId(authoritySaveDto.getId())
+                .setAuthorityName(authoritySaveDto.getAuthorityName());
+    }
 }

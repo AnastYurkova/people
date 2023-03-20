@@ -17,18 +17,23 @@ public class AuthorityService {
     private AuthorityRepository authorityRepository;
 
     public AuthorityDto findById(Long id) {
-        Authority authority = authorityRepository.findById(id).get();
-        return AuthorityMapper.toDto(authority);
+        return authorityRepository.findById(id);
     }
 
     public List<AuthorityListDto> findAll() {
-        List<Authority> authorities = authorityRepository.findAll();
-        return AuthorityMapper.toListDto(authorities);
+        return authorityRepository.findAll();
     }
 
-    public Authority save(AuthoritySaveDto authoritySaveDto) {
-        Authority authority = AuthorityMapper.fromSaveDto(authoritySaveDto);
-        return authorityRepository.save(authority);
+    public AuthoritySaveDto save(AuthoritySaveDto authoritySaveDto) {
+        return authorityRepository.save(authoritySaveDto);
+    }
+
+    public void update(AuthoritySaveDto authoritySaveDto) {
+        authorityRepository.update(authoritySaveDto);
+    }
+
+    public void delete(Long id) {
+        authorityRepository.delete(id);
     }
 
     @Autowired

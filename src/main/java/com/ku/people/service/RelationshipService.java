@@ -18,18 +18,23 @@ public class RelationshipService {
 
 
     public RelationshipDto findById(Long id) {
-        Relationship relationship = relationshipRepository.findById(id).get();
-        return RelationshipMapper.toDto(relationship);
+        return relationshipRepository.findById(id);
     }
 
     public List<RelationshipListDto> findAll() {
-        List<Relationship> relationships = relationshipRepository.findAll();
-        return RelationshipMapper.toListDto(relationships);
+        return relationshipRepository.findAll();
     }
 
-    public Relationship save(RelationshipSaveDto relationshipSaveDto) {
-        Relationship relationship = RelationshipMapper.fromSaveDto(relationshipSaveDto);
-        return relationshipRepository.save(relationship);
+    public RelationshipSaveDto save(RelationshipSaveDto relationshipSaveDto) {
+        return relationshipRepository.save(relationshipSaveDto);
+    }
+
+    public void update(RelationshipSaveDto relationshipSaveDto) {
+        relationshipRepository.update(relationshipSaveDto);
+    }
+
+    public void delete(Long id) {
+        relationshipRepository.delete(id);
     }
 
     @Autowired

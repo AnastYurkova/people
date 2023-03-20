@@ -5,6 +5,7 @@ import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
 import com.ku.people.entity.User;
+import com.ku.people.filter.UserFilter;
 import com.ku.people.mapper.UserMapper;
 import com.ku.people.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,28 @@ public class UserService {
 
 
     public UserDto findById(Long id) {
-        User user = userRepository.findById(id).get();
-        return UserMapper.toDto(user);
+        return userRepository.findById(id);
     }
 
     public List<UserListDto> findAll() {
-        List<User> users = userRepository.findAll();
-        return UserMapper.toListDto(users);
+        return userRepository.findAll();
+
     }
 
-    public User save(UserSaveDto userSaveDto) {
-        User user = UserMapper.fromSaveDto(userSaveDto);
-        return userRepository.save(user);
+    public List<UserDto> search(UserFilter userFilter) {
+        return userRepository.search(userFilter);
+    }
+
+    public UserSaveDto save(UserSaveDto userSaveDto) {
+        return userRepository.save(userSaveDto);
+    }
+
+    public void update(UserSaveDto userSaveDto) {
+        userRepository.update(userSaveDto);
+    }
+
+    public void delete(Long id) {
+        userRepository.delete(id);
     }
 
     @Autowired

@@ -14,8 +14,8 @@ public class DetailMapper {
     public static DetailDto toDto(Detail detail) {
         return new DetailDto()
                 .setId(detail.getId())
-                .setUser(UserMapper.toDto(detail.getUser()))
-                .setRelationship(RelationshipMapper.toDto(detail.getRelationship()))
+                .setUserId(detail.getUser().getId())
+                .setRelationshipId(detail.getRelationship().getId())
                 .setType(detail.getType());
     }
 
@@ -37,8 +37,16 @@ public class DetailMapper {
                 .setType(detail.getType());
     }
 
-    public static Detail fromSaveDto(DetailSaveDto roleSaveDto) {
-        return new Detail()
-                .setType(roleSaveDto.getType());
-    }
+//    public static Detail fromSaveDto(DetailSaveDto detailSaveDto) {
+//        return new Detail()
+//                .setType(detailSaveDto.getType())
+//                .setUser(detailSaveDto.getUserId())
+//                .setRelationship(detailSaveDto.getRelationshipId());
+//    }
+//
+//    public static Detail fromSaveDtoForUpdate(DetailSaveDto detailSaveDto) {
+//        return new Detail()
+//                .setId(detailSaveDto.getId())
+//                .setType(detailSaveDto.getType());
+//    }
 }

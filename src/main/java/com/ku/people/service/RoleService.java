@@ -18,18 +18,23 @@ public class RoleService {
 
 
     public RoleDto findById(Long id) {
-        Role role = roleRepository.findById(id).get();
-        return RoleMapper.toDto(role);
+        return roleRepository.findById(id);
     }
 
     public List<RoleListDto> findAll() {
-        List<Role> roles = roleRepository.findAll();
-        return RoleMapper.toListDto(roles);
+        return roleRepository.findAll();
     }
 
-    public Role save(RoleSaveDto roleSaveDto) {
-        Role role = RoleMapper.fromSaveDto(roleSaveDto);
-        return roleRepository.save(role);
+    public RoleSaveDto save(RoleSaveDto roleSaveDto) {
+        return roleRepository.save(roleSaveDto);
+    }
+
+    public void update(RoleSaveDto roleSaveDto) {
+        roleRepository.update(roleSaveDto);
+    }
+
+    public void delete(Long id) {
+        roleRepository.delete(id);
     }
 
     @Autowired

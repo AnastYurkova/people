@@ -3,8 +3,6 @@ package com.ku.people.service;
 import com.ku.people.dto.DetailDto;
 import com.ku.people.dto.DetailListDto;
 import com.ku.people.dto.DetailSaveDto;
-import com.ku.people.entity.Detail;
-import com.ku.people.mapper.DetailMapper;
 import com.ku.people.repository.DetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +16,23 @@ public class DetailService {
 
 
     public DetailDto findById(Long id) {
-        Detail detail = detailRepository.findById(id).get();
-        return DetailMapper.toDto(detail);
+        return detailRepository.findById(id);
     }
 
     public List<DetailListDto> findAll() {
-        List<Detail> details = detailRepository.findAll();
-        return DetailMapper.toListDto(details);
+        return detailRepository.findAll();
     }
 
-    public Detail save(DetailSaveDto detailSaveDto) {
-        Detail detail = DetailMapper.fromSaveDto(detailSaveDto);
-        return detailRepository.save(detail);
+    public DetailSaveDto save(DetailSaveDto detailSaveDto) {
+        return detailRepository.save(detailSaveDto);
+    }
+
+    public void update(DetailSaveDto detailSaveDto) {
+       detailRepository.update(detailSaveDto);
+    }
+
+    public void delete(Long id) {
+        detailRepository.delete(id);
     }
 
     @Autowired
