@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.ku.people.exception.ServiceException.notFoundException;
+
 @Service
 public class UserService {
 
@@ -20,7 +22,11 @@ public class UserService {
 
 
     public UserDto findById(Long id) {
-        return userRepository.findById(id);
+        try {
+            return userRepository.findById(id);
+        } catch (RuntimeException runtimeException) {
+            throw notFoundException(String.format("User with id = %d was not found", id), runtimeException);
+        }
     }
 
     public List<UserListDto> findAll() {
