@@ -1,25 +1,27 @@
 package com.ku.people.exception;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> handleNotFoundException(ServiceException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
+    public ResponseEntity<Object> handleException(RuntimeException ex, WebRequest request) {
         String message = "Internal server error";
-        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

@@ -7,6 +7,10 @@ import com.ku.people.filter.UserFilter;
 import com.ku.people.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +33,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find User by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", content =@Content(schema = @Schema(example = "User not found"))),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public UserDto findById(
             @PathVariable("id")
             @Parameter(description = "User id", example = "99", required = true) Long id
