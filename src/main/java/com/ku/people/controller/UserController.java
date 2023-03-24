@@ -1,7 +1,6 @@
 package com.ku.people.controller;
 
 import com.ku.people.dto.UserDto;
-import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
 import com.ku.people.filter.UserFilter;
 import com.ku.people.service.UserService;

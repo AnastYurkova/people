@@ -8,6 +8,8 @@ import com.ku.people.exception.ServiceException;
 import com.ku.people.filter.UserFilter;
 import com.ku.people.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class UserService {
     public UserDto findById(Long id) {
         try {
             return userRepository.findById(id);
-        } catch (RuntimeException runtimeException) {
-            throw new ServiceException(String.format("User with id = %d was not found", id), runtimeException);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ServiceException(String.format("User with id = %d was not found", id), exception, HttpStatus.NOT_FOUND);
         }
     }
 
