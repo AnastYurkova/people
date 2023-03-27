@@ -4,11 +4,12 @@ package com.ku.people.service;
 import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
-import com.ku.people.entity.User;
+import com.ku.people.exception.ServiceException;
 import com.ku.people.filter.UserFilter;
-import com.ku.people.mapper.UserMapper;
 import com.ku.people.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,11 @@ public class UserService {
 
 
     public UserDto findById(Long id) {
-        return userRepository.findById(id);
+        try {
+            return userRepository.findById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ServiceException(String.format("User with id = %d was not found", id), exception, HttpStatus.NOT_FOUND);
+        }
     }
 
     public List<UserListDto> findAll() {
