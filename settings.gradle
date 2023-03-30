@@ -1,2 +1,4 @@
-rootProject.name = 'people'
+rootProject.name = 'people_new'
 
+include "people"
+include "gateway"
