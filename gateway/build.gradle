@@ -31,7 +31,7 @@ dependencies {
 
 bootJar {
     mustRunAfter tasks.clean
-    mainClass.set("com.ku.people.PeopleApp")
+    mainClass.set("com.ku.gateway.GatewayApp")
 }
 
 jar {
