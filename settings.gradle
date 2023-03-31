@@ -1,4 +1,4 @@
-rootProject.name = 'people_new'
+rootProject.name = 'people'
 
 include "people"
 include "gateway"
