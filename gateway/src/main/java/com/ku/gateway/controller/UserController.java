@@ -32,13 +32,13 @@ public class UserController {
     @GetMapping("/{id}")
     @Operation(summary = "Find User by id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(example = "User not found"))),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(example = "User not found"))),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public String findById(
-            @PathVariable("id")
-            @Parameter(description = "User id", example = "99", required = true) Long id
+        @PathVariable("id")
+        @Parameter(description = "User id", example = "99", required = true) Long id
     ) {
         return userService.findById(id);
     }
@@ -46,11 +46,16 @@ public class UserController {
     @GetMapping
     @Operation(summary = "Find users by filter")
     public String search(
+       @Parameter(description = "Name", example = "Nastya")
        @RequestParam(value = "name", required = false) Optional<String> name,
+       @Parameter(description = "Surname", example = "Yurkova")
        @RequestParam(value = "surname", required = false) Optional<String> surname,
+       @Parameter(description = "Username", example = "User123")
        @RequestParam(value = "username", required = false) Optional<String> username,
-       @RequestParam(value = "offset", required = false, defaultValue = "10") Optional<Integer> offset,
-       @RequestParam(value = "limit", required = false, defaultValue = "20") Optional<Integer> limit
+       @Parameter(description = "Offset", example = "10")
+       @RequestParam(value = "offset", required = false, defaultValue = "10") Integer offset,
+       @Parameter(description = "Limit", example = "20")
+       @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
     ) {
         return userService.search(new UserFilter()
                 .setName(name)
@@ -64,15 +69,17 @@ public class UserController {
     @Operation(summary = "Save user")
     public UserSaveDto save(
         @RequestBody
-        @Parameter(description = "Information about saving user", required = true) UserSaveDto userSaveDto) {
+        @Parameter(description = "Information about saving user", required = true) UserSaveDto userSaveDto
+    ) {
         return userService.save(userSaveDto);
     }
 
     @PutMapping
     @Operation(summary = "Update user")
     public Boolean update(
-         @RequestBody
-         @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto) {
+        @RequestBody
+        @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto
+    ) {
         userService.update(userSaveDto);
         return true;
     }

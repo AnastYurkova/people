@@ -13,21 +13,16 @@ public class UserService {
     private RestTemplate restTemplate;
 
     public String findById(Long id){
-        StringBuilder resourceUrl = new StringBuilder("http://localhost:8080/users/");
-        if (id != null){
-            resourceUrl.append(id);
-        }
-        return restTemplate.getForObject(resourceUrl.toString(),String.class);
+        return restTemplate.getForObject("http://localhost:8080/users/" + id,String.class);
     }
 
     public String search(UserFilter userFilter){
         StringBuilder resourceUrl = new StringBuilder("http://localhost:8080/users/?");
-
         userFilter.getName().ifPresent(name -> resourceUrl.append("&name=").append(name));
         userFilter.getSurname().ifPresent(surname -> resourceUrl.append("&surname=").append(surname));
         userFilter.getUsername().ifPresent(username -> resourceUrl.append("&username=").append(username));
-        userFilter.getOffset().ifPresent(offset -> resourceUrl.append("&offset=").append(offset));
-        userFilter.getLimit().ifPresent(limit -> resourceUrl.append("&limit=").append(limit));
+        resourceUrl.append("&offset=").append(userFilter.getOffset());
+        resourceUrl.append("&limit=").append(userFilter.getLimit());
 
         return restTemplate.getForObject(resourceUrl.toString(), String.class);
 
@@ -35,32 +30,27 @@ public class UserService {
 
     public UserSaveDto save(UserSaveDto userSaveDto){
         StringBuilder resourceUrl = new StringBuilder("http://localhost:8080/users");
-        HttpEntity<UserSaveDto> request = new HttpEntity<>(new UserSaveDto()
+        HttpEntity<UserSaveDto> request = new HttpEntity<>(fillUserSaveDto(userSaveDto));
+        return  restTemplate.postForObject(resourceUrl.toString(),request,UserSaveDto.class);
+    }
+
+    public UserSaveDto fillUserSaveDto(UserSaveDto userSaveDto) {
+        return new UserSaveDto()
                 .setUsername(userSaveDto.getUsername())
                 .setSurname(userSaveDto.getSurname())
                 .setName(userSaveDto.getName())
-                .setPassword(userSaveDto.getPassword()));
-        return  restTemplate.postForObject(resourceUrl.toString(),request,UserSaveDto.class);
+                .setPassword(userSaveDto.getPassword());
     }
 
     public Boolean update(UserSaveDto userSaveDto){
         StringBuilder resourceUrl = new StringBuilder("http://localhost:8080/users");
-        HttpEntity<UserSaveDto> request = new HttpEntity<>(new UserSaveDto()
-                .setId(userSaveDto.getId())
-                .setUsername(userSaveDto.getUsername())
-                .setSurname(userSaveDto.getSurname())
-                .setName(userSaveDto.getName())
-                .setPassword(userSaveDto.getPassword()));
+        HttpEntity<UserSaveDto> request = new HttpEntity<>(fillUserSaveDto(userSaveDto).setId(userSaveDto.getId()));
        restTemplate.put(resourceUrl.toString(),request);
        return true;
     }
 
     public Boolean delete(Long id){
-        StringBuilder resourceUrl = new StringBuilder("http://localhost:8080/users/");
-        if (id != null){
-            resourceUrl.append(id);
-        }
-        restTemplate.delete(resourceUrl.toString());
+        restTemplate.delete("http://localhost:8080/users/" + id);
         return true;
     }
 
