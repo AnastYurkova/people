@@ -41,12 +41,14 @@ public class UserService {
         return userRepository.save(userSaveDto);
     }
 
-    public void update(UserSaveDto userSaveDto) {
+    public Boolean update(UserSaveDto userSaveDto) {
         userRepository.update(userSaveDto);
+        return true;
     }
 
-    public void delete(Long id) {
+    public Boolean delete(Long id) {
         userRepository.delete(id);
+        return true;
     }
 
     @Autowired

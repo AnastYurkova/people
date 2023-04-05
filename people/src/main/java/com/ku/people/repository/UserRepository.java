@@ -3,6 +3,7 @@ package com.ku.people.repository;
 import com.ku.people.dto.UserDto;
 import com.ku.people.dto.UserListDto;
 import com.ku.people.dto.UserSaveDto;
+import com.ku.people.exception.RepositoryException;
 import com.ku.people.filter.UserFilter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.util.List;
-
-import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 public class UserRepository {
@@ -54,7 +53,7 @@ public class UserRepository {
     }
 
     public List<UserListDto> findAll() {
-        return namedParameterJdbcTemplate.query(FIND_ALL,  (rs, rowNum) ->  new UserListDto()
+        return namedParameterJdbcTemplate.query(FIND_ALL, (rs, rowNum) -> new UserListDto()
                 .setId(rs.getLong("id"))
                 .setName(rs.getString("name"))
                 .setSurname(rs.getString("surname"))
@@ -88,7 +87,7 @@ public class UserRepository {
 
     public UserSaveDto save(UserSaveDto userSaveDto) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(SAVE,fillParameters(userSaveDto), keyHolder, new String[]{"id"});
+        namedParameterJdbcTemplate.update(SAVE, fillParameters(userSaveDto), keyHolder, new String[]{"id"});
         return userSaveDto.setId((Long) keyHolder.getKey());
     }
 
@@ -100,14 +99,26 @@ public class UserRepository {
                 .addValue("password", userSaveDto.getPassword());
     }
 
-    public void update(UserSaveDto userSaveDto) {
+    public Boolean update(UserSaveDto userSaveDto) {
         MapSqlParameterSource parameter = fillParameters(userSaveDto).addValue("id", userSaveDto.getId());
-        namedParameterJdbcTemplate.update(UPDATE,parameter);
-
+        int update = namedParameterJdbcTemplate.update(UPDATE, parameter);
+        if (update == 0) {
+            String message = "Failed to update user with id = %d. User was not found";
+            throw new RepositoryException(String.format(message, userSaveDto.getId()));
+        } else {
+            return true;
+        }
     }
 
-    public void delete(Long id) {
+    public Boolean delete(Long id) {
         MapSqlParameterSource parameter = new MapSqlParameterSource().addValue("id", id);
-        namedParameterJdbcTemplate.update(DELETE, parameter);
+        int delete =
+                namedParameterJdbcTemplate.update(DELETE, parameter);
+        if (delete == 0) {
+            String message = "Failed to delete user with id = %d. User was not found";
+            throw new RepositoryException(String.format(message, id));
+        } else {
+            return true;
+        }
     }
 }
