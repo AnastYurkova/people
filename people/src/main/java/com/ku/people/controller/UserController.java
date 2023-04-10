@@ -78,18 +78,20 @@ public class UserController {
 
     @PutMapping
     @Operation(summary = "Update user")
-    public void update(
+    public Boolean update(
             @RequestBody
             @Parameter(description = "Information about updating user", required = true) UserSaveDto userSaveDto) {
         userService.update(userSaveDto);
+        return true;
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete user")
-    public void delete(@PathVariable("id")
+    public Boolean delete(@PathVariable("id")
                        @Parameter(description = "Id of deleting user", example = "99", required = true) Long id
     ) {
         userService.delete(id);
+        return true;
     }
 
     @Autowired
